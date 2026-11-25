@@ -39,6 +39,9 @@
   --silver: #8e98a9;
   --bronze: #b0683a;
   --on-medal: #ffffff;
+  --flame: #ee6a12;
+  --on-flame: #ffffff;
+  --ice: #2a8bd0;
   --shadow: 0 1px 2px rgba(22, 26, 40, .05), 0 2px 10px rgba(22, 26, 40, .04);
   --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
   --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -49,7 +52,7 @@
     --paper: #0f1217; --surface: #171b22; --ink: #e8ebf1; --muted: #a2aab8; --faint: #737c8b;
     --line: #2a2f39; --chip: #21262f; --accent: #8399ff; --accent-soft: #1d2442; --on-accent: #0f1217;
     --dsa: #8399ff; --sd: #3cc6b2; --lld: #e3ab4e; --ai: #f27baf; --side: #9aa2b0; --done: #4acb86; --revisit: #f2a055;
-    --easy: #4fc98a; --medium: #e3ae4f; --hard: #f17b7b; --gold: #e6b84a; --silver: #b3bccb; --bronze: #d98e5d; --on-medal: #0f1217;
+    --easy: #4fc98a; --medium: #e3ae4f; --hard: #f17b7b; --gold: #e6b84a; --silver: #b3bccb; --bronze: #d98e5d; --on-medal: #0f1217; --flame: #ff9442; --on-flame: #1a1006; --ice: #6cc3f0;
     --shadow: 0 1px 2px rgba(0, 0, 0, .4); color-scheme: dark;
   }
 }
@@ -57,7 +60,7 @@
   --paper: #0f1217; --surface: #171b22; --ink: #e8ebf1; --muted: #a2aab8; --faint: #737c8b;
   --line: #2a2f39; --chip: #21262f; --accent: #8399ff; --accent-soft: #1d2442; --on-accent: #0f1217;
   --dsa: #8399ff; --sd: #3cc6b2; --lld: #e3ab4e; --ai: #f27baf; --side: #9aa2b0; --done: #4acb86; --revisit: #f2a055;
-  --easy: #4fc98a; --medium: #e3ae4f; --hard: #f17b7b; --gold: #e6b84a; --silver: #b3bccb; --bronze: #d98e5d; --on-medal: #0f1217;
+  --easy: #4fc98a; --medium: #e3ae4f; --hard: #f17b7b; --gold: #e6b84a; --silver: #b3bccb; --bronze: #d98e5d; --on-medal: #0f1217; --flame: #ff9442; --on-flame: #1a1006; --ice: #6cc3f0;
   --shadow: 0 1px 2px rgba(0, 0, 0, .4); color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -92,7 +95,9 @@ button, select, input { font: inherit; color: inherit; }
 .barend { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 .streak { display: inline-flex; align-items: center; gap: 4px; height: 34px; padding: 0 11px 0 8px; border-radius: 999px; text-decoration: none; background: var(--chip); color: var(--faint); font-family: var(--mono); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
 .streak .ic { width: 17px; height: 17px; fill: currentColor; stroke: none; }
-.streak.hot { color: var(--revisit); background: color-mix(in srgb, var(--revisit) 13%, var(--surface)); }
+.streak.hot { color: var(--flame); background: color-mix(in srgb, var(--flame) 14%, var(--surface)); }
+.streak.risk { color: var(--muted); }
+.streak.risk b { color: var(--ink); }
 .syncchip { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 13px; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 600; white-space: nowrap; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
 .syncchip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--faint); flex: none; }
 .syncchip[data-m="synced"] .dot { background: var(--done); }
@@ -367,6 +372,75 @@ dd { margin: 2px 0 0; max-width: 68ch; }
 .meter .num { font-family: var(--mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .setrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .foot { color: var(--faint); font-size: 12px; padding-top: 4px; margin: 0; }
+/* streaks */
+.atrisk { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; align-items: center; border: 1px solid color-mix(in srgb, var(--flame) 40%, var(--line)); background: color-mix(in srgb, var(--flame) 9%, var(--surface)); border-radius: 14px; padding: 12px 16px; }
+.atrisk > .ic { width: 28px; height: 28px; color: var(--flame); fill: currentColor; stroke: none; grid-row: span 2; }
+.atrisk b { font-size: 14.5px; }
+.atrisk span { color: var(--muted); font-size: 13px; }
+.atrisk a { color: var(--accent); font-weight: 600; text-decoration: none; white-space: nowrap; }
+.shero { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); padding: 22px 16px 16px; display: grid; justify-items: center; text-align: center; gap: 4px; min-width: 0; }
+.bigflame { color: var(--faint); line-height: 0; }
+.bigflame .ic { width: 76px; height: 76px; fill: currentColor; stroke: none; }
+.bigflame.lit { color: var(--flame); filter: drop-shadow(0 6px 14px color-mix(in srgb, var(--flame) 40%, transparent)); }
+.snum { font-family: var(--display); font-weight: 800; font-stretch: 70%; font-size: 68px; line-height: .9; font-variant-numeric: tabular-nums; margin-top: 4px; }
+.slabel { font-weight: 700; font-size: 15px; }
+.smsg { color: var(--muted); max-width: 42ch; margin: 4px 0 0; text-wrap: pretty; }
+.sfacts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; width: 100%; max-width: 520px; margin-top: 14px; }
+.sfact { background: var(--paper); border-radius: 12px; padding: 10px 8px; display: grid; gap: 2px; justify-items: center; min-width: 0; }
+.sfact b { font-family: var(--display); font-weight: 800; font-stretch: 78%; font-size: 24px; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.sfact span { font-size: 12px; color: var(--muted); }
+.freezes { display: inline-flex; gap: 2px; color: var(--ice); height: 29px; align-items: center; }
+.freezes .ic { width: 22px; height: 22px; }
+.freezes .ic.off { opacity: .25; }
+.mile { width: 100%; max-width: 520px; display: grid; gap: 6px; margin-top: 12px; text-align: left; }
+.mile .mrow { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.mile .bar i { background: var(--flame); }
+.calwrap { display: grid; gap: 10px; }
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; max-width: 460px; width: 100%; margin: 0 auto; }
+.cdh { font-family: var(--mono); font-size: 10.5px; color: var(--muted); text-align: center; }
+.cd { aspect-ratio: 1; border-radius: 9px; display: grid; place-items: center; font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; background: var(--chip); color: var(--muted); min-width: 0; }
+.cd.on { background: var(--flame); color: var(--on-flame); }
+.cd.ice { background: color-mix(in srgb, var(--ice) 20%, var(--surface)); color: var(--ice); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--ice) 55%, transparent); }
+.cd.fut { background: transparent; color: var(--faint); }
+.cd.today { box-shadow: inset 0 0 0 2px var(--ink); }
+.legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; font-size: 12px; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+.legend .l-on { background: var(--flame); } .legend .l-ice { background: color-mix(in srgb, var(--ice) 35%, var(--surface)); box-shadow: inset 0 0 0 1px var(--ice); } .legend .l-off { background: var(--chip); }
+.phead { display: flex; align-items: center; gap: 10px; }
+.phead h2 { flex: 1; }
+.flist { list-style: none; margin: 0; padding: 0; }
+.frow { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 2px 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
+.flist > .frow:first-child { border-top: 0; padding-top: 4px; }
+.frow .ava { width: 40px; height: 40px; font-size: 14px; }
+.fname { font-weight: 600; overflow-wrap: anywhere; }
+.fsub { font-size: 12.5px; color: var(--muted); }
+.fsub .yes { color: var(--done); font-weight: 600; }
+.fbadge { display: grid; justify-items: center; min-width: 58px; color: var(--faint); gap: 1px; }
+.fbadge.lit { color: var(--flame); }
+.fbadge .ic { width: 20px; height: 20px; fill: currentColor; stroke: none; }
+.fbadge b { font-family: var(--display); font-weight: 800; font-stretch: 78%; font-size: 21px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.fbadge small { font-family: var(--mono); font-size: 9.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.factions { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 6px; font-size: 13px; }
+@media (min-width: 640px) { .frow { grid-template-columns: 40px minmax(0, 1fr) auto auto; } .factions { grid-column: 3; grid-row: 1; margin-top: 0; } .fbadge { grid-column: 4; grid-row: 1; } }
+.btn.sm { min-height: 32px; padding: 5px 11px; font-size: 12.5px; }
+.invcard { border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line)); box-shadow: 0 0 0 3px var(--accent-soft); border-radius: 14px; padding: 14px; display: grid; gap: 10px; background: var(--surface); }
+.invhead { display: flex; align-items: center; gap: 12px; }
+.invhead p { margin: 0; color: var(--ink); font-size: 14px; }
+.sub2 { border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 10px; }
+.sub2 h3 { margin: 0; font-size: 15px; }
+.mono { font-family: var(--mono); }
+.field.ro { font-family: var(--mono); font-size: 12.5px; background: var(--paper); color: var(--muted); }
+.toast { position: fixed; left: 50%; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 40; transform: translate(-50%, 16px); opacity: 0; pointer-events: none;
+  display: flex; align-items: center; gap: 10px; max-width: calc(100% - 32px); width: max-content; padding: 12px 18px 12px 14px; border-radius: 14px; background: var(--ink); color: var(--paper); font-weight: 600; font-size: 14px; box-shadow: 0 8px 30px rgba(0, 0, 0, .25); }
+.toast .ic { width: 26px; height: 26px; color: var(--flame); fill: currentColor; stroke: none; flex: none; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+@media (min-width: 760px) { .toast { bottom: 32px; } }
+@media (prefers-reduced-motion: no-preference) {
+  .toast { transition: opacity .2s ease, transform .25s ease; }
+  .toast.show .ic { animation: pop .5s ease; }
+  .bigflame.lit .ic { animation: pop .6s ease; }
+}
+@keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.18); } 100% { transform: scale(1); } }
 @media (prefers-reduced-motion: no-preference) { .cell::after, .bar i, .cbar i { transition: height .25s ease, width .25s ease; } .ring .fg { transition: stroke-dashoffset .35s ease; } }
 </style>
 </head>
@@ -376,13 +450,14 @@ dd { margin: 2px 0 0; max-width: 68ch; }
     <a class="brand" href="#week" data-home="1" aria-label="Interview Prep: this week"><span class="mark" aria-hidden="true">16</span><span class="bname">Interview Prep<small>DSA · Design · LLD · AI</small></span></a>
     <nav class="topnav" id="topnav" aria-label="Main"></nav>
     <div class="barend">
-      <a class="streak" id="streakchip" href="#board"></a>
+      <a class="streak" id="streakchip" href="#streak"></a>
       <a class="syncchip" id="sync" href="#you" data-m="local"></a>
     </div>
   </div>
 </header>
 <main class="wrap" id="main"></main>
 <nav class="bottomnav" id="bottomnav" aria-label="Main"></nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function () {
@@ -1036,7 +1111,7 @@ async function cloudSave() {
   }
   cloud.busy = false;
   if (cloud.again) { cloud.again = false; cloudSave(); }
-  else if (cloudView()) loadBoard();
+  else { if (cloudView()) loadBoard(); if (view === "streak") loadFriends(); }
 }
 const cloudView = () => view === "board" || view === "you";
 async function loadProfile() {
@@ -1050,7 +1125,7 @@ async function loadProfile() {
 async function loadBoard() {
   if (!cloudAvailable()) return;
   try {
-    lb.rows = (await rpc("prep_leaderboard", { p_code: cloud.code, p_sort: lb.sort, p_limit: 100 })) || [];
+    lb.rows = (await rpc("prep_leaderboard", { p_code: cloud.code, p_sort: lb.sort, p_limit: 100, p_today: iso(new Date()) })) || [];
     lb.err = "";
   } catch (e) { lb.err = "Couldn't load the leaderboard. Check your connection and try again."; }
   if (cloudView()) render();
@@ -1128,10 +1203,15 @@ async function startCloud() {
   if (!cloudAvailable()) { setSync("local"); return; }
   try {
     const params = new URLSearchParams(location.search);
-    if (params.has("code")) {
-      const c = normCode(params.get("code"));
-      history.replaceState(null, "", location.pathname + (c ? "#you" : location.hash));
-      if (c) { setCode(c); route(); cloud.msg = "Sync is on. Progress from both devices is combined."; renderPanel(); }
+    if (params.has("code") || params.has("friend")) {
+      const c = params.has("code") ? normCode(params.get("code")) : null;
+      const f = params.has("friend") ? normFriend(params.get("friend")) : null;
+      history.replaceState(null, "", location.pathname + (f ? "#streak" : c ? "#you" : location.hash));
+      if (c) setCode(c);
+      if (f) fr.pending = { id: f, nickname: null };
+      if (c || f) route();
+      if (c && !f) { cloud.msg = "Sync is on. Progress from both devices is combined."; renderPanel(); }
+      if (f) lookupInvite(f);
     }
   } catch (e) {}
   if (!cloud.code) { setSync("cloudOff"); return; }
@@ -1181,7 +1261,7 @@ const NI = {
   link: svg('<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>')
 };
 const NAV = [["week", "This week"], ["tracks", "Tracks"], ["board", "Leaderboard"], ["you", "You"]];
-const VIEW_SET = new Set(["week", "plan", "tracks", "board", "you"]);
+const VIEW_SET = new Set(["week", "plan", "tracks", "board", "you", "streak"]);
 let view = "week";
 let trackSel = "dsa";
 let howOpen = false;
@@ -1249,22 +1329,54 @@ function weekFill(w) {
   return c.total ? c.done / c.total : 0;
 }
 // Same rules as the leaderboard: done and revisit both count, streak = consecutive days with a tick ending today or yesterday.
-function myStats() {
-  let pts = 0, wk = 0, n = 0;
-  const days = new Set();
-  const now = new Date(), weekAgo = iso(addDays(now, -6));
+// At most DAY_CAP points count per day (same as the server), so bulk-ticking can't buy rank.
+const DAY_CAP = 10;
+function dayPoints() {
+  const byDay = {};
+  let n = 0;
   for (const k of Object.keys(state.items)) {
     const r = state.items[k];
     if (r.s !== "d" && r.s !== "r") continue;
-    const w = r.w != null ? r.w : weightOf(BYID.get(k));
-    pts += w; n++;
-    if (r.t) { days.add(r.t); if (r.t >= weekAgo) wk += w; }
+    n++;
+    const key = r.t || "-";
+    byDay[key] = (byDay[key] || 0) + (r.w != null ? r.w : weightOf(BYID.get(k)));
   }
-  let d = new Date(now.getFullYear(), now.getMonth(), now.getDate()), streak = 0;
-  if (!days.has(iso(d))) d = addDays(d, -1);
-  while (days.has(iso(d))) { streak++; d = addDays(d, -1); }
-  return { pts, wk, n, streak };
+  return { byDay, n };
 }
+function myStats() {
+  const { byDay, n } = dayPoints();
+  const weekAgo = iso(addDays(new Date(), -6));
+  let pts = 0, wk = 0;
+  for (const k of Object.keys(byDay)) { const v = Math.min(byDay[k], DAY_CAP); pts += v; if (k !== "-" && k >= weekAgo) wk += v; }
+  return { pts, wk, n, streak: streakInfo().streak };
+}
+// Daily streak, same rules as the server: a day counts when you tick anything (done or revisit).
+// Every 7th day in a row earns a freeze (hold up to 2); a missed day uses one and keeps the streak.
+// Not having ticked today yet doesn't break it.
+function streakInfo() {
+  const days = new Set();
+  for (const k of Object.keys(state.items)) { const r = state.items[k]; if ((r.s === "d" || r.s === "r") && r.t) days.add(r.t); }
+  const now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate()), tk = iso(today);
+  const frozen = new Set();
+  let streak = 0, freezes = 0, best = 0;
+  if (days.size) {
+    const first = [...days].sort()[0];
+    let d = parseD(first);
+    const floor = addDays(today, -400);
+    if (d < floor) d = floor;
+    while (d < today) {
+      const k = iso(d);
+      if (days.has(k)) { streak++; if (streak % 7 === 0 && freezes < 2) freezes++; }
+      else if (streak > 0 && freezes > 0) { freezes--; frozen.add(k); }
+      else streak = 0;
+      if (streak > best) best = streak;
+      d = addDays(d, 1);
+    }
+    if (days.has(tk)) { streak++; if (streak % 7 === 0 && freezes < 2) freezes++; if (streak > best) best = streak; }
+  }
+  return { streak, freezes, best, today: days.has(tk), days, frozen };
+}
+const MILESTONES = [3, 7, 14, 21, 30, 50, 75, 100, 112, 150, 200, 365];
 function weekline() {
   const d = daysIn(), cw = curWeek(), end = fmt(addDays(parseD(state.start), 111));
   return d < 0 ? "Starts in " + -d + (d === -1 ? " day" : " days") + ", ends " + end
@@ -1291,10 +1403,10 @@ function renderChrome() {
   document.querySelectorAll("[data-nav]").forEach(a => {
     if (a.dataset.nav === active) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
   });
-  const st = myStats(), sc = document.getElementById("streakchip");
-  sc.className = "streak" + (st.streak ? " hot" : "");
-  sc.innerHTML = NI.flame + "<b>" + st.streak + "</b>";
-  const lab = st.streak + "-day streak. Open the leaderboard";
+  const S = streakInfo(), sc = document.getElementById("streakchip");
+  sc.className = "streak" + (S.today ? " hot" : S.streak ? " risk" : "");
+  sc.innerHTML = NI.flame + "<b>" + S.streak + "</b>";
+  const lab = S.streak + "-day streak" + (S.today ? ", practised today" : S.streak ? ", not practised yet today" : "") + ". Open your streak and friends";
   sc.title = lab; sc.setAttribute("aria-label", lab);
   paintSync();
 }
@@ -1337,6 +1449,12 @@ function weekView() {
       '<a class="more" href="#plan">All 16 weeks →</a></div>' +
   "</section>";
 
+  const SI = streakInfo();
+  if (SI.streak > 0 && !SI.today && w === clampW(cw)) {
+    h += '<section class="atrisk" aria-label="Streak at risk">' + NI.flame + "<b>Keep your " + SI.streak + "-day streak going</b>" +
+      "<span>Tick one thing today." + (SI.freezes ? " You have " + SI.freezes + (SI.freezes === 1 ? " freeze" : " freezes") + " in reserve if you can't." : "") +
+      ' <a href="#streak">See streak</a></span></section>';
+  }
   if (showNudge()) {
     h += '<section class="nudge" aria-label="Turn on sync">' + NI.cloud + "<div><b>Your progress is only saved in this browser.</b>" +
       "<p>Turn on sync to back it up and pick it up on your phone or laptop. No sign-up, just a code.</p>" +
@@ -1459,8 +1577,9 @@ const POINTS_HOW = [
   ["Design work", "Design problems, mocks, practice designs, hands-on builds and reviews: 3 points each."],
   ["Reading and videos", "1 point each, side quests included."],
   ["Revisit", "Marking something Revisit keeps its points."],
+  ["Daily cap", "At most 10 points count per day, however much you tick. A steady week beats one big day."],
   ["Last 7 days", "Points from things you ticked in the last 7 days. All time counts everything."],
-  ["Streak", "Consecutive days with at least one tick, ending today or yesterday."]
+  ["Streak", "Consecutive days with at least one tick. Every 7 days in a row earns a streak freeze (hold up to 2), and a missed day uses one."]
 ];
 function boardView() {
   const web = cloudAvailable();
@@ -1492,6 +1611,7 @@ function boardView() {
       (!cloud.code && !lb.renaming ? '<p>Joining also turns on sync, so your progress is backed up. You\'ll find your code on the <a href="#you">You</a> page.</p>' : "") + "</section>";
   }
   if (lb.err2) h += '<p class="err">' + esc(lb.err2) + "</p>";
+  h += '<a class="linkcard" href="#streak">' + NI.flame.replace('class="ic"', 'class="ic" style="color:var(--flame);fill:currentColor;stroke:none"') + "<div><b>Friend streaks</b><span>Invite friends and keep a daily streak going together.</span></div>" + '<span class="chev">' + NI.chev + "</span></a>";
   if (lb.err) h += '<section class="panel"><p class="err">' + esc(lb.err) + '</p><div class="row"><button type="button" class="btn" data-cloud="refresh">Try again</button></div></section>';
   else if (!lb.rows) h += '<section class="card lbcard" aria-busy="true"><div class="stack" style="padding:6px 0 10px"><div class="skel"></div><div class="skel" style="width:80%"></div><div class="skel" style="width:60%"></div></div></section>';
   else {
@@ -1552,6 +1672,8 @@ function youView() {
   h += '<div class="stats">' + stat(st.pts, "Total points") + stat(st.wk, "Points, last 7 days") +
     stat(st.streak, "Day streak", st.streak ? "hot" : "") + stat((all.done + all.rev) + "<small> / " + all.total + "</small>", "Items done") + "</div>";
   h += syncCardHTML();
+  h += '<a class="linkcard" href="#streak">' + NI.flame.replace('class="ic"', 'class="ic" style="color:var(--flame);fill:currentColor;stroke:none"') + "<div><b>Streak and friends</b><span>" +
+    (st.streak ? st.streak + "-day streak. " : "") + "Keep a daily streak, alone or with friends.</span></div>" + '<span class="chev">' + NI.chev + "</span></a>";
   if (web) {
     const rows = lb.rows || [], meI = rows.findIndex(r => r.is_you);
     h += '<a class="linkcard" href="#board">' + NI.board + "<div><b>" + (onBoard ? "On the leaderboard as " + esc(lb.profile.nickname) : "Join the leaderboard") + "</b><span>" +
@@ -1578,6 +1700,215 @@ function youView() {
   return '<div class="stack">' + h + "</div>";
 }
 
+/* ---------- streak + friends ---------- */
+NI.snow = svg('<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.6 4.6L12 6.8l2.4-2.2M9.6 19.4L12 17.2l2.4 2.2M3.9 10.6l3-.8-.8-3M20.1 13.4l-3 .8.8 3M3.9 13.4l3 .8-.8 3M20.1 10.6l-3-.8.8-3"/>');
+NI.share = svg('<path d="M12 15V4M8 7.5L12 3.5l4 4M5 12v6.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V12"/>');
+const flameIc = cls => NI.flame.replace('class="ic"', 'class="ic' + (cls ? " " + cls : "") + '"');
+const fr = { data: null, err: "", msg: "", pending: null, nameDraft: "", codeDraft: "", confirm: null, busy: false };
+function normFriend(v) {
+  let t = String(v || "");
+  const m = t.match(/friend=([0-9A-Za-z-]+)/);
+  if (m) t = m[1];
+  const s = t.toUpperCase().replace(/[^0-9A-Z]/g, "").replace(/O/g, "0").replace(/[IL]/g, "1");
+  if (s.length !== 8 || /[^0-9A-HJKMNP-TV-Z]/.test(s)) return null;
+  return s.slice(0, 4) + "-" + s.slice(4);
+}
+const myName = () => (fr.data && fr.data.nickname) || (lb.profile && lb.profile.nickname) || "";
+const inviteLink = () => fr.data && fr.data.friend_id ? SITE + "/?friend=" + fr.data.friend_id : "";
+async function loadFriends() {
+  if (!cloud.code || !cloudAvailable()) return;
+  try { fr.data = await rpc("prep_friends", { p_code: cloud.code, p_today: iso(new Date()) }); }
+  catch (e) { fr.err = fr.data ? "" : "Couldn't load your friends. Check your connection and try again."; }
+  if (view === "streak") render();
+}
+async function lookupInvite(id) {
+  try {
+    const r = await rpc("prep_friend_lookup", { p_friend_id: id });
+    if (fr.pending && fr.pending.id === id) { if (r) fr.pending.nickname = r.nickname; else fr.pending.bad = true; }
+  } catch (e) { if (fr.pending) fr.pending.offline = true; }
+  if (view === "streak") render();
+}
+async function ensureSync() {
+  if (!cloud.code) { setCode(newCode()); await cloudSave(); }
+}
+async function ensureName() {
+  if (myName()) return;
+  const name = (fr.nameDraft || "").trim();
+  if (name.length < 2) { const e = new Error("Pick a name first (at least 2 characters) so your friends know it's you."); e.status = 1; throw e; }
+  const p = await rpc("prep_set_profile", { p_code: cloud.code, p_nickname: name, p_on_board: !!(lb.profile && lb.profile.on_board) });
+  lb.profile = { nickname: p.nickname, on_board: !!p.on_board };
+  if (fr.data) fr.data.nickname = p.nickname;
+}
+const netErr = e => e && e.status ? e.message : "Couldn't reach the server. Check your connection and try again.";
+async function frRun(fn) {
+  if (fr.busy) return;
+  fr.busy = true; fr.err = ""; fr.msg = ""; render();
+  try { await fn(); } catch (e) { fr.err = netErr(e); }
+  fr.busy = false; render();
+}
+function addFriend(raw) {
+  const fid = normFriend(raw);
+  if (!fid) { fr.err = "Friend codes have 8 letters and numbers, like 7KQM-4XPA."; fr.msg = ""; render(); return; }
+  return frRun(async () => {
+    await ensureSync(); await ensureName();
+    const d = await rpc("prep_add_friend", { p_code: cloud.code, p_friend_id: fid, p_today: iso(new Date()) });
+    fr.data = d;
+    const f = (d.friends || []).find(x => x.friend_id === fid);
+    fr.msg = "You and " + (f ? f.nickname : "your friend") + " are friends now. Practise on the same day to grow your friend streak.";
+    fr.pending = null; fr.codeDraft = ""; fr.nameDraft = "";
+  });
+}
+function copyFr(text, okMsg) {
+  const fallback = () => {
+    fr.msg = "Copying isn't allowed here. The link is selected; copy it yourself."; render();
+    const el = document.getElementById("invitelink"); if (el) { el.focus(); el.select(); }
+  };
+  try { navigator.clipboard.writeText(text).then(() => { fr.msg = okMsg; fr.err = ""; render(); }, fallback); } catch (e) { fallback(); }
+}
+function shareOrCopy(data, copyText, okMsg) {
+  if (navigator.share) {
+    navigator.share(data).catch(e => { if (!e || e.name !== "AbortError") copyFr(copyText, okMsg); });
+  } else copyFr(copyText, okMsg);
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-fr]");
+  if (!el) return;
+  const a = el.dataset.fr;
+  if (a === "accept" && fr.pending) addFriend(fr.pending.id);
+  else if (a === "decline") { fr.pending = null; render(); }
+  else if (a === "add") addFriend(fr.codeDraft);
+  else if (a === "name") frRun(async () => { await ensureSync(); await ensureName(); fr.data = await rpc("prep_friends", { p_code: cloud.code, p_today: iso(new Date()) }); fr.nameDraft = ""; });
+  else if (a === "refresh") { fr.err = ""; fr.msg = ""; loadFriends(); }
+  else if (a === "invite") { const l = inviteLink(); if (l) shareOrCopy({ title: "Interview prep streak", text: myName() + " invited you to keep an interview prep streak together.", url: l }, l, "Invite link copied. Send it to a friend."); }
+  else if (a === "copyinvite") { const l = inviteLink(); if (l) copyFr(l, "Invite link copied. Send it to a friend."); }
+  else if (a === "nudge") {
+    const f = fr.data && (fr.data.friends || []).find(x => x.friend_id === el.dataset.fid);
+    if (!f) return;
+    const text = f.friend_streak > 0
+      ? f.nickname + ", our " + f.friend_streak + "-day prep streak needs you today! 🔥 " + SITE
+      : f.nickname + ", let's both get some prep in today and start a streak. 🔥 " + SITE;
+    shareOrCopy({ text }, text, "Nudge copied. Paste it in your chat with " + f.nickname + ".");
+  }
+  else if (a === "remove") { fr.confirm = el.dataset.fid; render(); }
+  else if (a === "remove-no") { fr.confirm = null; render(); }
+  else if (a === "remove-yes") {
+    const fid = fr.confirm; fr.confirm = null;
+    frRun(async () => { fr.data = await rpc("prep_remove_friend", { p_code: cloud.code, p_friend_id: fid, p_today: iso(new Date()) }); fr.msg = "Friend removed."; });
+  }
+});
+document.addEventListener("input", e => {
+  if (e.target.id === "fnick") fr.nameDraft = e.target.value;
+  else if (e.target.id === "fcode") fr.codeDraft = e.target.value;
+});
+document.addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+  if (e.target.id === "fnick") { e.preventDefault(); if (fr.pending && !fr.pending.bad) addFriend(fr.pending.id); else document.querySelector('[data-fr="name"]') && document.querySelector('[data-fr="name"]').click(); }
+  else if (e.target.id === "fcode") { e.preventDefault(); addFriend(fr.codeDraft); }
+});
+
+function calHTML(S) {
+  const now = new Date(), t = new Date(now.getFullYear(), now.getMonth(), now.getDate()), tk = iso(t);
+  const start = addDays(t, -((t.getDay() + 6) % 7) - 28);
+  let h = '<div class="cal">' + ["M", "T", "W", "T", "F", "S", "S"].map(x => '<span class="cdh" aria-hidden="true">' + x + "</span>").join("");
+  for (let i = 0; i < 35; i++) {
+    const d = addDays(start, i), k = iso(d);
+    const st = d > t ? "fut" : S.days.has(k) ? "on" : S.frozen.has(k) ? "ice" : "off";
+    const lab = fmt(d) + (st === "on" ? ", practised" : st === "ice" ? ", covered by a freeze" : st === "fut" ? "" : ", missed");
+    h += '<span class="cd ' + st + (k === tk ? " today" : "") + '" title="' + lab + '" aria-label="' + lab + '">' + d.getDate() + "</span>";
+  }
+  return h + "</div>";
+}
+function friendsHTML() {
+  let h = '<section class="panel" aria-label="Friend streaks"><div class="phead"><h2>Friend streaks</h2>' +
+    (cloudAvailable() && cloud.code && myName() ? '<button type="button" class="iconbtn" data-fr="refresh" aria-label="Refresh friends" title="Refresh">' + NI.refresh + "</button>" : "") + "</div>" +
+    "<p>Practise on the same day as a friend and you build a streak together. It's a team effort, not a ranking.</p>";
+  if (!cloudAvailable()) {
+    return h + '<p>Friend streaks are on the website version, where progress syncs with a code.</p><div class="row"><a class="btn primary" href="' + SITE + '" target="_blank" rel="noopener">Open the website</a></div></section>';
+  }
+  const msg = (fr.msg ? '<p class="okmsg" role="status">' + esc(fr.msg) + "</p>" : "") + (fr.err ? '<p class="err" role="alert">' + esc(fr.err) + "</p>" : "");
+  const busy = fr.busy ? " disabled" : "";
+  const nameField = '<div class="row"><input id="fnick" class="field" maxlength="24" placeholder="Your name" autocomplete="nickname" value="' + esc(fr.nameDraft) + '" aria-label="Your name, shown to friends"></div>';
+  const P = fr.pending;
+  const own = P && fr.data && fr.data.friend_id === P.id;
+  if (P) {
+    if (P.bad || own) {
+      h += '<div class="invcard"><p>' + (own ? "That's your own invite link. Send it to a friend instead." : "That invite link doesn't work. Ask your friend to send it again.") + '</p><div class="row"><button type="button" class="btn quiet" data-fr="decline">Dismiss</button></div></div>';
+    } else {
+      const nm = P.nickname || "A friend";
+      h += '<div class="invcard"><div class="invhead">' + avaHTML(nm) + "<p><b>" + esc(nm) + "</b> invited you to keep an interview prep streak together.</p></div>" +
+        (myName() ? "" : "<p>Pick the name your friends will see." + (cloud.code ? "" : " This also turns on sync, so your progress is saved.") + "</p>" + nameField) +
+        '<div class="row"><button type="button" class="btn primary" data-fr="accept"' + busy + ">" + (fr.busy ? "Adding…" : "Accept") + '</button><button type="button" class="btn quiet" data-fr="decline">Not now</button></div></div>';
+    }
+  }
+  if (!cloud.code || !myName()) {
+    if (!P || P.bad || own) {
+      h += "<p>Friends see your name, your streak, whether you've practised today and your points this week. Never your notes.</p>" + nameField +
+        '<div class="row"><button type="button" class="btn primary" data-fr="name"' + busy + ">" + (cloud.code ? "Save name" : "Turn on sync and continue") + "</button></div>";
+    }
+    return h + msg + "</section>";
+  }
+  h += msg;
+  const D = fr.data;
+  if (!D) return h + (fr.err ? "" : '<div class="stack" aria-busy="true"><div class="skel"></div><div class="skel" style="width:70%"></div></div>') + "</section>";
+  const list = D.friends || [];
+  if (list.length) {
+    h += '<ul class="flist">' + list.map(f => {
+      const confirm = fr.confirm === f.friend_id;
+      return '<li class="frow">' + avaHTML(f.nickname) +
+        '<div><div class="fname">' + esc(f.nickname) + "</div>" +
+        '<div class="fsub">' + (f.today ? '<span class="yes">Practised today</span>' : "Not yet today") + " · " + f.streak + "-day streak · " + f.week_points + " pts this week</div></div>" +
+        '<div class="fbadge' + (f.both_today ? " lit" : "") + '" title="Friend streak">' + NI.flame + "<b>" + f.friend_streak + "</b><small>together</small></div>" +
+        '<div class="factions">' + (confirm
+          ? "<span>Remove " + esc(f.nickname) + '?</span><button type="button" class="btn sm danger" data-fr="remove-yes">Remove</button><button type="button" class="btn sm quiet" data-fr="remove-no">Cancel</button>'
+          : (!f.today ? '<button type="button" class="btn sm" data-fr="nudge" data-fid="' + esc(f.friend_id) + '">' + NI.share + "Nudge</button>" : "") +
+            '<button type="button" class="btn sm quiet" data-fr="remove" data-fid="' + esc(f.friend_id) + '">Remove</button>') +
+        "</div></li>";
+    }).join("") + "</ul>";
+  } else {
+    h += '<p class="empty">No friends yet. Send your invite link to someone who\'s prepping too.</p>';
+  }
+  const link = inviteLink();
+  h += '<div class="sub2"><h3>Invite a friend</h3><p>Send this link. When they open it and tap Accept, you\'re friends.</p>' +
+    '<input id="invitelink" class="field ro" readonly value="' + esc(link) + '" aria-label="Your invite link">' +
+    '<div class="row">' + (navigator.share ? '<button type="button" class="btn primary" data-fr="invite">' + NI.share + "Share invite</button>" : "") +
+    '<button type="button" class="btn' + (navigator.share ? "" : " primary") + '" data-fr="copyinvite">' + NI.link + "Copy link</button></div>" +
+    '<div class="or">or add by code</div>' +
+    "<p>Your friend code is <b class=\"mono\">" + esc(D.friend_id) + "</b>.</p>" +
+    '<div class="row"><input id="fcode" class="field mono" placeholder="Friend\'s code" maxlength="64" autocomplete="off" spellcheck="false" value="' + esc(fr.codeDraft) + '" aria-label="Friend\'s code">' +
+    '<button type="button" class="btn" data-fr="add"' + busy + ">Add friend</button></div></div>";
+  return h + "</section>";
+}
+const STREAK_HOW = [
+  ["Daily streak", "Tick at least one thing (done or revisit) each day. Days follow your device's date."],
+  ["Streak freezes", "Every 7 days in a row earns a freeze, and you can hold 2. If you miss a day, a freeze covers it automatically. The covered day keeps your streak but doesn't add to it."],
+  ["Friend streaks", "Days since you became friends when you both ticked something. No freezes: if either of you misses a day, it starts over."],
+  ["Points", "At most 10 points count per day, however much you tick. A steady week beats one big day."],
+  ["Who sees what", "Friends see your name, your streak, whether you've practised today and your points this week. Never your notes or what you studied."],
+  ["Reminders", "There are no notifications. This week shows a banner when your streak needs a tick today."]
+];
+function streakView() {
+  const S = streakInfo();
+  const next = MILESTONES.find(m => m > S.streak);
+  const prev = [...MILESTONES].reverse().find(m => m <= S.streak) || 0;
+  const msg = S.today ? "You've practised today. Come back tomorrow to make it " + (S.streak + 1) + "."
+    : S.streak > 0 ? "Tick one thing today to keep your streak." + (S.freezes ? " If you can't, a freeze will cover today." : "")
+    : "Tick anything today to start a streak.";
+  let h = '<div class="vhead"><div class="grow"><a class="back" href="#week">← This week</a><h1>Streak</h1></div></div>';
+  h += '<section class="shero" aria-label="Your streak"><div class="bigflame' + (S.today ? " lit" : "") + '">' + NI.flame + "</div>" +
+    '<div class="snum">' + S.streak + '</div><div class="slabel">day streak</div><p class="smsg">' + esc(msg) + "</p>" +
+    '<div class="sfacts"><div class="sfact"><span class="freezes" aria-label="' + S.freezes + ' of 2 freezes">' +
+      [0, 1].map(i => NI.snow.replace('class="ic"', 'class="ic' + (i < S.freezes ? "" : " off") + '"')).join("") + "</span><span>Freezes</span></div>" +
+    '<div class="sfact"><b>' + S.best + "</b><span>Best streak</span></div>" +
+    '<div class="sfact"><b>' + S.days.size + "</b><span>Days practised</span></div></div>" +
+    (next ? '<div class="mile"><div class="mrow"><span>Next milestone: ' + next + " days</span><span>" + (next - S.streak) + (next - S.streak === 1 ? " day" : " days") + ' to go</span></div><div class="bar"><i style="width:' + Math.round(((S.streak - prev) / (next - prev)) * 100) + '%"></i></div></div>' : "") +
+    "</section>";
+  h += '<section class="panel calwrap" aria-label="Last five weeks"><h2>Last 5 weeks</h2>' + calHTML(S) +
+    '<div class="legend"><span><i class="l-on"></i>Practised</span><span><i class="l-ice"></i>Freeze used</span><span><i class="l-off"></i>Missed</span></div></section>';
+  h += friendsHTML();
+  h += '<details class="how"><summary>How streaks work</summary><dl>' + STREAK_HOW.map(p => "<div><dt>" + p[0] + "</dt><dd>" + p[1] + "</dd></div>").join("") + "</dl></details>";
+  return '<div class="stack">' + h + "</div>";
+}
+
 /* ---------- render ---------- */
 function render() {
   renderChrome();
@@ -1586,7 +1917,7 @@ function render() {
   const focusId = ae && ae !== document.body && m.contains(ae) ? ae.id : "";
   let caret = null;
   if (focusId) { try { caret = ae.selectionStart; } catch (e) {} }
-  m.innerHTML = view === "week" ? weekView() : view === "plan" ? planView() : view === "board" ? boardView() : view === "you" ? youView() : trackView(trackSel);
+  m.innerHTML = view === "week" ? weekView() : view === "plan" ? planView() : view === "board" ? boardView() : view === "you" ? youView() : view === "streak" ? streakView() : trackView(trackSel);
   if (focusId) {
     const el = document.getElementById(focusId);
     if (el) { el.focus({ preventScroll: true }); if (caret != null && el.setSelectionRange) { try { el.setSelectionRange(caret, caret); } catch (e) {} } }
@@ -1595,6 +1926,8 @@ function render() {
 
 /* ---------- events ---------- */
 function cycle(id) {
+  const before = streakInfo();
+  const rawBefore = dayPoints().byDay[iso(new Date())] || 0;
   const st = status(id);
   const rec = Object.assign({}, state.items[id] || {});
   if (st === "todo") { rec.s = "d"; rec.t = iso(new Date()); rec.w = weightOf(BYID.get(id)); }
@@ -1604,6 +1937,23 @@ function cycle(id) {
   state.items[id] = rec;
   commit();
   render();
+  const after = streakInfo();
+  const raw1 = dayPoints().byDay[iso(new Date())] || 0;
+  if (!before.today && after.today) celebrate(before, after);
+  else if (rawBefore < DAY_CAP && raw1 >= DAY_CAP) toast(flameIc() + "<span>That's 10 points today, the daily max. Extra ticks still count as progress.</span>");
+}
+let toastTimer = 0;
+function toast(html) {
+  const el = document.getElementById("toast");
+  el.innerHTML = html; el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 3400);
+}
+function celebrate(before, after) {
+  let t = after.streak === 1 ? "Streak started! Come back tomorrow." : after.streak + "-day streak!";
+  if (MILESTONES.includes(after.streak) && after.streak > 1) t = after.streak + "-day streak! Milestone reached.";
+  if (after.freezes > before.freezes) t += " You earned a streak freeze.";
+  toast(NI.flame + "<span>" + esc(t) + "</span>");
 }
 document.addEventListener("click", e => {
   const el = e.target.closest("[data-act],[data-week],[data-go],[data-step],[data-fs],[data-nav],[data-home]");
@@ -1684,9 +2034,10 @@ function route() {
   else if (h === "method") { view = "tracks"; howOpen = true; }
   else view = VIEW_SET.has(h) ? h : "week";
   confirmReset = false;
-  cloud.msg = ""; cloud.err = ""; lb.err2 = "";
+  cloud.msg = ""; cloud.err = ""; lb.err2 = ""; fr.msg = ""; fr.err = ""; fr.confirm = null;
   render();
   if (cloudView()) { loadBoard(); loadProfile(); }
+  if (view === "streak") { loadFriends(); loadProfile(); }
 }
 window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: 0 }); });
 
