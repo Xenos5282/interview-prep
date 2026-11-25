@@ -4,6 +4,8 @@ A 16-week interview prep tracker: DSA (NeetCode 150), system design, low-level d
 
 `index.html` is the whole app: one self-contained page with no build step.
 
+The app has four sections: **This week** (today's work, a 16-week strip and progress), **Tracks** (the full syllabus per track, with search, filters and how to work each track), **Leaderboard**, and **You** (sync code, stats, start date and reset). The sync button sits in the top bar on every page.
+
 Live: https://interview-prep-green-five-60.vercel.app
 
 ## How the Vercel site works
