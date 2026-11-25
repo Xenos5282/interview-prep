@@ -153,6 +153,30 @@ a.t:hover { text-decoration-color: currentColor; }
 .vid { color: var(--ai); font-weight: 500; }
 .vlink { color: var(--ai); text-decoration: none; font-weight: 500; }
 .vlink:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+/* sync + leaderboard */
+button.sync { border: 0; cursor: pointer; font-family: var(--mono); font-size: 11px; }
+button.sync:disabled { cursor: default; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 10px; min-width: 0; }
+.panel h2 { margin: 0; font-family: var(--display); font-stretch: 88%; font-size: 17px; overflow-wrap: anywhere; }
+.panel p { margin: 0; color: var(--muted); font-size: 13.5px; max-width: 62ch; }
+.code { font-family: var(--mono); font-size: 20px; letter-spacing: .06em; font-weight: 500; user-select: all; }
+.field { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 0; flex: 1 1 180px; }
+.field.mono { font-family: var(--mono); text-transform: uppercase; letter-spacing: .04em; }
+.panel p.err, .err { color: var(--hard); font-size: 13px; margin: 0; }
+.panel p.okmsg { color: var(--done); }
+.btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.lb { list-style: none; margin: 0; padding: 0; }
+.lbrow { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+.lb > .lbrow:first-child { border-top: 0; }
+.lbrank { font-family: var(--display); font-weight: 800; font-stretch: 70%; font-size: 22px; color: var(--faint); text-align: center; font-variant-numeric: tabular-nums; }
+.lbrow.top .lbrank { color: var(--ink); }
+.lbname { font-weight: 600; overflow-wrap: anywhere; }
+.lbsub { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.lbpts { text-align: right; font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: 22px; line-height: 1; font-variant-numeric: tabular-nums; }
+.lbpts small { display: block; margin-top: 2px; font-family: var(--mono); font-weight: 500; font-size: 10px; color: var(--muted); }
+.lbrow.you { background: var(--chip); border-radius: 8px; padding-inline: 8px; border-top-color: transparent; }
+.youtag { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--accent); margin-left: 6px; }
 .hint { font-size: 12.5px; color: var(--muted); }
 .mynote { font-size: 13px; padding: 4px 8px; margin-top: 4px; border-radius: 6px; background: var(--chip); white-space: pre-wrap; overflow-wrap: anywhere; }
 .noteta { width: 100%; margin-top: 6px; font: inherit; font-size: 13.5px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 8px; resize: vertical; min-height: 70px; }
@@ -215,8 +239,9 @@ details.queue summary { cursor: pointer; font-size: 13px; color: var(--revisit);
       <label for="start">Start</label>
       <input type="date" id="start" value="2026-11-30">
       <span id="weekline">Week 1 of 16</span>
-      <span id="sync" class="sync" data-m="local">Saved in this browser</span>
+      <button type="button" id="sync" class="sync" data-m="local" data-cloud="toggle" aria-expanded="false" aria-controls="syncpanel">Saved in this browser</button>
     </div>
+    <div id="syncpanel" class="panel" hidden></div>
     <div class="strip" id="strip" aria-label="Weeks 1 to 16, filled by how much is done"></div>
     <div class="meters" id="meters"></div>
   </header>
@@ -701,10 +726,13 @@ const byOrder = (a, b) => a.i - b.i;
 const LS = "interview-prep-16w.v1";
 const DEFAULT_START = "2026-11-30";
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+// item record: s = "d" done | "r" revisit, n = note, t = date done, w = points, u = last change (ms).
+// A record with only "u" marks an item that was cleared, so the clear syncs too.
 function normalize(d) {
-  const out = { start: DEFAULT_START, items: {} };
+  const out = { start: DEFAULT_START, su: 0, items: {} };
   if (d && typeof d === "object") {
     if (typeof d.start === "string" && DATE_RE.test(d.start)) out.start = d.start;
+    if (typeof d.su === "number" && isFinite(d.su)) out.su = d.su;
     const it = d.items && typeof d.items === "object" ? d.items : {};
     for (const k of Object.keys(it)) {
       const v = it[k];
@@ -713,8 +741,21 @@ function normalize(d) {
       if (v.s === "d" || v.s === "r") rec.s = v.s;
       if (typeof v.n === "string" && v.n) rec.n = v.n.slice(0, 4000);
       if (typeof v.t === "string" && DATE_RE.test(v.t)) rec.t = v.t;
-      if (rec.s || rec.n) out.items[k] = rec;
+      if (typeof v.w === "number" && isFinite(v.w)) rec.w = v.w;
+      if (typeof v.u === "number" && isFinite(v.u)) rec.u = v.u;
+      if (rec.s || rec.n || rec.u) out.items[k] = rec;
     }
+  }
+  return out;
+}
+// Per-item merge: the newer change wins. Ties keep a.
+function mergeDocs(a, b) {
+  const out = { start: a.start, su: a.su || 0, items: {} };
+  if (b.start && (b.su || 0) > (a.su || 0)) { out.start = b.start; out.su = b.su; }
+  const keys = new Set(Object.keys(a.items || {}).concat(Object.keys(b.items || {})));
+  for (const k of keys) {
+    const x = a.items[k], y = b.items[k];
+    out.items[k] = !y ? x : !x ? y : (y.u || 0) > (x.u || 0) ? y : x;
   }
   return out;
 }
@@ -727,8 +768,15 @@ let state = loadLocal();
 
 /* ---------- sync (private per-person doc when signed in) ---------- */
 const sync = { ref: null, saving: false, again: false, dirty: false, denied: false, retried: false, timer: 0 };
-const SYNC_TEXT = { local: "Saved in this browser", synced: "Synced to your account", saving: "Saving…", error: "Couldn't sync; saved in this browser" };
-function setSync(m) { const el = document.getElementById("sync"); el.dataset.m = m; el.textContent = SYNC_TEXT[m]; }
+const SYNC_TEXT = { local: "Saved in this browser", synced: "Synced to your account", saving: "Saving…", error: "Couldn't sync; saved in this browser",
+  cloudOff: "Saved in this browser · Sync", offline: "Offline; saved in this browser" };
+function setSync(m) {
+  const el = document.getElementById("sync");
+  const web = cloudAvailable();
+  el.dataset.m = m;
+  el.textContent = web && m === "synced" ? "Synced · " + (cloud.code || "") : SYNC_TEXT[m];
+  el.disabled = !web;
+}
 async function startSync() {
   try {
     if (!window.claude || typeof window.claude.use !== "function") return;
@@ -753,7 +801,7 @@ async function flush() {
   if (!sync.ref || sync.denied) { sync.dirty = false; return; }
   if (sync.saving) { sync.again = true; return; }
   sync.saving = true; setSync("saving");
-  const body = JSON.parse(JSON.stringify({ v: 1, start: state.start, items: state.items, updatedAt: new Date().toISOString() }));
+  const body = JSON.parse(JSON.stringify({ v: 1, start: state.start, su: state.su, items: state.items, updatedAt: new Date().toISOString() }));
   try {
     await sync.ref.set(body);
     sync.dirty = false; sync.retried = false; setSync("synced");
@@ -778,7 +826,196 @@ function commit() {
     clearTimeout(sync.timer);
     sync.timer = setTimeout(flush, 700);
   }
+  if (cloud.code && cloudAvailable()) {
+    clearTimeout(cloud.timer);
+    cloud.timer = setTimeout(cloudSave, 1200);
+  }
 }
+
+/* ---------- website sync code + leaderboard (Supabase) ---------- */
+const CLOUD = { url: "https://cjpqpyerpojiqhlxwbqt.supabase.co", key: "sb_publishable_jzxvLz1t_h5ACqEraz5Prw__ZdtgEr8" };
+const SITE = "https://interview-prep-green-five-60.vercel.app";
+const CODE_KEY = "interview-prep-16w.code";
+const ALPH = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+const cloud = { code: null, busy: false, again: false, timer: 0, open: false, msg: "", err: "" };
+try { cloud.code = normCode(localStorage.getItem(CODE_KEY)); } catch (e) {}
+const lb = { sort: "week", rows: null, err: "", err2: "", profile: null, renaming: false, nameDraft: "" };
+
+function cloudAvailable() { return !(window.claude && typeof window.claude.use === "function") && typeof fetch === "function"; }
+function newCode() {
+  const b = new Uint8Array(12); crypto.getRandomValues(b);
+  let s = ""; for (let i = 0; i < 12; i++) { s += ALPH[b[i] & 31]; if (i === 3 || i === 7) s += "-"; }
+  return s;
+}
+function normCode(v) {
+  const s = String(v || "").toUpperCase().replace(/[^0-9A-Z]/g, "").replace(/O/g, "0").replace(/[IL]/g, "1");
+  if (s.length !== 12 || /[^0-9A-HJKMNP-TV-Z]/.test(s)) return null;
+  return s.slice(0, 4) + "-" + s.slice(4, 8) + "-" + s.slice(8);
+}
+function setCode(c) {
+  cloud.code = c;
+  try { if (c) localStorage.setItem(CODE_KEY, c); else localStorage.removeItem(CODE_KEY); } catch (e) {}
+}
+function weightOf(x) {
+  if (!x) return 1;
+  if (x.track === "dsa") return x.diff === "E" ? 1 : x.diff === "M" ? 2 : 3;
+  return ["Problem", "Mock", "Practice", "Hands-on", "Review"].includes(x.type) ? 3 : 1;
+}
+async function rpc(fn, body) {
+  const r = await fetch(CLOUD.url + "/rest/v1/rpc/" + fn, {
+    method: "POST",
+    headers: { apikey: CLOUD.key, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const txt = await r.text();
+  let data = null;
+  try { data = txt ? JSON.parse(txt) : null; } catch (e) {}
+  if (!r.ok) {
+    const err = new Error((data && data.message) || "Request failed (" + r.status + ")");
+    err.status = r.status;
+    throw err;
+  }
+  return data;
+}
+async function cloudSave() {
+  if (!cloud.code || !cloudAvailable()) return;
+  if (cloud.busy) { cloud.again = true; return; }
+  cloud.busy = true; setSync("saving");
+  try {
+    const items = {};
+    for (const k of Object.keys(state.items)) {
+      const r = state.items[k];
+      items[k] = r.s && r.w == null ? Object.assign({}, r, { w: weightOf(BYID.get(k)) }) : r;
+    }
+    const doc = await rpc("prep_save", { p_code: cloud.code, p_doc: { start: state.start, su: state.su, items } });
+    const merged = mergeDocs(state, normalize(doc));
+    const changed = JSON.stringify(merged) !== JSON.stringify(state);
+    state = merged; saveLocal();
+    setSync("synced");
+    if (changed && !(document.activeElement && document.activeElement.dataset && document.activeElement.dataset.note)) render();
+  } catch (e) {
+    setSync(e.status ? "error" : "offline");
+  }
+  cloud.busy = false;
+  if (cloud.again) { cloud.again = false; cloudSave(); }
+  else if (view === "board") loadBoard();
+}
+async function loadProfile() {
+  if (!cloud.code || !cloudAvailable()) return;
+  try {
+    const r = await rpc("prep_load", { p_code: cloud.code });
+    lb.profile = r ? { nickname: r.nickname, on_board: !!r.on_board } : null;
+    if (view === "board") render();
+  } catch (e) {}
+}
+async function loadBoard() {
+  if (!cloudAvailable()) return;
+  try {
+    lb.rows = (await rpc("prep_leaderboard", { p_code: cloud.code, p_sort: lb.sort, p_limit: 100 })) || [];
+    lb.err = "";
+  } catch (e) { lb.err = "Couldn't load the leaderboard. Check your connection and try again."; }
+  if (view === "board") render();
+}
+function renderPanel() {
+  const p = document.getElementById("syncpanel"), b = document.getElementById("sync");
+  p.hidden = !cloud.open;
+  b.setAttribute("aria-expanded", String(cloud.open));
+  if (!cloud.open) return;
+  const msg = (cloud.msg ? '<p class="okmsg">' + esc(cloud.msg) + "</p>" : "") + (cloud.err ? '<p class="err">' + esc(cloud.err) + "</p>" : "");
+  if (cloud.code) {
+    p.innerHTML = "<h2>Sync is on</h2><p>Enter this code on your other devices, or send yourself the link. Anyone with it can see and edit your progress, so keep it to yourself.</p>" +
+      '<div class="code" id="mycode">' + esc(cloud.code) + "</div>" +
+      '<div class="row"><button type="button" class="btn" data-cloud="copy">Copy code</button><button type="button" class="btn" data-cloud="copylink">Copy link</button><button type="button" class="btn" data-cloud="stop">Stop syncing here</button></div>' + msg;
+  } else {
+    p.innerHTML = "<h2>Sync across devices</h2><p>Get a code, then enter it on your other device. No sign-up. Progress from both devices is combined.</p>" +
+      '<div class="row"><button type="button" class="btn primary" data-cloud="new">Get my sync code</button></div>' +
+      '<label class="eyebrow" for="codein">Already have a code?</label>' +
+      '<div class="row"><input id="codein" class="field mono" placeholder="XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" maxlength="16"><button type="button" class="btn" data-cloud="use">Use code</button></div>' + msg;
+  }
+}
+async function useCode() {
+  const inp = document.getElementById("codein");
+  const c = normCode(inp && inp.value);
+  cloud.msg = ""; cloud.err = "";
+  if (!c) { cloud.err = "That isn't a sync code. Codes have 12 letters and numbers, like K7QM-4XPA-9TZB."; renderPanel(); return; }
+  try {
+    const r = await rpc("prep_load", { p_code: c });
+    if (!r) { cloud.err = "No progress found for that code. Check it and try again."; renderPanel(); return; }
+    setCode(c);
+    state = mergeDocs(state, normalize(r.doc)); saveLocal();
+    lb.profile = { nickname: r.nickname, on_board: !!r.on_board };
+    cloud.msg = "Sync is on. Progress from both devices is combined.";
+    render(); renderPanel();
+    cloudSave();
+  } catch (e) { cloud.err = "Couldn't reach the sync service. Check your connection and try again."; renderPanel(); }
+}
+function copyText(text, okMsg) {
+  const done = () => { cloud.msg = okMsg; cloud.err = ""; renderPanel(); };
+  const fallback = () => {
+    const el = document.getElementById("mycode");
+    if (el) { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    cloud.msg = "Copying isn't allowed here. The code is selected; copy it yourself."; renderPanel();
+  };
+  try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+}
+async function joinBoard() {
+  const name = (lb.nameDraft || "").trim();
+  lb.err2 = "";
+  if (name.length < 2) { lb.err2 = "Use at least 2 characters."; render(); return; }
+  try {
+    if (!cloud.code) { setCode(newCode()); await cloudSave(); renderPanel(); }
+    const p = await rpc("prep_set_profile", { p_code: cloud.code, p_nickname: name, p_on_board: true });
+    lb.profile = { nickname: p.nickname, on_board: !!p.on_board };
+    lb.renaming = false; lb.nameDraft = "";
+    render(); loadBoard();
+  } catch (e) { lb.err2 = e.status ? e.message : "Couldn't reach the leaderboard. Check your connection and try again."; render(); }
+}
+async function leaveBoard() {
+  lb.err2 = "";
+  try {
+    const p = await rpc("prep_set_profile", { p_code: cloud.code, p_nickname: lb.profile && lb.profile.nickname, p_on_board: false });
+    lb.profile = { nickname: p.nickname, on_board: !!p.on_board };
+    render(); loadBoard();
+  } catch (e) { lb.err2 = "Couldn't update the leaderboard. Try again."; render(); }
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-cloud],[data-bsort]");
+  if (!el) return;
+  if (el.dataset.bsort) { lb.sort = el.dataset.bsort; lb.rows = null; render(); loadBoard(); return; }
+  const a = el.dataset.cloud;
+  if (a === "toggle") { if (!cloudAvailable()) return; cloud.open = !cloud.open; cloud.msg = ""; cloud.err = ""; renderPanel(); }
+  else if (a === "new") { setCode(newCode()); cloud.msg = "Your code is ready, and your progress is saved to it."; cloud.err = ""; renderPanel(); cloudSave(); }
+  else if (a === "use") useCode();
+  else if (a === "copy") copyText(cloud.code, "Code copied.");
+  else if (a === "copylink") copyText(SITE + "/?code=" + cloud.code, "Link copied. Open it on your other device.");
+  else if (a === "stop") { setCode(null); lb.profile = null; cloud.msg = "Sync is off on this device. Your progress here stays saved in this browser."; setSync("cloudOff"); renderPanel(); if (view === "board") render(); }
+  else if (a === "join") joinBoard();
+  else if (a === "leave") leaveBoard();
+  else if (a === "rename") { lb.renaming = true; lb.nameDraft = (lb.profile && lb.profile.nickname) || ""; lb.err2 = ""; render(); }
+  else if (a === "rename-cancel") { lb.renaming = false; lb.err2 = ""; render(); }
+  else if (a === "refresh") { lb.rows = null; render(); loadBoard(); }
+});
+document.addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+  if (e.target.id === "codein") { e.preventDefault(); useCode(); }
+  else if (e.target.id === "nickin") { e.preventDefault(); joinBoard(); }
+});
+async function startCloud() {
+  if (!cloudAvailable()) { setSync("local"); return; }
+  try {
+    const params = new URLSearchParams(location.search);
+    if (params.has("code")) {
+      const c = normCode(params.get("code"));
+      history.replaceState(null, "", location.pathname + location.hash);
+      if (c) { setCode(c); cloud.open = true; cloud.msg = "Sync is on. Progress from both devices is combined."; renderPanel(); }
+    }
+  } catch (e) {}
+  if (!cloud.code) { setSync("cloudOff"); return; }
+  await cloudSave();
+  loadProfile();
+}
+window.addEventListener("online", () => { if (cloud.code) cloudSave(); });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && cloud.code) cloudSave(); });
 
 /* ---------- helpers ---------- */
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -804,7 +1041,7 @@ const ICON = {
 const ST_LABEL = { todo: "Not done. Tap to mark done", done: "Done. Tap to mark for revisit", revisit: "Marked to revisit. Tap to reset" };
 
 /* ---------- ui state ---------- */
-const VIEWS = [["week", "This week"], ["plan", "Plan"], ["dsa", "DSA"], ["sd", "System design"], ["lld", "LLD"], ["ai", "AI design"], ["side", "Side quest"], ["method", "How to study"]];
+const VIEWS = [["week", "This week"], ["plan", "Plan"], ["board", "Leaderboard"], ["dsa", "DSA"], ["sd", "System design"], ["lld", "LLD"], ["ai", "AI design"], ["side", "Side quest"], ["method", "How to study"]];
 let view = "week";
 let selWeek = clampW(curWeek());
 const openNotes = new Set();
@@ -993,6 +1230,50 @@ function trackList(key) {
   return '<div class="stack">' + h + "</div>";
 }
 
+function boardView() {
+  if (!cloudAvailable()) {
+    return '<section class="panel"><h2>Leaderboard</h2><p>The leaderboard is on the website version of this tracker, where progress syncs with a code.</p>' +
+      '<p><a class="linkbtn" href="' + SITE + '" target="_blank" rel="noopener">Open the website</a></p></section>';
+  }
+  const rows = lb.rows || [];
+  const me = rows.find(r => r.is_you);
+  const period = lb.sort === "week" ? "in the last 7 days" : "all time";
+  let h = '<div class="stack"><section class="panel">';
+  if (lb.profile && lb.profile.on_board && !lb.renaming) {
+    h += "<h2>You're on the board as " + esc(lb.profile.nickname) + "</h2>" +
+      (me ? "<p>#" + (rows.indexOf(me) + 1) + " " + period + " · " + me.points + " points in total · " + me.streak + "-day streak</p>" : "") +
+      '<div class="row"><button type="button" class="btn" data-cloud="rename">Change name</button><button type="button" class="btn" data-cloud="leave">Leave the leaderboard</button></div>';
+  } else {
+    h += "<h2>" + (lb.renaming ? "Change your name" : "Join the leaderboard") + "</h2>" +
+      (lb.renaming ? "" : "<p>Pick a name. Others see your name, points, streak and how many items you've done; your notes stay private. It runs on trust, so tick honestly.</p>") +
+      '<div class="row"><input id="nickin" class="field" maxlength="24" placeholder="Your name" autocomplete="nickname" value="' + esc(lb.nameDraft) + '" aria-label="Name on the leaderboard">' +
+      '<button type="button" class="btn primary" data-cloud="join">' + (lb.renaming ? "Save name" : "Join") + "</button>" +
+      (lb.renaming ? '<button type="button" class="btn" data-cloud="rename-cancel">Cancel</button>' : "") + "</div>" +
+      (!cloud.code && !lb.renaming ? "<p>Joining turns on sync for this browser and gives you a sync code.</p>" : "");
+  }
+  if (lb.err2) h += '<p class="err">' + esc(lb.err2) + "</p>";
+  h += "</section>";
+  h += '<div class="row"><div class="chips" role="group" aria-label="Period">' +
+    [["week", "Last 7 days"], ["all", "All time"]].map(o => '<button type="button" class="chip" data-bsort="' + o[0] + '" aria-pressed="' + (lb.sort === o[0]) + '">' + o[1] + "</button>").join("") +
+    '</div><button type="button" class="chip" data-cloud="refresh">Refresh</button></div>';
+  h += '<section class="card" aria-label="Leaderboard">';
+  if (lb.err) h += '<p class="err" style="padding-bottom:10px">' + esc(lb.err) + "</p>";
+  else if (!lb.rows) h += '<div class="empty">Loading the leaderboard…</div>';
+  else if (!rows.length) h += '<div class="empty">No one is on the board yet. Join and be the first.</div>';
+  else {
+    h += '<ol class="lb">' + rows.map((r, i) => {
+      const pts = lb.sort === "week" ? r.week_points : r.points;
+      return '<li class="lbrow' + (r.is_you ? " you" : "") + (i < 3 ? " top" : "") + '"><span class="lbrank">' + (i + 1) + "</span>" +
+        '<div><div class="lbname">' + esc(r.nickname) + (r.is_you ? '<span class="youtag">you</span>' : "") + "</div>" +
+        '<div class="lbsub">' + r.streak + "-day streak · " + r.solved + " done" + (lb.sort === "week" ? " · " + r.points + " total" : "") + "</div></div>" +
+        '<div class="lbpts">' + pts + "<small>" + (lb.sort === "week" ? "7-day pts" : "points") + "</small></div></li>";
+    }).join("") + "</ol>";
+  }
+  h += "</section>";
+  h += '<p class="foot">Points: DSA Easy 1, Medium 2, Hard 3. Design problems, mocks, practice designs and hands-on builds 3. Readings and videos 1. Marking something Revisit keeps its points. A streak is consecutive days with at least one tick.</p></div>';
+  return h;
+}
+
 function methodView() {
   const labels = ["Main source", "How to work it", "Rhythm", "Done means", "Videos"];
   let h = '<div class="mgrid">';
@@ -1005,7 +1286,7 @@ function methodView() {
     (inClaude
       ? "<div><dt>Where it's kept</dt><dd>Ticks and notes are private to you. If you're signed in and allowed to save here, they sync to your account across devices. Otherwise they stay in this browser.</dd></div>" +
         "<div><dt>Make it your own</dt><dd>Change the start date at the top and every week moves with it. Copy this artifact to your own Claude to keep your own version.</dd></div></dl>"
-      : "<div><dt>Where it's kept</dt><dd>Ticks and notes are private to you and stay in this browser on this device. Clearing your browser's site data clears them too.</dd></div>" +
+      : "<div><dt>Where it's kept</dt><dd>Ticks and notes are saved in this browser. Tap Sync at the top to get a code and carry your progress to other devices; no sign-up. Notes never appear on the leaderboard.</dd></div>" +
         "<div><dt>Make it your own</dt><dd>Change the start date at the top and every week moves with it.</dd></div></dl>") +
     (confirmReset
       ? '<div class="row"><span>Clear every tick and note?</span><button type="button" class="btn danger" data-act="reset-yes">Clear everything</button><button type="button" class="btn" data-act="reset-no">Cancel</button></div>'
@@ -1021,7 +1302,7 @@ function render() {
   const focusId = document.activeElement && document.activeElement.id;
   let caret = null;
   if (focusId && document.activeElement.selectionStart != null) caret = document.activeElement.selectionStart;
-  m.innerHTML = view === "week" ? weekView() : view === "plan" ? planView() : view === "method" ? methodView() : trackView(view);
+  m.innerHTML = view === "week" ? weekView() : view === "plan" ? planView() : view === "board" ? boardView() : view === "method" ? methodView() : trackView(view);
   if (focusId) {
     const el = document.getElementById(focusId);
     if (el && el !== document.body) { el.focus({ preventScroll: true }); if (caret != null && el.setSelectionRange) { try { el.setSelectionRange(caret, caret); } catch (e) {} } }
@@ -1032,10 +1313,11 @@ function render() {
 function cycle(id) {
   const st = status(id);
   const rec = Object.assign({}, state.items[id] || {});
-  if (st === "todo") { rec.s = "d"; rec.t = iso(new Date()); }
+  if (st === "todo") { rec.s = "d"; rec.t = iso(new Date()); rec.w = weightOf(BYID.get(id)); }
   else if (st === "done") { rec.s = "r"; }
-  else { delete rec.s; delete rec.t; }
-  if (rec.s || rec.n) state.items[id] = rec; else delete state.items[id];
+  else { delete rec.s; delete rec.t; delete rec.w; }
+  rec.u = Date.now();
+  state.items[id] = rec;
   commit();
   render();
 }
@@ -1058,7 +1340,12 @@ document.addEventListener("click", e => {
   else if (act === "carry") { showCarry = !showCarry; render(); }
   else if (act === "reset") { confirmReset = true; render(); }
   else if (act === "reset-no") { confirmReset = false; render(); }
-  else if (act === "reset-yes") { confirmReset = false; state.items = {}; openNotes.clear(); commit(); render(); }
+  else if (act === "reset-yes") {
+    confirmReset = false;
+    const now = Date.now();
+    for (const k of Object.keys(state.items)) state.items[k] = { u: now };
+    openNotes.clear(); commit(); render();
+  }
 });
 document.addEventListener("input", e => {
   const t = e.target;
@@ -1067,8 +1354,11 @@ document.addEventListener("input", e => {
     const rec = Object.assign({}, state.items[id] || {});
     const v = t.value.slice(0, 4000);
     if (v) rec.n = v; else delete rec.n;
-    if (rec.s || rec.n) state.items[id] = rec; else delete state.items[id];
+    rec.u = Date.now();
+    state.items[id] = rec;
     commit();
+  } else if (t.id === "nickin") {
+    lb.nameDraft = t.value;
   } else if (t.dataset && t.dataset.q) {
     F[t.dataset.q].q = t.value;
     const box = document.getElementById("tlist");
@@ -1089,18 +1379,20 @@ document.addEventListener("focusout", e => {
 document.getElementById("start").addEventListener("change", e => {
   const v = e.target.value;
   if (!DATE_RE.test(v)) return;
-  state.start = v; selWeek = clampW(curWeek()); commit(); render();
+  state.start = v; state.su = Date.now(); selWeek = clampW(curWeek()); commit(); render();
 });
 function route() {
   const h = location.hash.slice(1);
   view = VIEWS.some(v => v[0] === h) ? h : "week";
   confirmReset = false;
   render();
+  if (view === "board") { loadBoard(); loadProfile(); }
 }
 window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: 0 }); });
 
 route();
 startSync();
+startCloud();
 })();
 </script>
 

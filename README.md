@@ -16,3 +16,7 @@ To publish a change:
 2. Redeploy the loader on Vercel with the new commit SHA.
 
 If the Vercel GitHub app is ever installed on this account, link the repo to the Vercel project instead and pushes will deploy on their own.
+
+## Sync and leaderboard
+
+On the website, progress can sync across devices with a 12-character code (no sign-up), and people can join a leaderboard with a nickname. Both use the Supabase project `interview-prep` (Mumbai). Browsers can't read the table; they call four database functions: `prep_load`, `prep_save`, `prep_set_profile` and `prep_leaderboard`. Only a SHA-256 hash of each code is stored.
