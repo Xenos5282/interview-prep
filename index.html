@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="A 16-week interview prep tracker for DSA, system design, LLD and AI system design.">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>16-Week Interview Prep</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a training log. Compact header with a 16-week season strip, sticky tabs,
+   then one column of session cards (two columns for the plan on wide screens). */
+:root {
+  --paper: #f4f5f8;
+  --surface: #ffffff;
+  --ink: #161a21;
+  --muted: #5d6574;
+  --faint: #8a92a0;
+  --line: #e0e3ea;
+  --chip: #eceef3;
+  --accent: #2a4bd7;
+  --dsa: #2a4bd7;
+  --sd: #0f8a79;
+  --lld: #a86f12;
+  --ai: #c23f78;
+  --side: #6f7786;
+  --done: #1e9b57;
+  --revisit: #d76f16;
+  --easy: #1e8a52;
+  --medium: #a8700f;
+  --hard: #c43b3b;
+  --shadow: 0 1px 2px rgba(22, 26, 40, .05), 0 2px 10px rgba(22, 26, 40, .04);
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1217; --surface: #171b22; --ink: #e8ebf1; --muted: #a2aab8; --faint: #737c8b;
+    --line: #2a2f39; --chip: #21262f; --accent: #8399ff; --dsa: #8399ff; --sd: #3cc6b2;
+    --lld: #e3ab4e; --ai: #f27baf; --side: #9aa2b0; --done: #4acb86; --revisit: #f2a055;
+    --easy: #4fc98a; --medium: #e3ae4f; --hard: #f17b7b;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1217; --surface: #171b22; --ink: #e8ebf1; --muted: #a2aab8; --faint: #737c8b;
+  --line: #2a2f39; --chip: #21262f; --accent: #8399ff; --dsa: #8399ff; --sd: #3cc6b2;
+  --lld: #e3ab4e; --ai: #f27baf; --side: #9aa2b0; --done: #4acb86; --revisit: #f2a055;
+  --easy: #4fc98a; --medium: #e3ae4f; --hard: #f17b7b;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 14.5px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.wrap { max-width: 960px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* header */
+.top { padding-block: 22px 14px; display: grid; gap: 14px; }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 2px 0 0; font-family: var(--display); font-weight: 800; font-stretch: 78%; font-size: clamp(30px, 7vw, 44px); line-height: 1; letter-spacing: -.01em; text-wrap: balance; }
+.sub { margin: 6px 0 0; color: var(--muted); max-width: 62ch; }
+.when { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: 13.5px; }
+.when label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.when input[type=date] { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+#weekline { font-weight: 600; }
+.sync { font-family: var(--mono); font-size: 11px; color: var(--muted); padding: 3px 8px; border-radius: 999px; background: var(--chip); white-space: nowrap; }
+.sync[data-m="synced"] { color: var(--done); }
+.sync[data-m="saving"] { color: var(--accent); }
+.sync[data-m="error"] { color: var(--revisit); }
+
+/* season strip */
+.strip { display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 4px; }
+.cell { position: relative; height: 30px; border: 0; padding: 0; border-radius: 4px; background: var(--chip); overflow: hidden; cursor: pointer; }
+.cell::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: var(--p, 0%); background: var(--done); opacity: .85; }
+.cell.now { box-shadow: inset 0 0 0 2px var(--ink); }
+.cell.sel { outline: 2px solid var(--accent); outline-offset: 1px; }
+.cell span { position: relative; z-index: 1; font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.cell.full span { color: var(--surface); }
+
+/* meters */
+.meters { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.meter { text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 10px; cursor: pointer; display: grid; gap: 5px; }
+.meter .row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.meter .name { font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+.meter .num { font-family: var(--mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bar { height: 5px; border-radius: 3px; background: var(--chip); display: flex; overflow: hidden; }
+.bar i { display: block; height: 100%; }
+.bar .b-done { background: var(--done); }
+.bar .b-rev { background: var(--revisit); }
+.sw { width: 9px; height: 9px; border-radius: 2px; flex: none; display: inline-block; }
+.sw.dsa { background: var(--dsa); } .sw.sd { background: var(--sd); } .sw.lld { background: var(--lld); } .sw.ai { background: var(--ai); } .sw.side { background: var(--side); }
+
+/* tabs */
+.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--line); }
+.tabrow { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.tabrow::-webkit-scrollbar { display: none; }
+.tab { flex: none; padding: 11px 11px 10px; text-decoration: none; color: var(--muted); font-weight: 500; font-size: 13.5px; border-bottom: 2px solid transparent; white-space: nowrap; }
+.tab[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+
+main { padding-block: 18px 48px; }
+.stack { display: grid; gap: 14px; }
+
+/* week view */
+.weeknav { display: flex; align-items: center; gap: 12px; }
+.navbtn { width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-size: 18px; line-height: 1; }
+.navbtn:disabled { opacity: .35; cursor: default; }
+.wk { display: grid; }
+.wk b { font-family: var(--display); font-weight: 800; font-stretch: 70%; font-size: 32px; line-height: 1; }
+.wk small { color: var(--muted); font-size: 12.5px; }
+.nowbtn { margin-left: auto; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px; font-size: 12.5px; cursor: pointer; }
+.pace { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 10px 14px; display: grid; gap: 8px; }
+.pace .msg { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.pace.ok .msg strong { color: var(--done); }
+.pace.behind .msg strong { color: var(--revisit); }
+.linkbtn { border: 0; background: none; padding: 0; color: var(--accent); cursor: pointer; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px 6px; box-shadow: var(--shadow); min-width: 0; }
+.card.quiet { box-shadow: none; background: transparent; }
+.chead { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.chead h2 { margin: 0; font-family: var(--display); font-stretch: 88%; font-weight: 700; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+.cad { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.count { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tip { color: var(--muted); font-size: 13px; margin: 6px 0 2px; }
+.sess { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 12px 0 0; }
+.empty { color: var(--faint); font-size: 13px; padding: 10px 0 12px; }
+
+/* items */
+.list { list-style: none; margin: 0; padding: 0; }
+.item { display: grid; grid-template-columns: 28px minmax(0, 1fr) 32px; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); align-items: start; }
+.list > .item:first-child { border-top: 0; }
+.st { width: 28px; height: 28px; border: 0; background: none; padding: 2px; cursor: pointer; color: var(--faint); border-radius: 50%; }
+.st svg { width: 24px; height: 24px; display: block; }
+.s-done .st { color: var(--done); }
+.s-revisit .st { color: var(--revisit); }
+.ck { stroke: var(--surface); }
+.body { min-width: 0; display: grid; gap: 2px; }
+.t { font-weight: 500; text-decoration: none; overflow-wrap: anywhere; }
+a.t { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+a.t:hover { text-decoration-color: currentColor; }
+.s-done .t { color: var(--muted); }
+.meta { font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 2px 8px; }
+.d-E { color: var(--easy); } .d-M { color: var(--medium); } .d-H { color: var(--hard); }
+.p-Must { color: var(--ink); font-weight: 500; }
+.p-Optional { color: var(--faint); }
+.tag-rev { color: var(--revisit); } .tag-done { color: var(--done); }
+.vid { color: var(--ai); font-weight: 500; }
+.vlink { color: var(--ai); text-decoration: none; font-weight: 500; }
+.vlink:hover { text-decoration: underline; text-underline-offset: 2px; }
+.hint { font-size: 12.5px; color: var(--muted); }
+.mynote { font-size: 13px; padding: 4px 8px; margin-top: 4px; border-radius: 6px; background: var(--chip); white-space: pre-wrap; overflow-wrap: anywhere; }
+.noteta { width: 100%; margin-top: 6px; font: inherit; font-size: 13.5px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 8px; resize: vertical; min-height: 70px; }
+.nb { width: 32px; height: 32px; border: 0; background: none; color: var(--faint); cursor: pointer; border-radius: 6px; position: relative; }
+.nb svg { width: 18px; height: 18px; }
+.nb.has { color: var(--accent); }
+.nb.has::after { content: ""; position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+details.queue { margin: 4px 0 8px; }
+details.queue summary { cursor: pointer; font-size: 13px; color: var(--revisit); font-weight: 500; }
+
+/* plan */
+.plan { display: grid; gap: 12px; }
+@media (min-width: 760px) { .plan { grid-template-columns: 1fr 1fr; } }
+.pw { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 8px; min-width: 0; }
+.pw.now { border-color: var(--ink); }
+.pwh { display: flex; align-items: center; gap: 10px; }
+.pwh b { font-family: var(--display); font-weight: 800; font-stretch: 70%; font-size: 26px; line-height: 1; }
+.pwh small { color: var(--muted); font-size: 12px; display: block; }
+.pwh .open { margin-left: auto; }
+.pline { display: grid; grid-template-columns: 9px minmax(0, 1fr); gap: 8px; font-size: 13px; align-items: baseline; }
+.pline .sw { transform: translateY(1px); }
+.pline span { overflow-wrap: anywhere; }
+.pline em { font-style: normal; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.pline.side { color: var(--muted); }
+
+/* track views */
+.toolbar { display: grid; gap: 8px; }
+.search { width: 100%; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 11px; font-size: 12.5px; cursor: pointer; color: var(--muted); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.ghead { display: flex; align-items: baseline; gap: 10px; margin: 6px 0 0; }
+.ghead h3 { margin: 0; font-family: var(--display); font-stretch: 80%; font-weight: 700; font-size: 16px; }
+.ghead small { color: var(--muted); font-size: 12px; }
+
+/* method */
+.mgrid { display: grid; gap: 12px; }
+@media (min-width: 760px) { .mgrid { grid-template-columns: 1fr 1fr; } }
+.mcard { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 10px; min-width: 0; }
+.mcard h2 { margin: 0; font-family: var(--display); font-stretch: 88%; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+.mcard dl { margin: 0; display: grid; gap: 8px; }
+.mcard dt { font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.mcard dd { margin: 0; max-width: 65ch; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 14px; cursor: pointer; font-weight: 500; }
+.btn.danger { color: var(--hard); border-color: var(--hard); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.foot { color: var(--faint); font-size: 12px; padding-top: 6px; }
+@media (prefers-reduced-motion: no-preference) { .cell::after, .bar i { transition: height .25s ease, width .25s ease; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">DSA · System design · LLD · AI system design</div>
+      <h1>16-Week Interview Prep</h1>
+      <p class="sub">30 minutes of DSA a day, plus two system design sessions, two AI design sessions and one LLD session a week. Readings, videos and practice for each session. Tick things off as you go; your progress and notes are private to you.</p>
+    </div>
+    <div class="when">
+      <label for="start">Start</label>
+      <input type="date" id="start" value="2026-11-30">
+      <span id="weekline">Week 1 of 16</span>
+      <span id="sync" class="sync" data-m="local">Saved in this browser</span>
+    </div>
+    <div class="strip" id="strip" aria-label="Weeks 1 to 16, filled by how much is done"></div>
+    <div class="meters" id="meters"></div>
+  </header>
+</div>
+<nav class="tabs" aria-label="Views">
+  <div class="wrap"><div class="tabrow" id="tabs"></div></div>
+</nav>
+<main class="wrap" id="main"></main>
+
+<script>
+(function () {
+"use strict";
+
+/* ---------- data ---------- */
+const LC = "https://leetcode.com/problems/";
+const CATS = ["Arrays & Hashing","Two Pointers","Sliding Window","Stack","Binary Search","Linked List","Trees","Tries","Heap / Priority Queue","Backtracking","Graphs","Advanced Graphs","1-D DP","2-D DP","Greedy","Intervals","Math & Geometry","Bit Manipulation"];
+const PR = { M: "Must", G: "Good", O: "Optional" };
+const DIFF = { E: "Easy", M: "Medium", H: "Hard" };
+// [slug, title, difficulty, category, priority, week (0 = extra)]
+const DSA = [
+["contains-duplicate","Contains Duplicate","E",0,"M",1],
+["valid-anagram","Valid Anagram","E",0,"M",1],
+["two-sum","Two Sum","E",0,"M",1],
+["group-anagrams","Group Anagrams","M",0,"M",1],
+["top-k-frequent-elements","Top K Frequent Elements","M",0,"M",1],
+["encode-and-decode-strings","Encode and Decode Strings","M",0,"M",1],
+["product-of-array-except-self","Product of Array Except Self","M",0,"M",1],
+["valid-sudoku","Valid Sudoku","M",0,"O",0],
+["longest-consecutive-sequence","Longest Consecutive Sequence","M",0,"M",1],
+["valid-palindrome","Valid Palindrome","E",1,"M",2],
+["two-sum-ii-input-array-is-sorted","Two Sum II - Input Array Is Sorted","M",1,"G",13],
+["3sum","3Sum","M",1,"M",2],
+["container-with-most-water","Container With Most Water","M",1,"M",2],
+["trapping-rain-water","Trapping Rain Water","H",1,"G",16],
+["best-time-to-buy-and-sell-stock","Best Time to Buy and Sell Stock","E",2,"M",2],
+["longest-substring-without-repeating-characters","Longest Substring Without Repeating Characters","M",2,"M",2],
+["longest-repeating-character-replacement","Longest Repeating Character Replacement","M",2,"M",2],
+["permutation-in-string","Permutation in String","M",2,"G",13],
+["minimum-window-substring","Minimum Window Substring","H",2,"M",2],
+["sliding-window-maximum","Sliding Window Maximum","H",2,"O",0],
+["valid-parentheses","Valid Parentheses","E",3,"M",3],
+["min-stack","Min Stack","M",3,"G",13],
+["evaluate-reverse-polish-notation","Evaluate Reverse Polish Notation","M",3,"G",13],
+["generate-parentheses","Generate Parentheses","M",3,"O",0],
+["daily-temperatures","Daily Temperatures","M",3,"G",13],
+["car-fleet","Car Fleet","M",3,"O",0],
+["largest-rectangle-in-histogram","Largest Rectangle in Histogram","H",3,"O",0],
+["binary-search","Binary Search","E",4,"G",14],
+["search-a-2d-matrix","Search a 2D Matrix","M",4,"G",14],
+["koko-eating-bananas","Koko Eating Bananas","M",4,"G",14],
+["find-minimum-in-rotated-sorted-array","Find Minimum in Rotated Sorted Array","M",4,"M",3],
+["search-in-rotated-sorted-array","Search in Rotated Sorted Array","M",4,"M",3],
+["time-based-key-value-store","Time Based Key-Value Store","M",4,"G",14],
+["median-of-two-sorted-arrays","Median of Two Sorted Arrays","H",4,"O",0],
+["reverse-linked-list","Reverse Linked List","E",5,"M",3],
+["merge-two-sorted-lists","Merge Two Sorted Lists","E",5,"M",3],
+["linked-list-cycle","Linked List Cycle","E",5,"M",3],
+["reorder-list","Reorder List","M",5,"M",3],
+["remove-nth-node-from-end-of-list","Remove Nth Node From End of List","M",5,"M",3],
+["copy-list-with-random-pointer","Copy List with Random Pointer","M",5,"G",14],
+["add-two-numbers","Add Two Numbers","M",5,"G",14],
+["find-the-duplicate-number","Find the Duplicate Number","M",5,"O",0],
+["lru-cache","LRU Cache","M",5,"G",13],
+["merge-k-sorted-lists","Merge k Sorted Lists","H",5,"M",4],
+["reverse-nodes-in-k-group","Reverse Nodes in k-Group","H",5,"O",0],
+["invert-binary-tree","Invert Binary Tree","E",6,"M",4],
+["maximum-depth-of-binary-tree","Maximum Depth of Binary Tree","E",6,"M",4],
+["diameter-of-binary-tree","Diameter of Binary Tree","E",6,"G",14],
+["balanced-binary-tree","Balanced Binary Tree","E",6,"O",0],
+["same-tree","Same Tree","E",6,"M",4],
+["subtree-of-another-tree","Subtree of Another Tree","E",6,"M",4],
+["lowest-common-ancestor-of-a-binary-search-tree","Lowest Common Ancestor of a BST","M",6,"M",4],
+["binary-tree-level-order-traversal","Binary Tree Level Order Traversal","M",6,"M",4],
+["binary-tree-right-side-view","Binary Tree Right Side View","M",6,"G",15],
+["count-good-nodes-in-binary-tree","Count Good Nodes in Binary Tree","M",6,"O",0],
+["validate-binary-search-tree","Validate Binary Search Tree","M",6,"M",5],
+["kth-smallest-element-in-a-bst","Kth Smallest Element in a BST","M",6,"M",5],
+["construct-binary-tree-from-preorder-and-inorder-traversal","Construct Binary Tree from Preorder and Inorder","M",6,"M",5],
+["binary-tree-maximum-path-sum","Binary Tree Maximum Path Sum","H",6,"M",5],
+["serialize-and-deserialize-binary-tree","Serialize and Deserialize Binary Tree","H",6,"M",6],
+["implement-trie-prefix-tree","Implement Trie (Prefix Tree)","M",7,"M",6],
+["design-add-and-search-words-data-structure","Design Add and Search Words","M",7,"M",6],
+["word-search-ii","Word Search II","H",7,"M",6],
+["kth-largest-element-in-a-stream","Kth Largest Element in a Stream","E",8,"O",0],
+["last-stone-weight","Last Stone Weight","E",8,"O",0],
+["k-closest-points-to-origin","K Closest Points to Origin","M",8,"G",15],
+["kth-largest-element-in-an-array","Kth Largest Element in an Array","M",8,"G",15],
+["task-scheduler","Task Scheduler","M",8,"G",15],
+["design-twitter","Design Twitter","M",8,"O",0],
+["find-median-from-data-stream","Find Median from Data Stream","H",8,"M",7],
+["insert-interval","Insert Interval","M",15,"M",11],
+["merge-intervals","Merge Intervals","M",15,"M",11],
+["non-overlapping-intervals","Non-overlapping Intervals","M",15,"M",11],
+["meeting-rooms","Meeting Rooms","E",15,"M",11],
+["meeting-rooms-ii","Meeting Rooms II","M",15,"M",11],
+["minimum-interval-to-include-each-query","Minimum Interval to Include Each Query","H",15,"O",0],
+["subsets","Subsets","M",9,"G",15],
+["combination-sum","Combination Sum","M",9,"M",7],
+["combination-sum-ii","Combination Sum II","M",9,"O",0],
+["permutations","Permutations","M",9,"G",15],
+["subsets-ii","Subsets II","M",9,"O",0],
+["word-search","Word Search","M",9,"M",7],
+["palindrome-partitioning","Palindrome Partitioning","M",9,"O",0],
+["letter-combinations-of-a-phone-number","Letter Combinations of a Phone Number","M",9,"O",0],
+["n-queens","N-Queens","H",9,"O",0],
+["maximum-subarray","Maximum Subarray","M",14,"M",11],
+["jump-game","Jump Game","M",14,"M",11],
+["jump-game-ii","Jump Game II","M",14,"O",0],
+["gas-station","Gas Station","M",14,"O",0],
+["hand-of-straights","Hand of Straights","M",14,"O",0],
+["merge-triplets-to-form-target-triplet","Merge Triplets to Form Target Triplet","M",14,"O",0],
+["partition-labels","Partition Labels","M",14,"O",0],
+["valid-parenthesis-string","Valid Parenthesis String","M",14,"O",0],
+["number-of-islands","Number of Islands","M",10,"M",7],
+["max-area-of-island","Max Area of Island","M",10,"O",0],
+["clone-graph","Clone Graph","M",10,"M",7],
+["walls-and-gates","Walls and Gates","M",10,"O",0],
+["rotting-oranges","Rotting Oranges","M",10,"G",16],
+["pacific-atlantic-water-flow","Pacific Atlantic Water Flow","M",10,"M",8],
+["surrounded-regions","Surrounded Regions","M",10,"O",0],
+["course-schedule","Course Schedule","M",10,"M",8],
+["course-schedule-ii","Course Schedule II","M",10,"G",16],
+["graph-valid-tree","Graph Valid Tree","M",10,"M",8],
+["number-of-connected-components-in-an-undirected-graph","Number of Connected Components","M",10,"M",8],
+["redundant-connection","Redundant Connection","M",10,"O",0],
+["word-ladder","Word Ladder","H",10,"O",0],
+["network-delay-time","Network Delay Time","M",11,"O",0],
+["reconstruct-itinerary","Reconstruct Itinerary","H",11,"O",0],
+["min-cost-to-connect-all-points","Min Cost to Connect All Points","M",11,"O",0],
+["swim-in-rising-water","Swim in Rising Water","H",11,"O",0],
+["alien-dictionary","Alien Dictionary","H",11,"M",8],
+["cheapest-flights-within-k-stops","Cheapest Flights Within K Stops","M",11,"O",0],
+["climbing-stairs","Climbing Stairs","E",12,"M",9],
+["min-cost-climbing-stairs","Min Cost Climbing Stairs","E",12,"O",0],
+["house-robber","House Robber","M",12,"M",9],
+["house-robber-ii","House Robber II","M",12,"M",9],
+["longest-palindromic-substring","Longest Palindromic Substring","M",12,"M",9],
+["palindromic-substrings","Palindromic Substrings","M",12,"M",9],
+["decode-ways","Decode Ways","M",12,"M",9],
+["coin-change","Coin Change","M",12,"M",10],
+["maximum-product-subarray","Maximum Product Subarray","M",12,"M",10],
+["word-break","Word Break","M",12,"M",10],
+["longest-increasing-subsequence","Longest Increasing Subsequence","M",12,"M",10],
+["partition-equal-subset-sum","Partition Equal Subset Sum","M",12,"O",0],
+["unique-paths","Unique Paths","M",13,"M",10],
+["longest-common-subsequence","Longest Common Subsequence","M",13,"M",10],
+["best-time-to-buy-and-sell-stock-with-cooldown","Best Time to Buy and Sell Stock with Cooldown","M",13,"O",0],
+["coin-change-ii","Coin Change II","M",13,"G",16],
+["target-sum","Target Sum","M",13,"O",0],
+["interleaving-string","Interleaving String","M",13,"O",0],
+["longest-increasing-path-in-a-matrix","Longest Increasing Path in a Matrix","H",13,"O",0],
+["distinct-subsequences","Distinct Subsequences","H",13,"O",0],
+["edit-distance","Edit Distance","M",13,"G",16],
+["burst-balloons","Burst Balloons","H",13,"O",0],
+["regular-expression-matching","Regular Expression Matching","H",13,"O",0],
+["single-number","Single Number","E",17,"O",0],
+["number-of-1-bits","Number of 1 Bits","E",17,"M",12],
+["counting-bits","Counting Bits","E",17,"M",12],
+["reverse-bits","Reverse Bits","E",17,"M",12],
+["missing-number","Missing Number","E",17,"M",12],
+["sum-of-two-integers","Sum of Two Integers","M",17,"M",12],
+["reverse-integer","Reverse Integer","M",17,"O",0],
+["rotate-image","Rotate Image","M",16,"M",12],
+["spiral-matrix","Spiral Matrix","M",16,"M",12],
+["set-matrix-zeroes","Set Matrix Zeroes","M",16,"M",12],
+["happy-number","Happy Number","E",16,"O",0],
+["plus-one","Plus One","E",16,"O",0],
+["powx-n","Pow(x, n)","M",16,"O",0],
+["multiply-strings","Multiply Strings","M",16,"O",0],
+["detect-squares","Detect Squares","M",16,"O",0]
+];
+const PREMIUM = new Set(["encode-and-decode-strings","meeting-rooms","meeting-rooms-ii","walls-and-gates","graph-valid-tree","number-of-connected-components-in-an-undirected-graph","alien-dictionary"]);
+
+const HI = "https://www.hellointerview.com/learn/system-design/";
+// [id, title, link (path under HI, full URL, or ""), type, priority, week, session, note]
+const SD = [
+["intro","Introduction","in-a-hurry/introduction","Framework","M",1,1,""],
+["prepare","How to Prepare","in-a-hurry/how-to-prepare","Framework","M",1,1,""],
+["delivery","Delivery Framework","in-a-hurry/delivery","Framework","M",1,1,"Use it in every problem: requirements → entities → API → high-level design → deep dives"],
+["hi-channel","Hello Interview mock interviews","https://www.youtube.com/@hello_interview","Mock walkthroughs","G",1,1,"Watch one full mock early to see how a 45-minute interview flows","v"],
+["networking","Networking Essentials","core-concepts/networking-essentials","Core concept","M",1,2,""],
+["api","API Design","core-concepts/api-design","Core concept","M",1,2,""],
+["modeling","Data Modeling","core-concepts/data-modeling","Core concept","M",1,2,""],
+["numbers","Numbers to Know","core-concepts/numbers-to-know","Core concept","M",1,2,""],
+["caching","Caching","core-concepts/caching","Core concept","M",2,1,""],
+["sharding","Sharding","core-concepts/sharding","Core concept","M",2,1,""],
+["consistent-hashing","Consistent Hashing","core-concepts/consistent-hashing","Core concept","M",2,1,""],
+["cap","CAP Theorem","core-concepts/cap-theorem","Core concept","M",2,2,""],
+["indexing","Database Indexing","core-concepts/db-indexing","Core concept","M",2,2,""],
+["redis","Redis","deep-dives/redis","Key technology","M",2,2,""],
+["postgres","PostgreSQL","deep-dives/postgres","Key technology","M",3,1,""],
+["kafka","Kafka","deep-dives/kafka","Key technology","M",3,1,""],
+["elasticsearch","Elasticsearch","deep-dives/elasticsearch","Key technology","M",3,2,""],
+["dynamodb","DynamoDB","deep-dives/dynamodb","Key technology","G",3,2,"Skim"],
+["cassandra","Cassandra","deep-dives/cassandra","Key technology","G",3,2,"Skim"],
+["api-gateway","API Gateway","deep-dives/api-gateway","Key technology","G",3,2,"Skim"],
+["bitly","Bitly","problem-breakdowns/bitly","Problem","M",4,1,""],
+["large-blobs","Handling Large Blobs","patterns/large-blobs","Pattern","M",4,2,""],
+["dropbox","Dropbox","problem-breakdowns/dropbox","Problem","M",4,2,""],
+["realtime","Real-time Updates","patterns/realtime-updates","Pattern","M",5,1,""],
+["contention","Dealing with Contention","patterns/dealing-with-contention","Pattern","M",5,1,""],
+["ticketmaster","Ticketmaster","problem-breakdowns/ticketmaster","Problem","M",5,2,""],
+["scaling-reads","Scaling Reads","patterns/scaling-reads","Pattern","M",6,1,""],
+["scaling-writes","Scaling Writes","patterns/scaling-writes","Pattern","M",6,1,""],
+["news-feed","FB News Feed","problem-breakdowns/fb-news-feed","Problem","M",6,2,""],
+["whatsapp","WhatsApp","problem-breakdowns/whatsapp","Problem","M",7,1,""],
+["rate-limiter","Rate Limiter","problem-breakdowns/distributed-rate-limiter","Problem","M",7,2,""],
+["long-running","Managing Long Running Tasks","patterns/long-running-tasks","Pattern","M",8,1,""],
+["youtube","YouTube","problem-breakdowns/youtube","Problem","M",8,1,""],
+["proximity","Proximity Search","deep-dives/proximity-search","Advanced topic","G",8,2,"Read before Yelp and Uber"],
+["yelp","Yelp","problem-breakdowns/yelp","Problem","M",8,2,""],
+["uber","Uber","problem-breakdowns/uber","Problem","M",9,1,""],
+["live-comments","FB Live Comments","problem-breakdowns/fb-live-comments","Problem","M",9,2,""],
+["web-crawler","Web Crawler","problem-breakdowns/web-crawler","Problem","M",10,1,""],
+["flink","Flink","deep-dives/flink","Key technology","G",10,2,""],
+["ad-click","Ad Click Aggregator","problem-breakdowns/ad-click-aggregator","Problem","M",10,2,""],
+["big-data","Data Structures for Big Data","deep-dives/data-structures-for-big-data","Advanced topic","O",11,1,"Count-min sketch and friends; useful for Top K"],
+["top-k","YouTube Top K","problem-breakdowns/top-k","Problem","M",11,1,""],
+["google-docs","Google Docs","problem-breakdowns/google-docs","Problem","M",11,2,""],
+["multi-step","Multi-step Processes","patterns/multi-step-processes","Pattern","G",12,1,""],
+["temporal","Temporal","deep-dives/temporal","Key technology","G",12,1,""],
+["job-scheduler","Job Scheduler","problem-breakdowns/job-scheduler","Problem","M",12,1,""],
+["notification","Notification System","problem-breakdowns/notification-system","Problem","M",12,2,""],
+["payment","Payment System","problem-breakdowns/payment-system","Problem","M",13,1,""],
+["distributed-cache","Distributed Cache","problem-breakdowns/distributed-cache","Problem","M",13,2,""],
+["mock-1","Mock interview #1","","Mock","M",14,1,"45 min, timed. Hello Interview Guided Practice or a peer"],
+["instagram","Instagram","problem-breakdowns/instagram","Problem","G",14,2,""],
+["mock-2","Mock interview #2","","Mock","M",15,1,""],
+["redo","Redo your weakest problem from scratch","","Review","M",15,2,"Pick one you marked Revisit"],
+["mock-3","Mock interview #3","","Mock","M",16,1,""],
+["mock-4","Mock interview #4","","Mock","M",16,2,""],
+["zookeeper","ZooKeeper","deep-dives/zookeeper","Key technology","O",0,0,""],
+["tinder","Tinder","problem-breakdowns/tinder","Problem","G",0,0,""],
+["online-auction","Online Auction","problem-breakdowns/online-auction","Problem","G",0,0,""],
+["leetcode","LeetCode","problem-breakdowns/leetcode","Problem","G",0,0,""],
+["post-search","FB Post Search","problem-breakdowns/fb-post-search","Problem","G",0,0,""],
+["robinhood","Robinhood","problem-breakdowns/robinhood","Problem","G",0,0,""],
+["metrics","Metrics Monitoring","problem-breakdowns/metrics-monitoring","Problem","G",0,0,""],
+["flash-sale","Flash Sale","problem-breakdowns/flash-sale","Problem","G",0,0,""],
+["strava","Strava","problem-breakdowns/strava","Problem","G",0,0,""],
+["price-tracking","Price Tracking Service","problem-breakdowns/camelcamelcamel","Problem","G",0,0,""],
+["news-aggregator","News Aggregator","problem-breakdowns/google-news","Problem","G",0,0,""],
+["online-chess","Online Chess","problem-breakdowns/online-chess","Problem","G",0,0,""],
+["local-delivery","Local Delivery Service","problem-breakdowns/gopuff","Problem","G",0,0,""]
+];
+
+const HL = "https://www.hellointerview.com/learn/low-level-design/";
+const AW = "https://github.com/ashishps1/awesome-low-level-design/blob/main/problems/";
+const RG = "https://refactoring.guru/design-patterns/";
+// link prefixes: L: Hello Interview LLD, A: awesome-low-level-design, R: Refactoring Guru
+const LLD = [
+["intro","Introduction","L:in-a-hurry/introduction","Fundamentals","M",1,"Note the India vs US differences: pseudocode vs real code, patterns named explicitly"],
+["delivery","Delivery Framework","L:in-a-hurry/delivery","Fundamentals","M",1,"Also this week: pick your interview language and set up a runnable project template with tests"],
+["principles","Design Principles","L:in-a-hurry/design-principles","Fundamentals","M",2,""],
+["oop","OOP Concepts","L:in-a-hurry/oop-concepts","Fundamentals","M",2,""],
+["patterns","Design Patterns overview","L:in-a-hurry/patterns","Fundamentals","M",3,""],
+["concept-coding","Concept && Coding: LLD and design pattern videos","https://youtube.com/@conceptandcodingbyshrayansh","Pattern","G",3,"Popular for LLD prep in India; pick the videos for this week's patterns","v"],
+["strategy","Strategy","R:strategy","Pattern","M",3,""],
+["factory","Factory Method","R:factory-method","Pattern","M",3,""],
+["observer","Observer","R:observer","Pattern","M",3,""],
+["state","State","R:state","Pattern","M",3,""],
+["parking-lot","Parking Lot","L:problem-breakdowns/parking-lot","Problem","M",4,""],
+["hi-lld-videos","Hello Interview LLD mock walkthroughs","https://www.youtube.com/@hello_interview","Mock walkthroughs","G",4,"Connect Four and Elevator mocks with an ex-Meta staff engineer; find them on the channel","v"],
+["vending","Vending Machine","A:vending-machine","Problem","M",5,"Classic State-pattern problem"],
+["elevator","Elevator","L:problem-breakdowns/elevator","Problem","M",6,""],
+["lru","LRU Cache","A:lru-cache","Problem","M",7,""],
+["bookmyshow","Movie Ticket Booking","L:problem-breakdowns/bookmyshow","Problem","M",8,"BookMyShow; very common in India"],
+["conc-intro","Concurrency: Introduction","L:concurrency/intro","Concurrency","M",9,""],
+["conc-correct","Concurrency: Correctness","L:concurrency/correctness","Concurrency","M",9,""],
+["rate-limiter","Rate Limiter","L:problem-breakdowns/rate-limiter","Problem","M",10,""],
+["splitwise","Splitwise","A:splitwise","Problem","M",11,"Machine-coding favourite"],
+["conc-coord","Concurrency: Coordination","L:concurrency/coordination","Concurrency","M",12,""],
+["conc-scarcity","Concurrency: Scarcity","L:concurrency/scarcity","Concurrency","G",12,""],
+["snake-ladder","Snake and Ladder","A:snake-and-ladder","Problem","M",13,"Machine-coding favourite"],
+["pub-sub","Pub Sub System","A:pub-sub-system","Problem","M",14,""],
+["mc-mock-1","Machine-coding mock #1","","Mock","M",15,"90 min: runnable, in-memory, a few tests, clean packages. Pick a problem you haven't seen"],
+["mc-mock-2","Machine-coding mock #2","","Mock","M",16,""],
+["builder","Builder","R:builder","Pattern","G",0,"Read when a problem needs it"],
+["singleton","Singleton","R:singleton","Pattern","G",0,"Read when a problem needs it"],
+["decorator","Decorator","R:decorator","Pattern","G",0,"Read when a problem needs it"],
+["command","Command","R:command","Pattern","G",0,"Read when a problem needs it"],
+["chain","Chain of Responsibility","R:chain-of-responsibility","Pattern","G",0,"Read when a problem needs it"],
+["adapter","Adapter","R:adapter","Pattern","G",0,"Read when a problem needs it"],
+["connect-four","Connect Four","L:problem-breakdowns/connect-four","Problem","G",0,""],
+["tic-tac-toe","Tic Tac Toe","A:tic-tac-toe","Problem","G",0,""],
+["amazon-locker","Amazon Locker","L:problem-breakdowns/amazon-locker","Problem","G",0,""],
+["logging","Logging Service","L:problem-breakdowns/logging-service","Problem","G",0,""],
+["file-system","File System","L:problem-breakdowns/file-system","Problem","G",0,""],
+["inventory","Inventory Management","L:problem-breakdowns/inventory-management","Problem","G",0,""],
+["task-mgmt","Task Management System","A:task-management-system","Problem","G",0,""],
+["library","Library Management System","A:library-management-system","Problem","G",0,""],
+["atm","ATM","A:atm","Problem","G",0,""],
+["car-rental","Car Rental System","A:car-rental-system","Problem","G",0,""],
+["wallet","Digital Wallet","A:digital-wallet-service","Problem","G",0,""],
+["food-delivery","Food Delivery (Swiggy)","A:food-delivery-service","Problem","G",0,""],
+["ride-sharing","Ride-Sharing (Uber)","A:ride-sharing-service","Problem","G",0,""],
+["ttl-cache","Thread-Safe Cache with TTL","https://algomaster.io/learn/concurrency-interview/design-thread-safe-cache-with-ttl","Concurrency","G",0,""],
+["blocking-queue","Thread-Safe Blocking Queue","https://algomaster.io/learn/concurrency-interview/design-thread-safe-blocking-queue","Concurrency","G",0,""],
+["chess","Chess","A:chess-game","Problem","G",0,""],
+["brokerage","Online Stock Brokerage","A:online-stock-brokerage-system","Problem","G",0,""]
+];
+
+const OR = "https://www.oreilly.com/library/view/ai-engineering/9781098166298/";
+const AN = "https://www.anthropic.com/engineering/";
+// [id, title, by, url, type, priority, week, session, note]
+const AI = [
+["karpathy-intro","Intro to Large Language Models","Andrej Karpathy","https://www.youtube.com/watch?v=zjkBMFhNj_g","Basics","M",1,1,"Start here: how LLMs are trained, what they can and can't do","1 hr"],
+["genai-platform","Building A Generative AI Platform","Chip Huyen","https://huyenchip.com/2024/07/25/genai-platform.html","Basics","M",1,2,"The reference architecture to draw in interviews: context, guardrails, router, gateway, cache"],
+["llm-patterns","Patterns for Building LLM-based Systems","Eugene Yan","https://eugeneyan.com/writing/llm-patterns/","Basics","G",1,2,"Long; skim it if the session runs over"],
+["effective-agents","Building effective agents","Anthropic",AN+"building-effective-agents","Agents & harness","M",2,1,"Workflows vs agents; the core patterns"],
+["barry-agents","How We Build Effective Agents (talk)","Barry Zhang, Anthropic","https://www.youtube.com/watch?v=D7_ipDqhtwk","Agents & harness","G",2,1,"The talk version of the post above; watch or read","v"],
+["chip-agents","Agents","Chip Huyen","https://huyenchip.com/2025/01/07/agents.html","Agents & harness","G",2,1,""],
+["ai-eng-1-2","AI Engineering, ch 1–2","Chip Huyen",OR,"Basics","M",2,2,"Foundation models: how they're trained and sampled"],
+["3b1b-gpt","But what is a GPT? Visual intro to transformers","3Blue1Brown","https://www.youtube.com/watch?v=wjZofJX0v4M","Basics","G",2,2,"","v"],
+["3b1b-attention","Attention in transformers, visually explained","3Blue1Brown","https://www.youtube.com/watch?v=eMlx5fFNoYc","Basics","G",2,2,"","v"],
+["ai-eng-3","AI Engineering, ch 3 (evaluation methodology)","Chip Huyen",OR,"Basics","M",3,1,""],
+["writing-tools","Writing effective tools for agents","Anthropic",AN+"writing-tools-for-agents","Tool calls","M",3,2,""],
+["tool-use-docs","Tool use overview","Claude docs","https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview","Tool calls","M",3,2,"The loop: tool definitions, tool_use, tool_result"],
+["function-calling","Function calling guide","OpenAI docs","https://platform.openai.com/docs/guides/function-calling","Tool calls","G",3,2,"Skim"],
+["mcp","Model Context Protocol docs & spec","MCP","https://modelcontextprotocol.io","Tool calls","M",4,1,""],
+["advanced-tool-use","Introducing advanced tool use","Anthropic",AN+"advanced-tool-use","Tool calls","G",4,1,""],
+["code-exec-mcp","Code execution with MCP","Anthropic",AN+"code-execution-with-mcp","Tool calls","G",4,1,""],
+["mcp-workshop","Building Agents with Model Context Protocol (workshop)","Mahesh Murag, Anthropic","https://www.youtube.com/watch?v=kQmXtrmQ5Zg","Tool calls","G",4,1,"","v"],
+["openai-guide","A practical guide to building agents (PDF)","OpenAI","https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf","Agents & harness","G",4,2,""],
+["tips-agents","Tips for building AI agents","Anthropic","https://www.youtube.com/watch?v=LP5OCa20Zpg","Agents & harness","G",4,2,"Erik, Barry and Alex from Anthropic in conversation","v"],
+["context-engineering","Effective context engineering for AI agents","Anthropic",AN+"effective-context-engineering-for-ai-agents","Context & RAG","M",5,1,""],
+["contextual-retrieval","Contextual Retrieval","Anthropic","https://www.anthropic.com/news/contextual-retrieval","Context & RAG","M",5,1,""],
+["no-vibes","No Vibes Allowed: Solving Hard Problems in Complex Codebases","Dex Horthy, HumanLayer","https://www.youtube.com/watch?v=rmvDxxNubIg","Context & RAG","G",5,1,"Context engineering for coding agents","v"],
+["vector-dbs","Vector Databases","Hello Interview",HI+"deep-dives/vector-databases","Context & RAG","M",5,2,""],
+["ai-eng-6","AI Engineering, ch 6 (RAG & agents)","Chip Huyen",OR,"Context & RAG","M",5,2,""],
+["practice-rag","Design a RAG Q&A over company docs","","","Practice","M",6,1,"Cover access control, freshness and re-indexing, chunking, citations, retrieval evals"],
+["demystifying-evals","Demystifying evals for AI agents","Anthropic",AN+"demystifying-evals-for-ai-agents","Evals","M",6,2,"Tasks, trials, transcripts, graders, pass@k vs pass^k"],
+["evals-webinar","Evals for AI Agents (webinar)","Anthropic Applied AI","https://claude.com/resources/webinars/evals-for-ai-agents-how-product-builders-get-the-most-out-of-every-new-model","Evals","G",6,2,"Building a first eval set from real production failures","v"],
+["product-evals","Your AI Product Needs Evals","Hamel Husain","https://hamel.dev/blog/posts/evals/","Evals","M",7,1,""],
+["lenny-evals","Why AI evals are the hottest new skill for product builders","Hamel Husain & Shreya Shankar on Lenny's Podcast","https://www.youtube.com/watch?v=BsWxPI9UM4c","Evals","G",7,1,"Long; fine at 1.5×","1 h 46 min"],
+["build-loop","Build a minimal agent loop","","","Hands-on","M",7,2,"3 tools, retries, max steps, one JSON log line per step (prompt, tool call, result, tokens, latency)"],
+["llm-judge","Creating an LLM-as-a-Judge That Drives Business Results","Hamel Husain","https://hamel.dev/blog/posts/llm-judge/","Evals","M",8,1,""],
+["field-guide","A Field Guide to Rapidly Improving AI Products","Hamel Husain","https://hamel.dev/blog/posts/field-guide/","Evals","M",8,1,"Error analysis first, metrics second"],
+["ai-eng-4","AI Engineering, ch 4 (evaluate AI systems)","Chip Huyen",OR,"Evals","M",8,2,""],
+["evals-faq","AI Evals FAQ","Hamel Husain & Shreya Shankar","https://hamel.dev/blog/posts/evals-faq/","Evals","G",8,2,"Keep it as a reference"],
+["tau-bench","τ-bench paper (pass^k reliability)","Sierra","https://arxiv.org/abs/2406.12045","Evals","O",8,2,""],
+["build-evals","Build a 30-case eval set + LLM judge for your agent","","","Hands-on","M",9,1,"Label the cases yourself, then measure how often the judge agrees with you"],
+["what-is-trace","What is a trace?","AI Evals FAQ","https://hamel.dev/blog/posts/evals-faq/what-is-a-trace.html","Tracing","M",9,2,""],
+["otel-spans","OpenTelemetry GenAI spans","OpenTelemetry","https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/","Tracing","M",9,2,"Standard span and attribute names for model calls"],
+["otel-agent-spans","OpenTelemetry GenAI agent spans","OpenTelemetry","https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-agent-spans/","Tracing","G",9,2,"Agent and tool-execution spans; still in development"],
+["openllmetry","OpenLLMetry is all you need","Nir Gazit, Traceloop","https://www.youtube.com/watch?v=KVgbERRPU4M","Tracing","G",9,2,"OpenTelemetry for LLM calls, vector DBs and frameworks","v"],
+["langfuse","Langfuse docs (tracing)","Langfuse","https://langfuse.com/docs","Tracing","G",10,1,""],
+["agent-o11y","How agent o11y differs from traditional o11y","Phil Hetzel, Braintrust","https://www.youtube.com/watch?v=XBaznoTRDFI","Tracing","G",10,1,"Why agent traces need quality checks, not just latency and error metrics","v"],
+["build-trace","Trace your agent and read 50 traces","","","Hands-on","G",10,1,"Send traces to Langfuse or Phoenix; list your top 3 failure modes"],
+["practice-chatgpt","Design ChatGPT","Hello Interview",HI+"problem-breakdowns/chatgpt","Practice","M",10,2,""],
+["practice-tracing","Design an LLM trace-logging & observability system","","","Practice","M",11,1,"Span model, ingestion at scale, PII redaction, sampling, replay into eval sets"],
+["long-running-harness","Effective harnesses for long-running agents","Anthropic",AN+"effective-harnesses-for-long-running-agents","Agents & harness","M",11,2,"Progress files, git history, initializer vs coding agent"],
+["harness-design","Harness design for long-running app development","Anthropic",AN+"harness-design-long-running-apps","Agents & harness","G",11,2,"Planner, generator and evaluator; context resets vs compaction"],
+["harness-patterns","Agent harness design: 3 patterns","Claude blog","https://claude.com/resources/articles/harnessing-claudes-intelligence","Agents & harness","G",11,2,""],
+["twelve-factor","12-Factor Agents","HumanLayer","https://github.com/humanlayer/12-factor-agents","Agents & harness","M",12,1,""],
+["12factor-talk","12-Factor Agents (talk)","Dex Horthy, HumanLayer","https://www.youtube.com/watch?v=8kMaTybvDUw","Agents & harness","G",12,1,"Watch or read the repo","v"],
+["multi-agent","How we built our multi-agent research system","Anthropic",AN+"multi-agent-research-system","Agents & harness","M",12,1,""],
+["practice-support","Design an order-support agent with tool calls","Hello Interview","https://www.hellointerview.com/community/questions/order-management-assistant/cmmlcpcr40b5y0fadtiamz5er","Practice","M",12,2,"Tools, guardrails, human handoff, citations"],
+["practice-coding-agent","Design a coding agent","","","Practice","M",13,1,"Sandbox, tool set, context management, long-running harness, checkpoint and resume"],
+["vllm","PagedAttention (vLLM paper)","vLLM","https://arxiv.org/abs/2309.06180","Serving & cost","G",13,2,"KV cache, continuous batching"],
+["inference-handbook","LLM Inference Handbook","BentoML","https://bentoml.com/llm/","Serving & cost","G",13,2,""],
+["ai-eng-9-10","AI Engineering, ch 9–10 (inference, architecture)","Chip Huyen",OR,"Serving & cost","M",13,2,""],
+["inference-talk","Mastering LLM Inference Optimization","Mark Moyou, NVIDIA","https://www.youtube.com/watch?v=9tvJ_GYJA-o","Serving & cost","G",13,2,"","34 min"],
+["practice-gateway","Design an LLM gateway","","","Practice","M",14,1,"Routing, fallbacks, quotas, semantic cache, cost tracking, PII"],
+["practice-eval-platform","Design an eval platform","","","Practice","M",14,2,"Datasets, graders, judge calibration, CI regression gates, online sampling"],
+["practice-research","Design a deep-research multi-agent system","","","Practice","G",15,1,""],
+["practice-tools","Design an agent tool platform","","","Practice","G",15,2,"MCP servers, auth and permissions, approvals for risky actions"],
+["ai-mock","AI system design mock interview","","","Mock","M",16,1,""],
+["ai-redo","Redo your weakest design from scratch","","","Review","M",16,2,""],
+["practice-voice","Design a voice agent","","","Practice","O",0,0,"ASR → LLM → TTS latency budget, barge-in"],
+["practice-memory","Design long-term memory for an assistant","","","Practice","O",0,0,""]
+];
+
+// [id, title, source, read after, week, url, note]
+const SIDE = [
+["xu1-1","Ch 1 · Scale from zero to millions of users","Alex Xu · Vol 1","SD core concepts",1,"",""],
+["xu1-2","Ch 2 · Back-of-the-envelope estimation","Alex Xu · Vol 1","Numbers to Know",1,"",""],
+["xu1-3","Ch 3 · A framework for system design interviews","Alex Xu · Vol 1","Delivery Framework",1,"",""],
+["xu1-5","Ch 5 · Design consistent hashing","Alex Xu · Vol 1","Consistent Hashing",2,"",""],
+["lilian","LLM Powered Autonomous Agents","Lilian Weng","Building effective agents",2,"https://lilianweng.github.io/posts/2023-06-23-agent/",""],
+["kleppmann","Distributed Systems lecture series","Martin Kleppmann · Cambridge","SD core concepts",2,"https://www.youtube.com/playlist?list=PLeKd45zvjcDFUEv_ohr_HdUFe97RItdiB","8 lectures, about 7 hours. One a weekend","7 hrs"],
+["karpathy-deep-dive","Deep Dive into LLMs like ChatGPT","Andrej Karpathy","AI Engineering ch 1–2",3,"https://www.youtube.com/watch?v=7xTGNNLPyMI","The long, detailed follow-up to his intro talk","v"],
+["year-of-llms","What We Learned From A Year of Building With LLMs","AI Engineer World's Fair 2024","Demystifying evals",6,"https://www.youtube.com/watch?v=qBHfQT3YtyY","Eugene Yan, Hamel Husain, Shreya Shankar and others","v"],
+["jordan-sd","Systems Design Interview: 0 to 1 series","Jordan has no life","SD core concepts",0,"https://www.youtube.com/watch?v=bwt09KXDH94","Very deep. Starts with 'What is Systems Design?'","v"],
+["xu2-4","Ch 4 · Distributed message queue","Alex Xu · Vol 2","Kafka",3,"",""],
+["zgateway","Meta ZGateway","Hello Interview · In the Wild","API Gateway",3,HI+"in-the-wild/meta-zgateway-zippydb",""],
+["head-first","Head First Design Patterns","Freeman & Robson","LLD patterns",3,"",""],
+["xu1-7","Ch 7 · Design a unique ID generator","Alex Xu · Vol 1","Bitly",4,"",""],
+["xu1-8","Ch 8 · Design a URL shortener","Alex Xu · Vol 1","Bitly",4,"",""],
+["xu1-15","Ch 15 · Design Google Drive","Alex Xu · Vol 1","Dropbox",4,"",""],
+["xu2-9","Ch 9 · S3-like object storage","Alex Xu · Vol 2","Handling Large Blobs",4,"",""],
+["xu2-7","Ch 7 · Hotel reservation system","Alex Xu · Vol 2","Ticketmaster",5,"",""],
+["xu1-11","Ch 11 · Design a news feed system","Alex Xu · Vol 1","FB News Feed",6,"",""],
+["xu1-4","Ch 4 · Design a rate limiter","Alex Xu · Vol 1","Rate Limiter",7,"",""],
+["xu1-12","Ch 12 · Design a chat system","Alex Xu · Vol 1","WhatsApp",7,"",""],
+["discord","Discord Message Storage","Hello Interview · In the Wild","WhatsApp",7,HI+"in-the-wild/discord-messages-scylladb",""],
+["xu1-14","Ch 14 · Design YouTube","Alex Xu · Vol 1","YouTube",8,"",""],
+["xu2-1","Ch 1 · Proximity service","Alex Xu · Vol 2","Yelp",8,"",""],
+["xu2-2","Ch 2 · Nearby friends","Alex Xu · Vol 2","Uber",9,"",""],
+["xu2-3","Ch 3 · Google Maps","Alex Xu · Vol 2","Uber",9,"",""],
+["xu1-9","Ch 9 · Design a web crawler","Alex Xu · Vol 1","Web Crawler",10,"",""],
+["xu2-6","Ch 6 · Ad click event aggregation","Alex Xu · Vol 2","Ad Click Aggregator",10,"",""],
+["xu2-10","Ch 10 · Real-time gaming leaderboard","Alex Xu · Vol 2","YouTube Top K",11,"",""],
+["figma","Figma Multiplayer","Hello Interview · In the Wild","Google Docs",11,HI+"in-the-wild/figma-multiplayer",""],
+["xu1-10","Ch 10 · Design a notification system","Alex Xu · Vol 1","Notification System",12,"",""],
+["slack","Slack Job Queue","Hello Interview · In the Wild","Job Scheduler",12,HI+"in-the-wild/slack-job-queue",""],
+["xu2-11","Ch 11 · Payment system","Alex Xu · Vol 2","Payment System",13,"",""],
+["xu2-12","Ch 12 · Digital wallet","Alex Xu · Vol 2","Payment System",13,"",""],
+["xu1-6","Ch 6 · Design a key-value store","Alex Xu · Vol 1","Distributed Cache",13,"",""],
+["ddia","Designing Data-Intensive Applications, 2nd ed (2026)","Kleppmann & Riccomini","Most of the SD track",14,"https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/","The deep 'why' behind storage, replication, partitioning and streams. A slow read, not interview prep"],
+["xu1-13","Ch 13 · Design a search autocomplete system","Alex Xu · Vol 1","FB Post Search",0,"",""],
+["xu2-5","Ch 5 · Metrics monitoring and alerting","Alex Xu · Vol 2","Metrics Monitoring",0,"",""],
+["xu2-13","Ch 13 · Stock exchange","Alex Xu · Vol 2","Robinhood",0,"",""],
+["xu2-8","Ch 8 · Distributed email service","Alex Xu · Vol 2","Anytime",0,"","Lowest priority"],
+["primer","System Design Primer","GitHub","SD core concepts",0,"https://github.com/donnemartin/system-design-primer",""],
+["tsdb","Time Series Databases","Hello Interview","Metrics Monitoring",0,HI+"deep-dives/time-series-databases",""],
+["cdc","Change Data Capture","Hello Interview","FB Post Search",0,HI+"deep-dives/change-data-capture",""],
+["shopify","Shopify Inventory Reservations","Hello Interview · In the Wild","Flash Sale",0,HI+"in-the-wild/shopify-inventory-reservations",""],
+["spotify","Spotify Data Lake","Hello Interview · In the Wild","Anytime",0,HI+"in-the-wild/spotify-data-lake-point-queries",""],
+["ai-eng-rest","AI Engineering, ch 5, 7, 8 (prompting, finetuning, data)","Chip Huyen","AI basics",0,OR,""]
+];
+
+const TRACKS = [
+  { key: "dsa", name: "DSA", long: "DSA · NeetCode 150", cadence: "30 min daily", noun: "problems" },
+  { key: "sd", name: "System design", long: "System design", cadence: "2 sessions a week", noun: "items" },
+  { key: "lld", name: "LLD", long: "Low-level design", cadence: "1 session a week", noun: "items" },
+  { key: "ai", name: "AI design", long: "AI system design", cadence: "2 sessions a week", noun: "items" },
+  { key: "side", name: "Side quest", long: "Side quest", cadence: "Optional reading", noun: "reads" }
+];
+const TRACK = Object.fromEntries(TRACKS.map(t => [t.key, t]));
+
+const METHOD = {
+  dsa: ["NeetCode 150 on LeetCode. Must is the Blind 75 core (weeks 1–12). Good is the most-asked extras (weeks 13–16). Optional has no week; do those if you're ahead.",
+        "20 minutes solo. Stuck? Use the last 10 to read the approach, mark it Revisit, and re-solve it cold on Sunday. Write the pattern and the key trick in a note.",
+        "Monday to Saturday: one new problem (two if both are Easy). Sunday: redo one problem from your Revisit queue.",
+        "Solved cold in under 25 minutes with the right complexity, explained out loud.",
+        "Every problem has a ▶ NeetCode video link, which opens a YouTube search for NeetCode's walkthrough. Watch it after your own attempt."],
+  sd:  ["Hello Interview's System Design in a Hurry: framework, core concepts, key technologies, patterns and problem breakdowns. The written breakdowns are free; guided practice is premium.",
+        "Attempt each problem yourself first: 45 minutes on Excalidraw with the Delivery Framework. Then read or watch the breakdown and write your gaps in a note.",
+        "Two sessions a week, 75–90 minutes each.",
+        "You can draw it from memory in 45 minutes and defend two deep dives.",
+        "Most Hello Interview breakdowns have a video walkthrough on the same page (marked ▶ Video on the page). Their YouTube channel has full mock interviews. For depth later, Martin Kleppmann's lectures and Jordan's series are in Side quest."],
+  lld: ["Hello Interview's LLD in a Hurry (with its concurrency section), awesome-low-level-design for extra problems, and Refactoring Guru for patterns.",
+        "Requirements → entities → classes → core methods → one extension. Code it in your interview language, then compare. Indian product companies often want runnable code and patterns called out by name.",
+        "One session a week, 60–90 minutes. The two machine-coding mocks are 90 minutes each.",
+        "Working classes and core methods in 45 minutes, and a new requirement added without a rewrite.",
+        "Hello Interview's channel has LLD mock walkthroughs (Connect Four, Elevator). Concept && Coding covers LLD problems and design patterns."],
+  ai:  ["Anthropic's engineering posts, Hamel Husain on evals, Chip Huyen's GenAI platform post and AI Engineering, and the OpenTelemetry GenAI conventions.",
+        "Read, then build a tiny version. Answer every AI design in this order: requirements and success metric → architecture (gateway, orchestration, retrieval, tools, guardrails) → evals → tracing → latency and cost → failure modes.",
+        "Two sessions a week, 60–75 minutes. The hands-on builds land in weeks 7–10.",
+        "You can whiteboard it and tell the eval, tracing and cost story.",
+        "Talks sit next to the reading on the same topic, from Karpathy's intro in week 1 to the inference talk in week 13. Where a talk and a post cover the same ground, do one or the other."],
+  side:["Alex Xu Vol 1 & 2, DDIA 2nd edition (2026), and Hello Interview's In the Wild posts.",
+        "Read only after the item it pairs with. Skip it in an interview week. A three-line takeaway is enough.",
+        "Weekends, and only when you're on schedule.",
+        "Read, with a three-line takeaway in your note.",
+        "Kleppmann's distributed systems lectures, Karpathy's deep dive and the 'Year of building with LLMs' panel. Treat them like the books."]
+};
+
+/* ---------- items ---------- */
+// Hello Interview breakdowns that have a video walkthrough on the page itself
+const PAGE_VIDEO = new Set(["sd:bitly","sd:dropbox","sd:yelp","sd:ticketmaster","sd:instagram","sd:news-feed","sd:tinder","sd:leetcode","sd:whatsapp","sd:rate-limiter","sd:online-auction","sd:youtube","sd:job-scheduler","sd:live-comments","sd:price-tracking","sd:top-k","sd:uber","sd:google-docs","sd:web-crawler","sd:ad-click","sd:post-search","sd:payment","sd:metrics","ai:practice-chatgpt"]);
+// last column of SD/LLD/AI/SIDE rows: "v" = video, or its length ("1 hr")
+const vf = f => ({ video: !!f, len: f && f !== "v" ? f : "" });
+const ITEMS = [];
+DSA.forEach((r, i) => ITEMS.push({ id: "dsa:" + r[0], track: "dsa", title: r[1], url: LC + r[0] + "/", diff: r[2], cat: CATS[r[3]], prio: PR[r[4]], week: r[5], s: 0, hint: PREMIUM.has(r[0]) ? "LeetCode Premium; free on neetcode.io" : "", i }));
+SD.forEach((r, i) => ITEMS.push(Object.assign({ id: "sd:" + r[0], track: "sd", title: r[1], url: r[2] ? (r[2].startsWith("http") ? r[2] : HI + r[2]) : "", type: r[3], prio: PR[r[4]], week: r[5], s: r[6], hint: r[7], i }, vf(r[8]))));
+LLD.forEach((r, i) => {
+  const l = r[2];
+  const url = !l ? "" : l.startsWith("http") ? l : l.startsWith("L:") ? HL + l.slice(2) : l.startsWith("A:") ? AW + l.slice(2) + ".md" : RG + l.slice(2);
+  ITEMS.push(Object.assign({ id: "lld:" + r[0], track: "lld", title: r[1], url, type: r[3], prio: PR[r[4]], week: r[5], s: 0, hint: r[6], i }, vf(r[7])));
+});
+AI.forEach((r, i) => ITEMS.push(Object.assign({ id: "ai:" + r[0], track: "ai", title: r[1], by: r[2], url: r[3], type: r[4], prio: PR[r[5]], week: r[6], s: r[7], hint: r[8], i }, vf(r[9]))));
+SIDE.forEach((r, i) => ITEMS.push(Object.assign({ id: "side:" + r[0], track: "side", title: r[1], source: r[2], after: r[3], week: r[4], url: r[5], hint: r[6], prio: null, s: 0, i }, vf(r[7]))));
+ITEMS.forEach(x => { if (PAGE_VIDEO.has(x.id)) x.pageVid = true; });
+const isVideo = x => !!(x.video || x.pageVid);
+const ytSearch = t => "https://www.youtube.com/results?search_query=" + encodeURIComponent("neetcode " + t);
+const BYID = new Map(ITEMS.map(x => [x.id, x]));
+const byOrder = (a, b) => a.i - b.i;
+
+/* ---------- state ---------- */
+const LS = "interview-prep-16w.v1";
+const DEFAULT_START = "2026-11-30";
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+function normalize(d) {
+  const out = { start: DEFAULT_START, items: {} };
+  if (d && typeof d === "object") {
+    if (typeof d.start === "string" && DATE_RE.test(d.start)) out.start = d.start;
+    const it = d.items && typeof d.items === "object" ? d.items : {};
+    for (const k of Object.keys(it)) {
+      const v = it[k];
+      if (!BYID.has(k) || !v || typeof v !== "object") continue;
+      const rec = {};
+      if (v.s === "d" || v.s === "r") rec.s = v.s;
+      if (typeof v.n === "string" && v.n) rec.n = v.n.slice(0, 4000);
+      if (typeof v.t === "string" && DATE_RE.test(v.t)) rec.t = v.t;
+      if (rec.s || rec.n) out.items[k] = rec;
+    }
+  }
+  return out;
+}
+function loadLocal() {
+  try { const raw = localStorage.getItem(LS); if (raw) return normalize(JSON.parse(raw)); } catch (e) {}
+  return normalize(null);
+}
+function saveLocal() { try { localStorage.setItem(LS, JSON.stringify(state)); } catch (e) {} }
+let state = loadLocal();
+
+/* ---------- sync (private per-person doc when signed in) ---------- */
+const sync = { ref: null, saving: false, again: false, dirty: false, denied: false, retried: false, timer: 0 };
+const SYNC_TEXT = { local: "Saved in this browser", synced: "Synced to your account", saving: "Saving…", error: "Couldn't sync; saved in this browser" };
+function setSync(m) { const el = document.getElementById("sync"); el.dataset.m = m; el.textContent = SYNC_TEXT[m]; }
+async function startSync() {
+  try {
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    const [user, db] = await Promise.all([window.claude.use("user"), window.claude.use("db")]);
+    if (!user || !db) return;
+    const uid = await user.id();
+    if (!uid) return;
+    sync.ref = db.doc("data/users/" + uid + "/prep");
+    sync.ref.onSnapshot(snap => {
+      if (snap.metadata && snap.metadata.hasPendingWrites) return;
+      if (sync.dirty || sync.saving) return;
+      if (snap.exists) {
+        state = normalize(snap.data());
+        saveLocal();
+        if (!sync.denied) setSync("synced");
+        render();
+      }
+    }, () => { sync.ref = null; setSync("local"); });
+  } catch (e) { /* stay local */ }
+}
+async function flush() {
+  if (!sync.ref || sync.denied) { sync.dirty = false; return; }
+  if (sync.saving) { sync.again = true; return; }
+  sync.saving = true; setSync("saving");
+  const body = JSON.parse(JSON.stringify({ v: 1, start: state.start, items: state.items, updatedAt: new Date().toISOString() }));
+  try {
+    await sync.ref.set(body);
+    sync.dirty = false; sync.retried = false; setSync("synced");
+  } catch (e) {
+    const c = e && e.code;
+    if (c === "unavailable" && !sync.retried) {
+      sync.retried = true; sync.saving = false;
+      setTimeout(flush, 1200 + Math.random() * 1200);
+      return;
+    }
+    sync.retried = false; sync.dirty = false;
+    if (["invalid_argument", "not_granted", "capability_disabled", "capability_removed", "revoked", "transform_error"].includes(c)) { sync.denied = true; setSync("local"); }
+    else setSync("error");
+  }
+  sync.saving = false;
+  if (sync.again) { sync.again = false; sync.dirty = true; flush(); }
+}
+function commit() {
+  saveLocal();
+  if (sync.ref && !sync.denied) {
+    sync.dirty = true;
+    clearTimeout(sync.timer);
+    sync.timer = setTimeout(flush, 700);
+  }
+}
+
+/* ---------- helpers ---------- */
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function parseD(s) { const p = s.split("-").map(Number); return new Date(p[0], p[1] - 1, p[2]); }
+function addDays(d, n) { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() + n); return x; }
+function fmt(d) { return d.getDate() + " " + MON[d.getMonth()]; }
+function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function weekStart(w) { return addDays(parseD(state.start), (w - 1) * 7); }
+function weekRange(w) { return fmt(weekStart(w)) + " – " + fmt(addDays(weekStart(w), 6)); }
+function daysIn() { const t = new Date(); const today = new Date(t.getFullYear(), t.getMonth(), t.getDate()); return Math.round((today - parseD(state.start)) / 864e5); }
+function curWeek() { return Math.floor(daysIn() / 7) + 1; }
+const clampW = w => Math.max(1, Math.min(16, w));
+function status(id) { const r = state.items[id]; return r && r.s === "d" ? "done" : r && r.s === "r" ? "revisit" : "todo"; }
+const domId = id => "n-" + id.replace(/[^a-z0-9]/gi, "-");
+
+const ICON = {
+  todo: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
+  done: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path class="ck" d="M7.5 12.5l3 3 6-6.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  revisit: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path class="ck" d="M16.4 13.2A4.6 4.6 0 1 1 15 8.6" fill="none" stroke-width="2" stroke-linecap="round"/><path class="ck" d="M15.6 5.8l-.3 3.2-3.1-.4" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  note: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M13 7l4 4" stroke="currentColor" stroke-width="1.7"/></svg>'
+};
+const ST_LABEL = { todo: "Not done. Tap to mark done", done: "Done. Tap to mark for revisit", revisit: "Marked to revisit. Tap to reset" };
+
+/* ---------- ui state ---------- */
+const VIEWS = [["week", "This week"], ["plan", "Plan"], ["dsa", "DSA"], ["sd", "System design"], ["lld", "LLD"], ["ai", "AI design"], ["side", "Side quest"], ["method", "How to study"]];
+let view = "week";
+let selWeek = clampW(curWeek());
+const openNotes = new Set();
+const F = {};
+TRACKS.forEach(t => { F[t.key] = { q: "", p: "all", s: "all", v: "all" }; });
+let showCarry = false;
+let confirmReset = false;
+
+/* ---------- item row ---------- */
+function metaHTML(x, withWeek) {
+  const parts = [];
+  if (x.video) parts.push('<span class="vid">▶ Video' + (x.len ? " · " + esc(x.len) : "") + "</span>");
+  else if (x.pageVid) parts.push('<span class="vid">▶ Video on the page</span>');
+  if (x.track === "dsa") {
+    parts.push('<span class="d-' + x.diff + '">' + DIFF[x.diff] + "</span>", esc(x.cat));
+  } else if (x.track === "side") {
+    parts.push(esc(x.source), "after " + esc(x.after));
+  } else {
+    parts.push(esc(x.type));
+    if (x.by) parts.push(esc(x.by));
+  }
+  if (x.prio) parts.push('<span class="p-' + x.prio + '">' + x.prio + "</span>");
+  if (withWeek) parts.push(x.week ? "W" + x.week : "extra");
+  const st = status(x.id), rec = state.items[x.id];
+  if (st === "done" && rec && rec.t) parts.push('<span class="tag-done">done ' + esc(fmt(parseD(rec.t))) + "</span>");
+  if (st === "revisit") parts.push('<span class="tag-rev">revisit</span>');
+  if (x.track === "dsa") parts.push('<a class="vlink" href="' + esc(ytSearch(x.title)) + '" target="_blank" rel="noopener" title="Opens a YouTube search for NeetCode\'s walkthrough">▶ NeetCode video</a>');
+  return parts.map(p => "<span>" + p + "</span>").join("");
+}
+function itemHTML(x, withWeek) {
+  const st = status(x.id);
+  const rec = state.items[x.id];
+  const note = rec && rec.n ? rec.n : "";
+  const open = openNotes.has(x.id);
+  const title = x.url
+    ? '<a class="t" href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.title) + "</a>"
+    : '<span class="t">' + esc(x.title) + "</span>";
+  return '<li class="item s-' + st + '" data-id="' + esc(x.id) + '">' +
+    '<button class="st" type="button" data-act="cycle" aria-label="' + esc(x.title) + ": " + ST_LABEL[st] + '" title="' + ST_LABEL[st] + '">' + ICON[st] + "</button>" +
+    '<div class="body">' + title +
+      '<div class="meta">' + metaHTML(x, withWeek) + "</div>" +
+      (x.hint ? '<div class="hint">' + esc(x.hint) + "</div>" : "") +
+      (note && !open ? '<div class="mynote">' + esc(note) + "</div>" : "") +
+      (open ? '<textarea class="noteta" id="' + domId(x.id) + '" data-note="' + esc(x.id) + '" rows="3" placeholder="Pattern, key trick, gaps to fix…" aria-label="Note for ' + esc(x.title) + '">' + esc(note) + "</textarea>" : "") +
+    "</div>" +
+    '<button class="nb' + (note ? " has" : "") + '" type="button" data-act="note" aria-expanded="' + open + '" aria-label="' + (open ? "Close note" : note ? "Edit note" : "Add a note") + '">' + ICON.note + "</button>" +
+  "</li>";
+}
+const listHTML = (xs, withWeek) => '<ul class="list">' + xs.map(x => itemHTML(x, withWeek)).join("") + "</ul>";
+
+/* ---------- counts ---------- */
+function counts(xs) {
+  let d = 0, r = 0;
+  for (const x of xs) { const s = status(x.id); if (s === "done") d++; else if (s === "revisit") r++; }
+  return { done: d, rev: r, total: xs.length };
+}
+function weekFill(w) {
+  const xs = ITEMS.filter(x => x.week === w && x.track !== "side");
+  const c = counts(xs);
+  return c.total ? c.done / c.total : 0;
+}
+
+/* ---------- header ---------- */
+function renderHeader() {
+  const start = document.getElementById("start");
+  if (document.activeElement !== start) start.value = state.start;
+  const d = daysIn(), cw = curWeek();
+  const end = fmt(addDays(parseD(state.start), 111));
+  document.getElementById("weekline").textContent =
+    d < 0 ? "Starts in " + -d + (d === -1 ? " day" : " days") + " · ends " + end
+    : cw > 16 ? "Plan finished on " + end
+    : "Week " + cw + " of 16 · ends " + end;
+  let s = "";
+  for (let w = 1; w <= 16; w++) {
+    const p = Math.round(weekFill(w) * 100);
+    const cls = "cell" + (w === cw ? " now" : "") + (view === "week" && w === selWeek ? " sel" : "") + (p >= 60 ? " full" : "");
+    s += '<button type="button" class="' + cls + '" data-week="' + w + '" style="--p:' + p + '%" aria-label="Week ' + w + ", " + p + '% done"><span>' + w + "</span></button>";
+  }
+  document.getElementById("strip").innerHTML = s;
+  document.getElementById("meters").innerHTML = TRACKS.map(t => {
+    const c = counts(ITEMS.filter(x => x.track === t.key));
+    const pd = c.total ? (c.done / c.total) * 100 : 0, pr = c.total ? (c.rev / c.total) * 100 : 0;
+    return '<button type="button" class="meter" data-go="' + t.key + '"><div class="row"><span class="name"><i class="sw ' + t.key + '"></i>' + esc(t.name) + '</span><span class="num">' + c.done + "/" + c.total + "</span></div>" +
+      '<div class="bar"><i class="b-done" style="width:' + pd + '%"></i><i class="b-rev" style="width:' + pr + '%"></i></div></button>';
+  }).join("");
+  document.getElementById("tabs").innerHTML = VIEWS.map(v => '<a class="tab" href="#' + v[0] + '"' + (v[0] === view ? ' aria-current="page"' : "") + ">" + v[1] + "</a>").join("");
+}
+
+/* ---------- views ---------- */
+function weekView() {
+  const w = selWeek, cw = curWeek();
+  let h = '<div class="weeknav">' +
+    '<button type="button" class="navbtn" data-step="-1" aria-label="Previous week"' + (w <= 1 ? " disabled" : "") + ">‹</button>" +
+    '<div class="wk"><b>Week ' + String(w).padStart(2, "0") + "</b><small>" + weekRange(w) + (w === cw ? " · this week" : "") + "</small></div>" +
+    '<button type="button" class="navbtn" data-step="1" aria-label="Next week"' + (w >= 16 ? " disabled" : "") + ">›</button>" +
+    (w !== clampW(cw) && cw >= 1 && cw <= 16 ? '<button type="button" class="nowbtn" data-week="' + cw + '">Back to this week</button>' : "") +
+    "</div>";
+
+  if (w === cw && cw > 1) {
+    const carry = ITEMS.filter(x => x.track !== "side" && x.week >= 1 && x.week < cw && status(x.id) === "todo").sort((a, b) => a.week - b.week || byOrder(a, b));
+    if (!carry.length) h += '<div class="pace ok"><div class="msg"><strong>On pace.</strong><span>Everything scheduled before this week is done.</span></div></div>';
+    else {
+      h += '<div class="pace behind"><div class="msg"><strong>' + carry.length + (carry.length === 1 ? " item" : " items") + " from earlier weeks still open.</strong>" +
+        '<button type="button" class="linkbtn" data-act="carry">' + (showCarry ? "Hide" : "Show them") + "</button></div>" +
+        (showCarry ? listHTML(carry, true) : "") + "</div>";
+    }
+  }
+
+  for (const t of TRACKS) {
+    const xs = ITEMS.filter(x => x.track === t.key && x.week === w).sort(byOrder);
+    const c = counts(xs);
+    h += '<section class="card' + (t.key === "side" ? " quiet" : "") + '" aria-label="' + esc(t.long) + '"><div class="chead"><h2><i class="sw ' + t.key + '"></i>' + esc(t.long) + '</h2><span class="cad">' + esc(t.cadence) + '</span><span class="count">' + c.done + "/" + c.total + " done</span></div>";
+    if (t.key === "dsa") {
+      h += '<p class="tip">Mon–Sat: one a day (two if both are Easy). Sunday: redo one from your Revisit queue. Watch the ▶ NeetCode video only after your own attempt.</p>';
+      const rq = ITEMS.filter(x => x.track === "dsa" && status(x.id) === "revisit").sort((a, b) => a.week - b.week || byOrder(a, b));
+      if (rq.length) h += '<details class="queue"><summary>Revisit queue (' + rq.length + ")</summary>" + listHTML(rq, true) + "</details>";
+    }
+    if (t.key === "side") h += '<p class="tip">Only if you\'re on schedule. Read after the item it pairs with.</p>';
+    if (!xs.length) h += '<div class="empty">Nothing scheduled this week.</div>';
+    else if (t.key === "sd" || t.key === "ai") {
+      for (const s of [1, 2]) {
+        const ss = xs.filter(x => x.s === s);
+        if (!ss.length) continue;
+        h += '<div class="sess">Session ' + s + "</div>" + listHTML(ss, false);
+      }
+    } else h += listHTML(xs, false);
+    h += "</section>";
+  }
+  return '<div class="stack">' + h + "</div>";
+}
+
+function planView() {
+  const cw = curWeek();
+  let h = '<div class="plan">';
+  for (let w = 1; w <= 16; w++) {
+    const pct = Math.round(weekFill(w) * 100);
+    h += '<article class="pw' + (w === cw ? " now" : "") + '"><div class="pwh"><b>W' + String(w).padStart(2, "0") + "</b><div><small>" + weekRange(w) + (w === cw ? " · this week" : "") + "</small><small>" + pct + "% done</small></div>" +
+      '<button type="button" class="chip open" data-week="' + w + '">Open week</button></div>';
+    for (const t of TRACKS) {
+      const xs = ITEMS.filter(x => x.track === t.key && x.week === w).sort(byOrder);
+      if (!xs.length) continue;
+      let txt;
+      if (t.key === "dsa") {
+        const cats = [...new Set(xs.map(x => x.cat))];
+        txt = "<em>" + xs.length + " problems</em> " + esc(cats.join(", "));
+      } else if (t.key === "sd" || t.key === "ai") {
+        txt = [1, 2].map(s => { const ss = xs.filter(x => x.s === s); return ss.length ? "<em>S" + s + "</em> " + esc(ss.map(x => x.title).join(", ")) : ""; }).filter(Boolean).join(" · ");
+      } else txt = esc(xs.map(x => x.title).join(", "));
+      h += '<div class="pline' + (t.key === "side" ? " side" : "") + '"><i class="sw ' + t.key + '"></i><span>' + txt + "</span></div>";
+    }
+    h += "</article>";
+  }
+  return h + "</div>";
+}
+
+function trackView(key) {
+  const t = TRACK[key], f = F[key];
+  const pOpts = key === "side" ? [] : ["all", "Must", "Good", "Optional"];
+  const sOpts = [["all", "All"], ["todo", "Open"], ["done", "Done"], ["revisit", "Revisit"]];
+  let h = '<div class="stack"><div class="toolbar">' +
+    '<input type="search" class="search" id="q-' + key + '" data-q="' + key + '" placeholder="Search ' + esc(t.long) + '" value="' + esc(f.q) + '" aria-label="Search ' + esc(t.long) + '">';
+  if (pOpts.length) h += '<div class="chips" role="group" aria-label="Priority">' + pOpts.map(p => '<button type="button" class="chip" data-fp="' + p + '" aria-pressed="' + (f.p === p) + '">' + (p === "all" ? "Any priority" : p) + "</button>").join("") + "</div>";
+  h += '<div class="chips" role="group" aria-label="Status">' + sOpts.map(s => '<button type="button" class="chip" data-fs="' + s[0] + '" aria-pressed="' + (f.s === s[0]) + '">' + s[1] + "</button>").join("") + "</div>";
+  if (key !== "dsa") h += '<div class="chips" role="group" aria-label="Format">' + [["all", "Any format"], ["video", "▶ Videos"], ["other", "Reading & practice"]].map(v => '<button type="button" class="chip" data-fv="' + v[0] + '" aria-pressed="' + (f.v === v[0]) + '">' + v[1] + "</button>").join("") + "</div>";
+  else h += '<p class="tip">Every problem has a ▶ NeetCode video link. Watch it after your own attempt, not before.</p>';
+  h += "</div>";
+  h += '<div id="tlist">' + trackList(key) + "</div></div>";
+  return h;
+}
+function trackList(key) {
+  const f = F[key], q = f.q.trim().toLowerCase();
+  const xs = ITEMS.filter(x => x.track === key)
+    .filter(x => f.p === "all" || x.prio === f.p)
+    .filter(x => f.s === "all" || status(x.id) === f.s)
+    .filter(x => key === "dsa" || f.v === "all" || (f.v === "video") === isVideo(x))
+    .filter(x => !q || (x.title + " " + (x.cat || "") + " " + (x.type || "") + " " + (x.by || "") + " " + (x.source || "") + " " + (x.after || "")).toLowerCase().includes(q));
+  if (!xs.length) return '<div class="empty">Nothing matches these filters.</div>';
+  const weeks = [...new Set(xs.map(x => x.week))].sort((a, b) => (a || 99) - (b || 99));
+  let h = "";
+  for (const w of weeks) {
+    const g = xs.filter(x => x.week === w).sort(byOrder);
+    const all = ITEMS.filter(x => x.track === key && x.week === w);
+    const c = counts(all);
+    h += '<section class="card"><div class="ghead"><h3>' + (w ? "Week " + w : "Extras") + "</h3><small>" + (w ? weekRange(w) : "No week; do these if you're ahead") + '</small><span class="count">' + c.done + "/" + c.total + "</span></div>" + listHTML(g, false) + "</section>";
+  }
+  return '<div class="stack">' + h + "</div>";
+}
+
+function methodView() {
+  const labels = ["Main source", "How to work it", "Rhythm", "Done means", "Videos"];
+  let h = '<div class="mgrid">';
+  for (const t of TRACKS) {
+    h += '<section class="mcard"><h2><i class="sw ' + t.key + '"></i>' + esc(t.long) + "</h2><dl>" +
+      METHOD[t.key].map((v, i) => "<div><dt>" + labels[i] + "</dt><dd>" + esc(v) + "</dd></div>").join("") + "</dl></section>";
+  }
+  const inClaude = !!(window.claude && typeof window.claude.use === "function");
+  h += '<section class="mcard"><h2>Your progress</h2><dl>' +
+    (inClaude
+      ? "<div><dt>Where it's kept</dt><dd>Ticks and notes are private to you. If you're signed in and allowed to save here, they sync to your account across devices. Otherwise they stay in this browser.</dd></div>" +
+        "<div><dt>Make it your own</dt><dd>Change the start date at the top and every week moves with it. Copy this artifact to your own Claude to keep your own version.</dd></div></dl>"
+      : "<div><dt>Where it's kept</dt><dd>Ticks and notes are private to you and stay in this browser on this device. Clearing your browser's site data clears them too.</dd></div>" +
+        "<div><dt>Make it your own</dt><dd>Change the start date at the top and every week moves with it.</dd></div></dl>") +
+    (confirmReset
+      ? '<div class="row"><span>Clear every tick and note?</span><button type="button" class="btn danger" data-act="reset-yes">Clear everything</button><button type="button" class="btn" data-act="reset-no">Cancel</button></div>'
+      : '<div class="row"><button type="button" class="btn" data-act="reset">Reset my progress</button></div>') +
+    "</section></div>";
+  h += '<p class="foot">Problem links go to LeetCode, Hello Interview, Anthropic, Hamel Husain, Chip Huyen and the other original sources.</p>';
+  return h;
+}
+
+function render() {
+  renderHeader();
+  const m = document.getElementById("main");
+  const focusId = document.activeElement && document.activeElement.id;
+  let caret = null;
+  if (focusId && document.activeElement.selectionStart != null) caret = document.activeElement.selectionStart;
+  m.innerHTML = view === "week" ? weekView() : view === "plan" ? planView() : view === "method" ? methodView() : trackView(view);
+  if (focusId) {
+    const el = document.getElementById(focusId);
+    if (el && el !== document.body) { el.focus({ preventScroll: true }); if (caret != null && el.setSelectionRange) { try { el.setSelectionRange(caret, caret); } catch (e) {} } }
+  }
+}
+
+/* ---------- events ---------- */
+function cycle(id) {
+  const st = status(id);
+  const rec = Object.assign({}, state.items[id] || {});
+  if (st === "todo") { rec.s = "d"; rec.t = iso(new Date()); }
+  else if (st === "done") { rec.s = "r"; }
+  else { delete rec.s; delete rec.t; }
+  if (rec.s || rec.n) state.items[id] = rec; else delete state.items[id];
+  commit();
+  render();
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act],[data-week],[data-go],[data-step],[data-fp],[data-fs],[data-fv]");
+  if (!el) return;
+  if (el.dataset.week) { selWeek = clampW(+el.dataset.week); showCarry = false; if (view !== "week") location.hash = "week"; else render(); window.scrollTo({ top: 0 }); return; }
+  if (el.dataset.go) { location.hash = el.dataset.go; return; }
+  if (el.dataset.step) { selWeek = clampW(selWeek + +el.dataset.step); render(); return; }
+  if (el.dataset.fp) { F[view].p = el.dataset.fp; render(); return; }
+  if (el.dataset.fs) { F[view].s = el.dataset.fs; render(); return; }
+  if (el.dataset.fv) { F[view].v = el.dataset.fv; render(); return; }
+  const act = el.dataset.act, li = el.closest(".item"), id = li && li.dataset.id;
+  if (act === "cycle" && id) cycle(id);
+  else if (act === "note" && id) {
+    if (openNotes.has(id)) openNotes.delete(id); else openNotes.add(id);
+    render();
+    if (openNotes.has(id)) { const ta = document.getElementById(domId(id)); if (ta) ta.focus(); }
+  }
+  else if (act === "carry") { showCarry = !showCarry; render(); }
+  else if (act === "reset") { confirmReset = true; render(); }
+  else if (act === "reset-no") { confirmReset = false; render(); }
+  else if (act === "reset-yes") { confirmReset = false; state.items = {}; openNotes.clear(); commit(); render(); }
+});
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (t.dataset && t.dataset.note) {
+    const id = t.dataset.note;
+    const rec = Object.assign({}, state.items[id] || {});
+    const v = t.value.slice(0, 4000);
+    if (v) rec.n = v; else delete rec.n;
+    if (rec.s || rec.n) state.items[id] = rec; else delete state.items[id];
+    commit();
+  } else if (t.dataset && t.dataset.q) {
+    F[t.dataset.q].q = t.value;
+    const box = document.getElementById("tlist");
+    if (box) box.innerHTML = trackList(t.dataset.q);
+  }
+});
+document.addEventListener("focusout", e => {
+  const t = e.target;
+  if (t.dataset && t.dataset.note) {
+    const id = t.dataset.note;
+    setTimeout(() => {
+      const a = document.activeElement;
+      if (a && a.closest && a.closest('.item[data-id="' + CSS.escape(id) + '"]')) return;
+      openNotes.delete(id); render();
+    }, 120);
+  }
+});
+document.getElementById("start").addEventListener("change", e => {
+  const v = e.target.value;
+  if (!DATE_RE.test(v)) return;
+  state.start = v; selWeek = clampW(curWeek()); commit(); render();
+});
+function route() {
+  const h = location.hash.slice(1);
+  view = VIEWS.some(v => v[0] === h) ? h : "week";
+  confirmReset = false;
+  render();
+}
+window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: 0 }); });
+
+route();
+startSync();
+})();
+</script>
+
+</body>
+</html>
