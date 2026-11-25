@@ -4,6 +4,8 @@ A 16-week interview prep tracker: DSA (NeetCode 150), system design, low-level d
 
 `index.html` is the whole app: one self-contained page with no build step.
 
+Live: https://interview-prep-green-five-60.vercel.app
+
 ## How the Vercel site works
 
 The Vercel project is not linked to this repo. It serves a small loader page that fetches `index.html` from this repo, pinned to a commit, through the jsDelivr CDN, falling back to raw.githubusercontent.com.
