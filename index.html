@@ -30,6 +30,7 @@
   --lld: #a86f12;
   --ai: #c23f78;
   --side: #6f7786;
+  --test: #7a4fd0;
   --done: #1e9b57;
   --revisit: #d76f16;
   --easy: #1e8a52;
@@ -51,7 +52,7 @@
   :root:not([data-theme="light"]) {
     --paper: #0f1217; --surface: #171b22; --ink: #e8ebf1; --muted: #a2aab8; --faint: #737c8b;
     --line: #2a2f39; --chip: #21262f; --accent: #8399ff; --accent-soft: #1d2442; --on-accent: #0f1217;
-    --dsa: #8399ff; --sd: #3cc6b2; --lld: #e3ab4e; --ai: #f27baf; --side: #9aa2b0; --done: #4acb86; --revisit: #f2a055;
+    --dsa: #8399ff; --sd: #3cc6b2; --lld: #e3ab4e; --ai: #f27baf; --side: #9aa2b0; --test: #b596f7; --done: #4acb86; --revisit: #f2a055;
     --easy: #4fc98a; --medium: #e3ae4f; --hard: #f17b7b; --gold: #e6b84a; --silver: #b3bccb; --bronze: #d98e5d; --on-medal: #0f1217; --flame: #ff9442; --on-flame: #1a1006; --ice: #6cc3f0;
     --shadow: 0 1px 2px rgba(0, 0, 0, .4); color-scheme: dark;
   }
@@ -59,7 +60,7 @@
 :root[data-theme="dark"] {
   --paper: #0f1217; --surface: #171b22; --ink: #e8ebf1; --muted: #a2aab8; --faint: #737c8b;
   --line: #2a2f39; --chip: #21262f; --accent: #8399ff; --accent-soft: #1d2442; --on-accent: #0f1217;
-  --dsa: #8399ff; --sd: #3cc6b2; --lld: #e3ab4e; --ai: #f27baf; --side: #9aa2b0; --done: #4acb86; --revisit: #f2a055;
+  --dsa: #8399ff; --sd: #3cc6b2; --lld: #e3ab4e; --ai: #f27baf; --side: #9aa2b0; --test: #b596f7; --done: #4acb86; --revisit: #f2a055;
   --easy: #4fc98a; --medium: #e3ae4f; --hard: #f17b7b; --gold: #e6b84a; --silver: #b3bccb; --bronze: #d98e5d; --on-medal: #0f1217; --flame: #ff9442; --on-flame: #1a1006; --ice: #6cc3f0;
   --shadow: 0 1px 2px rgba(0, 0, 0, .4); color-scheme: dark;
 }
@@ -73,8 +74,8 @@ button, select, input { font: inherit; color: inherit; }
 .ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; display: block; }
 .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .sw { width: 9px; height: 9px; border-radius: 2px; flex: none; display: inline-block; }
-.sw.dsa { background: var(--dsa); } .sw.sd { background: var(--sd); } .sw.lld { background: var(--lld); } .sw.ai { background: var(--ai); } .sw.side { background: var(--side); }
-[data-t="dsa"] { --tc: var(--dsa); } [data-t="sd"] { --tc: var(--sd); } [data-t="lld"] { --tc: var(--lld); } [data-t="ai"] { --tc: var(--ai); } [data-t="side"] { --tc: var(--side); }
+.sw.dsa { background: var(--dsa); } .sw.sd { background: var(--sd); } .sw.lld { background: var(--lld); } .sw.ai { background: var(--ai); } .sw.side { background: var(--side); } .sw.test { background: var(--test); }
+[data-t="dsa"] { --tc: var(--dsa); } [data-t="sd"] { --tc: var(--sd); } [data-t="lld"] { --tc: var(--lld); } [data-t="ai"] { --tc: var(--ai); } [data-t="side"] { --tc: var(--side); } [data-t="test"] { --tc: var(--test); }
 
 /* app bar */
 .appbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--paper); border-bottom: 1px solid var(--line); }
@@ -279,7 +280,7 @@ details.queue summary { cursor: pointer; font-size: 13px; color: var(--revisit);
 /* tracks */
 .tiles { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(140px, 1fr); gap: 8px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; padding: 2px; margin: -2px; }
 .tiles::-webkit-scrollbar { display: none; }
-@media (min-width: 760px) { .tiles { grid-auto-flow: row; grid-template-columns: repeat(5, minmax(0, 1fr)); overflow: visible; } }
+@media (min-width: 760px) { .tiles { grid-auto-flow: row; grid-template-columns: repeat(6, minmax(0, 1fr)); overflow: visible; } }
 .tile { scroll-snap-align: start; display: grid; gap: 7px; text-decoration: none; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 11px 12px 12px; min-width: 0; }
 .tile:hover { border-color: var(--faint); }
 .tile .tn { display: flex; align-items: center; gap: 7px; font-weight: 600; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -929,13 +930,53 @@ const SIDE = [
 ["primer","System Design Primer","GitHub","SD core concepts","ref","https://github.com/donnemartin/system-design-primer",""],
 ["jordan-sd","Systems Design Interview: 0 to 1 series","Jordan has no life","SD core concepts","ref","https://www.youtube.com/watch?v=bwt09KXDH94","A long playlist. Use it as a lookup: watch the episode on whatever topic you're on","v"]
 ];
+// Test yourself: unseen prompts, not tied to weeks. Mock prompts are real reported interview questions (via the FastPrep question bank).
+// Rows: [id, title, group, difficulty ("" for mocks), url, reported, goes after / topic]
+const FP = "https://www.fastprep.io/system-design/";
+const TEST_GROUPS = [
+  ["mock-sd", "System design mocks", "Real interview prompts the system design track doesn't cover. 45 minutes, timer on, no notes: requirements, API, data model, high-level design, one deep dive. Then compare with the walkthrough for the topic it goes after. Best with a friend, or with Claude as the interviewer."],
+  ["lc-extra", "Coding beyond NeetCode", "Often-reported LeetCode problems that aren't in NeetCode 150. Do one cold, 30 minutes on the clock, once you've covered its topic."]
+];
+const TEST = [
+["rec-system","Design a personalized recommendation system","mock-sd","",FP+"personalized-recommendation-system","Reported at 14 companies, e.g. Netflix, Google, Meta","FB News Feed"],
+["workflow-engine","Design a durable workflow orchestration platform","mock-sd","",FP+"durable-work-orchestration-platform","Reported at 6 companies, e.g. Rippling, Salesforce","Job Scheduler"],
+["log-search","Design centralized log ingestion and search","mock-sd","",FP+"centralized-log-ingestion-and-search","Reported at 6 companies, e.g. Apple, Confluent","Metrics Monitoring"],
+["cicd","Design a CI/CD pipeline orchestration system","mock-sd","",FP+"ci-cd-pipeline-orchestration-system","Reported at 6 companies, e.g. LinkedIn, OpenAI","Job Scheduler"],
+["product-analytics","Design a product event analytics platform","mock-sd","",FP+"product-feature-event-analytics-platform","Reported at 6 companies, e.g. PostHog, Atlassian","Ad Click Aggregator"],
+["online-ordering","Design an online food ordering platform","mock-sd","",FP+"online-ordering-platform","Reported at 7 companies, e.g. Zomato, Amazon","Local Delivery Service"],
+["inventory","Design an inventory management service","mock-sd","",FP+"inventory-management-service","Reported at 6 companies, e.g. Instacart, Amazon","Flash Sale"],
+["inference-serving","Design a large-model inference serving platform","mock-sd","",FP+"large-model-inference-serving-platform","Reported at 5 companies, e.g. OpenAI, Anthropic","LLM Inference Handbook"],
+["ml-scheduler","Design a machine-learning job scheduler","mock-sd","",FP+"machine-learning-job-scheduler","Reported at 5 companies, e.g. Netflix, Together AI","Job Scheduler"],
+["friend-count","Serve friend counts for every post author","mock-sd","",FP+"post-author-friend-count-serving","Reported at 5 companies, e.g. Atlassian, Coinbase","Distributed Cache"],
+["cloud-queue","Design a fault-tolerant cloud queue service","mock-sd","",FP+"fault-tolerant-cloud-queue-service","Reported at 5 companies, e.g. Snowflake, Dropbox","Notification System"],
+["calendar","Design a collaborative calendar","mock-sd","",FP+"calendar-event-collaboration-system","Reported at 4 companies, e.g. LinkedIn, Postman","Google Docs"],
+["ledger","Design an idempotent ledger service","mock-sd","",FP+"idempotent-ledger-service","Reported at 4 companies, e.g. Stripe","Payment System"],
+["feature-flags","Design a feature flag platform","mock-sd","",FP+"feature-flag-platform","Reported at 4 companies, e.g. Stripe, PhonePe","Distributed Cache"],
+["feature-store","Design a machine learning feature store","mock-sd","",FP+"machine-learning-feature-store","Reported at 4 companies, e.g. Unity, Faire","Ad Click Aggregator"],
+["lfu-cache","LFU Cache","lc-extra","H",LC+"lfu-cache/","Reported at 7 companies","Design"],
+["decode-string","Decode String","lc-extra","M",LC+"decode-string/","Reported at 5 companies","Stack"],
+["lca-binary-tree","Lowest Common Ancestor of a Binary Tree","lc-extra","M",LC+"lowest-common-ancestor-of-a-binary-tree/","Reported at 5 companies","Trees"],
+["basic-calculator","Basic Calculator","lc-extra","H",LC+"basic-calculator/","Reported at 4 companies","Stack"],
+["next-permutation","Next Permutation","lc-extra","M",LC+"next-permutation/","Reported at 4 companies","Arrays"],
+["sort-colors","Sort Colors","lc-extra","M",LC+"sort-colors/","Reported at 4 companies","Two pointers"],
+["merge-sorted-array","Merge Sorted Array","lc-extra","E",LC+"merge-sorted-array/","Reported at 4 companies","Two pointers"],
+["max-consecutive-ones-iii","Max Consecutive Ones III","lc-extra","M",LC+"max-consecutive-ones-iii/","Reported at 4 companies","Sliding window"],
+["intersection-linked-lists","Intersection of Two Linked Lists","lc-extra","E",LC+"intersection-of-two-linked-lists/","Reported at 4 companies","Linked list"],
+["remove-k-digits","Remove K Digits","lc-extra","M",LC+"remove-k-digits/","Reported at 3 companies","Monotonic stack"],
+["first-last-position","Find First and Last Position of Element in Sorted Array","lc-extra","M",LC+"find-first-and-last-position-of-element-in-sorted-array/","Reported at 3 companies","Binary search"],
+["people-with-secret","Find All People With Secret","lc-extra","H",LC+"find-all-people-with-secret/","Reported at 3 companies","Graphs"],
+["evaluate-division","Evaluate Division","lc-extra","M",LC+"evaluate-division/","Reported at 3 companies as \"currency conversion\"","Graphs"],
+["first-unique-char","First Unique Character in a String","lc-extra","E",LC+"first-unique-character-in-a-string/","Reported at 3 companies","Hashing"]
+];
+const GROUPS = { side: SIDE_GROUPS, test: TEST_GROUPS };
 
 const TRACKS = [
   { key: "dsa", name: "DSA", long: "DSA · NeetCode 150", cadence: "30 min daily", noun: "problems" },
   { key: "sd", name: "System design", long: "System design", cadence: "2 sessions a week", noun: "items" },
   { key: "lld", name: "LLD", long: "Low-level design", cadence: "1 session a week", noun: "items" },
   { key: "ai", name: "AI design", long: "AI system design", cadence: "2 sessions a week", noun: "items" },
-  { key: "side", name: "Side quest", long: "Side quest", cadence: "Any time · optional", noun: "items" }
+  { key: "side", name: "Side quest", long: "Side quest", cadence: "Any time · optional", noun: "items" },
+  { key: "test", name: "Test yourself", long: "Test yourself", cadence: "Mocks · any time", noun: "items" }
 ];
 const TRACK = Object.fromEntries(TRACKS.map(t => [t.key, t]));
 
@@ -960,6 +1001,11 @@ const METHOD = {
         "Two sessions a week, 60–75 minutes. The hands-on builds land in weeks 7–10.",
         "You can whiteboard it and tell the eval, tracing and cost story.",
         "Talks sit next to the reading on the same topic, from Karpathy's intro in week 1 to the inference talk in week 13. Where a talk and a post cover the same ground, do one or the other."],
+  test:["Unseen prompts to check whether it sticks: 15 system design mock prompts reported in real interviews that the track doesn't cover, and 14 often-reported LeetCode problems outside NeetCode 150.",
+        "Never read a walkthrough first. For a mock: 45 minutes, timer on, talk out loud, draw it. For a problem: 30 minutes cold. Then compare with the walkthrough for the topic it goes after and note what you missed.",
+        "One mock every week or two from about week 6, and in the mock weeks. Coding ones on a weekend once you've covered the topic.",
+        "You finished in time and could defend each choice. If you needed the answer, mark it Revisit and redo it in two weeks.",
+        "No videos here on purpose. Mock with a friend from your circle, or ask Claude to play the interviewer and push back on your design."],
   side:["Extras for when you're ahead: the 24 NeetCode problems that don't fit one a day, DDIA 2nd edition chapter by chapter, Kleppmann's distributed systems lectures, Alex Xu Vol 1 & 2, Hello Interview deep dives, AI deep dives and Head First Design Patterns.",
         "Not tied to any week. Each item says what it goes after, so pick one once you've covered that. A three-line takeaway in a note is enough.",
         "Weekends, and only when you're on schedule. Skip it in a mock-interview week.",
@@ -981,6 +1027,7 @@ LLD.forEach((r, i) => {
   ITEMS.push(Object.assign({ id: "lld:" + r[0], track: "lld", title: r[1], url, type: r[3], prio: PR[r[4]], week: r[5], s: 0, hint: r[6], i }, vf(r[7])));
 });
 AI.forEach((r, i) => ITEMS.push(Object.assign({ id: "ai:" + r[0], track: "ai", title: r[1], by: r[2], url: r[3], type: r[4], prio: PR[r[5]], week: r[6], s: r[7], hint: r[8], i }, vf(r[9]))));
+TEST.forEach((r, i) => ITEMS.push({ id: "test:" + r[0], track: "test", title: r[1], group: r[2], diff: r[3] || undefined, type: r[3] ? undefined : "Mock", url: r[4], reported: r[5], after: r[3] ? undefined : r[6], cat: r[3] ? r[6] : undefined, week: 0, prio: null, s: 0, i }));
 SIDE.forEach((r, i) => ITEMS.push(Object.assign({ id: "side:" + r[0], track: "side", title: r[1], source: r[2], after: r[3], week: 0, group: r[4], url: r[5], hint: r[6], prio: null, s: 0, i }, vf(r[7]))));
 ITEMS.forEach(x => { if (PAGE_VIDEO.has(x.id)) x.pageVid = true; });
 const isVideo = x => !!(x.video || x.pageVid);
@@ -1133,7 +1180,7 @@ function setCode(c) {
 }
 function weightOf(x) {
   if (!x) return 1;
-  if (x.track === "dsa") return x.diff === "E" ? 1 : x.diff === "M" ? 2 : 3;
+  if (x.track === "dsa" || (x.track === "test" && x.diff)) return x.diff === "E" ? 1 : x.diff === "M" ? 2 : 3;
   return ["Problem", "Mock", "Practice", "Hands-on", "Review"].includes(x.type) ? 3 : 1;
 }
 async function rpc(fn, body) {
@@ -1345,6 +1392,10 @@ function metaHTML(x, withWeek) {
   else if (x.pageVid) parts.push('<span class="vid">▶ Video on the page</span>');
   if (x.track === "dsa") {
     parts.push('<span class="d-' + x.diff + '">' + DIFF[x.diff] + "</span>", esc(x.cat));
+  } else if (x.track === "test") {
+    if (x.diff) parts.push('<span class="d-' + x.diff + '">' + DIFF[x.diff] + "</span>", esc(x.cat));
+    else parts.push("Mock", "after " + esc(x.after));
+    parts.push(esc(x.reported));
   } else if (x.track === "side") {
     parts.push(esc(x.source), "after " + esc(x.after));
   } else {
@@ -1356,7 +1407,7 @@ function metaHTML(x, withWeek) {
   const st = status(x.id), rec = state.items[x.id];
   if (st === "done" && rec && rec.t) parts.push('<span class="tag-done">done ' + esc(fmt(parseD(rec.t))) + "</span>");
   if (st === "revisit") parts.push('<span class="tag-rev">revisit</span>');
-  if (x.track === "dsa") parts.push('<a class="vlink" href="' + esc(ytSearch(x.title)) + '" target="_blank" rel="noopener" title="Opens a YouTube search for NeetCode\'s walkthrough">▶ NeetCode video</a>');
+  if (x.track === "dsa" || (x.track === "test" && x.diff)) parts.push('<a class="vlink" href="' + esc(ytSearch(x.title)) + '" target="_blank" rel="noopener" title="Opens a YouTube search for NeetCode\'s walkthrough">▶ NeetCode video</a>');
   return parts.map(p => "<span>" + p + "</span>").join("");
 }
 function itemHTML(x, withWeek) {
@@ -1535,7 +1586,7 @@ function weekView() {
   }
 
   for (const t of TRACKS) {
-    if (t.key === "side") continue;
+    if (t.key === "side" || t.key === "test") continue;
     const xs = ITEMS.filter(x => inCard(x, t.key) && x.week === w).sort(byOrder);
     const k = counts(xs);
     h += '<section class="card" data-t="' + t.key + '" aria-label="' + esc(t.long) + '">' +
@@ -1558,6 +1609,8 @@ function weekView() {
   }
   const sq = counts(ITEMS.filter(x => inTrack(x, "side")));
   h += '<a class="linkcard" href="#side">' + NI.tracks + "<div><b>Side quests</b><span>Optional extras for when you're ahead: bonus problems, DDIA, lectures and more. Not tied to any week. " + sq.done + " of " + sq.total + " done.</span></div>" + '<span class="chev">' + NI.chev + "</span></a>";
+  const ty = counts(ITEMS.filter(x => x.track === "test"));
+  h += '<a class="linkcard" href="#test">' + NI.board + "<div><b>Test yourself</b><span>15 unseen system design mock prompts and 14 problems beyond NeetCode. " + ty.done + " of " + ty.total + " done.</span></div>" + '<span class="chev">' + NI.chev + "</span></a>";
   return '<div class="stack">' + h + "</div>";
 }
 
@@ -1571,7 +1624,7 @@ function planView() {
     h += '<article class="pw' + (w === cw ? " now" : "") + '"><div class="pwh"><b>W' + String(w).padStart(2, "0") + "</b><div><small>" + weekRange(w) + (w === cw ? " · this week" : "") + "</small><small>" + pct + "% done</small></div>" +
       '<button type="button" class="chip" data-week="' + w + '">Open week</button></div>';
     for (const t of TRACKS) {
-      if (t.key === "side") continue;
+      if (t.key === "side" || t.key === "test") continue;
       const xs = ITEMS.filter(x => inCard(x, t.key) && x.week === w).sort(byOrder);
       if (!xs.length) continue;
       let txt;
@@ -1609,9 +1662,9 @@ function trackView(key) {
     '<input type="search" class="search" id="q-' + key + '" data-q="' + key + '" placeholder="Search ' + esc(t.long) + '" value="' + esc(f.q) + '" aria-label="Search ' + esc(t.long) + '">' +
     '<div class="row"><div class="seg" role="group" aria-label="Status">' +
       sOpts.map(s => '<button type="button" id="fs-' + key + "-" + s[0] + '" data-fs="' + s[0] + '" aria-pressed="' + (f.s === s[0]) + '">' + s[1] + "</button>").join("") + "</div>";
-  if (key !== "side") h += '<label class="sel"><select id="fp-' + key + '" data-fsel="p" aria-label="Priority">' +
+  if (key !== "side" && key !== "test") h += '<label class="sel"><select id="fp-' + key + '" data-fsel="p" aria-label="Priority">' +
     [["all", "Any priority"], ["Must", "Must"], ["Good", "Good"], key === "dsa" ? ["Side quest", "Side quest"] : ["Optional", "Optional"]].map(o => '<option value="' + o[0] + '"' + (f.p === o[0] ? " selected" : "") + ">" + o[1] + "</option>").join("") + "</select></label>";
-  if (key !== "dsa") h += '<label class="sel"><select id="fv-' + key + '" data-fsel="v" aria-label="Format">' +
+  if (key !== "dsa" && key !== "test") h += '<label class="sel"><select id="fv-' + key + '" data-fsel="v" aria-label="Format">' +
     [["all", "Any format"], ["video", "▶ Videos"], ["other", "Reading & practice"]].map(o => '<option value="' + o[0] + '"' + (f.v === o[0] ? " selected" : "") + ">" + o[1] + "</option>").join("") + "</select></label>";
   h += "</div></div>";
   h += '<div id="tlist">' + trackList(key) + "</div>";
@@ -1627,10 +1680,10 @@ function trackList(key) {
     .filter(x => !q || (x.title + " " + (x.cat || "") + " " + (x.type || "") + " " + (x.by || "") + " " + (x.source || "") + " " + (x.after || "")).toLowerCase().includes(q));
   const found = '<p class="found">' + (xs.length === all.length ? "All " + all.length + " " + TRACK[key].noun : xs.length + " of " + all.length + " " + TRACK[key].noun) + "</p>";
   if (!xs.length) return '<div class="stack">' + found + '<div class="empty">Nothing matches these filters.</div></div>';
-  if (key === "side") {
+  if (GROUPS[key]) {
     const filtering = !!q || f.s !== "all" || f.v !== "all";
     let h = found;
-    for (const g of SIDE_GROUPS) {
+    for (const g of GROUPS[key]) {
       const gx = xs.filter(x => x.group === g[0]).sort(byOrder);
       if (!gx.length) continue;
       const ga = all.filter(x => x.group === g[0]), c = counts(ga);
