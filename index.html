@@ -453,6 +453,18 @@ dd { margin: 2px 0 0; max-width: 68ch; }
   .bigflame.lit .ic { animation: pop .6s ease; }
 }
 @keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.18); } 100% { transform: scale(1); } }
+/* tour */
+.tour { position: fixed; inset: 0; z-index: 60; }
+.tback { position: absolute; inset: 0; }
+.tback.dim { background: rgba(8, 10, 16, .62); }
+.tspot { position: fixed; border-radius: 12px; box-shadow: 0 0 0 9999px rgba(8, 10, 16, .62), 0 0 0 2px var(--accent) inset; pointer-events: none; }
+.tcard { position: fixed; width: min(360px, calc(100vw - 32px)); background: var(--surface); color: var(--ink); border-radius: 16px; padding: 16px; box-shadow: 0 16px 48px rgba(0, 0, 0, .35); display: grid; gap: 6px; }
+.tcard.center { left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(420px, calc(100vw - 32px)); padding: 22px 20px 18px; }
+.tcard h2 { margin: 0; font-family: var(--display); font-stretch: 84%; font-weight: 800; font-size: 20px; line-height: 1.2; }
+.tcard.center h2 { font-size: 24px; }
+.tcard p { margin: 0 0 8px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.tcount { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+@media (prefers-reduced-motion: no-preference) { .tspot { transition: left .25s ease, top .25s ease, width .25s ease, height .25s ease; } .tcard { transition: left .25s ease, top .25s ease; } }
 @media (prefers-reduced-motion: no-preference) { .cell::after, .bar i, .cbar i { transition: height .25s ease, width .25s ease; } .ring .fg { transition: stroke-dashoffset .35s ease; } }
 </style>
 </head>
@@ -1822,7 +1834,7 @@ function youView() {
       '<span class="bar"><i class="b-done" style="width:' + pd + '%"></i><i class="b-rev" style="width:' + pr + '%"></i></span></button>';
   }).join("") + "</div></section>";
   h += '<section class="panel"><h2>Plan</h2><div class="setrow"><label class="lbl" for="start">Start date</label><input type="date" id="start" class="field date" value="' + esc(state.start) + '"></div>' +
-    "<p>" + esc(weekline()) + '. Every week moves with the start date. <a href="#plan">See all 16 weeks</a></p></section>';
+    "<p>" + esc(weekline()) + '. Every week moves with the start date. <a href="#plan">See all 16 weeks</a></p><div class="row"><button type="button" class="btn" data-act="tour">Replay the tour</button></div></section>';
   const where = !web
     ? "Ticks and notes are private to you. If you're signed in and allowed to save here, they sync to your Claude account. Otherwise they stay in this browser."
     : cloud.code ? "Saved in this browser and synced to your code. Notes never appear on the leaderboard."
@@ -2044,6 +2056,118 @@ function streakView() {
   return '<div class="stack">' + h + "</div>";
 }
 
+/* ---------- first-run tour ---------- */
+// Shown once per device. Each step lights up a real element; steps can switch views first.
+const TOUR_KEY = "interview-prep-16w.tour";
+const TOUR_SKIP_FIRST = /[?&](code|friend)=/.test(location.search);
+const tourSteps = () => [
+  { title: "Welcome to your 16-week prep", text: "One DSA problem a day, plus system design, low-level design and AI design sessions each week. Here's a one-minute tour." },
+  { hash: "week", sel: ".hero", title: "This week", text: "What to do this week. The ring fills as you tick things off. Tap a square in the strip to jump to that week, or open All 16 weeks to see the whole plan." },
+  { hash: "week", sel: '.card[data-t="dsa"] .item .st', alt: ".hero", title: "Tick things off", text: "Tap the circle once for done, twice for Revisit (come back to it later), and a third time to clear it. The pencil adds a private note." },
+  { hash: "week", sel: '.card[data-t="dsa"] .chead', title: "Daily DSA", text: "NeetCode 150, one problem a day, two when both are Easy. Try it yourself first, then watch the ▶ video. This week's system design, LLD and AI design sessions are listed below it." },
+  { hash: "dsa", sel: ".tiles", title: "Tracks", text: "The full syllabus, track by track: DSA, system design (2 sessions a week), low-level design (1) and AI system design (2). Search and filter anything here." },
+  { hash: "dsa", sel: "details.how", title: "How to work each track", text: "Every track has its own method: what to use, how long to spend and what counts as done. Open it when you start a track." },
+  { hash: "dsa", sel: '.tile[data-t="side"]', title: "Side quests", text: "Optional extras for when you're ahead: 24 bonus problems, DDIA chapter by chapter, Kleppmann's lectures, Alex Xu and more. Not tied to any week." },
+  { hash: "dsa", sel: '.tile[data-t="test"]', title: "Test yourself", text: "Unseen mock interview prompts and often-asked problems beyond NeetCode. Don't read an answer first; put a timer on." },
+  { sel: "#streakchip", title: "Streaks", text: "Tick anything each day to keep your streak. Every 7 days in a row earns a freeze that covers a missed day. Tap the flame for your calendar and friend streaks." },
+  cloudAvailable()
+    ? { sel: "#sync", title: "Sync", text: "Progress is saved in this browser. Turn on sync to get a code and carry your progress to your phone or laptop. No sign-up." }
+    : { sel: "#sync", title: "Where your progress lives", text: "Your ticks and notes are private to you, and they sync to your Claude account when you're signed in." },
+  { sel: '[data-nav="board"]', title: "Leaderboard", text: "Join with a nickname to see how your week compares. Points cap at 10 a day, so a steady week beats one big day." },
+  { sel: '[data-nav="you"]', title: "You", text: "Your stats, sync code, start date and reset. You can replay this tour from here any time." }
+];
+let tour = null;
+const wait = ms => new Promise(r => setTimeout(r, ms));
+function visibleEl(sel) {
+  for (const el of document.querySelectorAll(sel)) { const r = el.getBoundingClientRect(); if (r.width && r.height) return el; }
+  return null;
+}
+function startTour() {
+  if (tour) return;
+  const root = document.createElement("div");
+  root.className = "tour"; root.id = "tour";
+  root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-labelledby", "tour-t");
+  root.innerHTML = '<div class="tback" data-tour="skip"></div><div class="tspot" hidden></div>' +
+    '<div class="tcard"><span class="tcount"></span><h2 id="tour-t"></h2><p></p>' +
+    '<div class="row"><button type="button" class="btn quiet" data-tour="skip">Skip</button><span class="sp"></span>' +
+    '<button type="button" class="btn" data-tour="back">Back</button><button type="button" class="btn primary" data-tour="next">Next</button></div></div>';
+  document.body.appendChild(root);
+  tour = { root, steps: tourSteps(), i: 0, el: null, back: location.hash };
+  showStep(0);
+}
+function endTour(done) {
+  if (!tour) return;
+  tour.root.remove(); tour = null;
+  if (done) location.hash = "week";
+}
+async function showStep(i) {
+  const t = tour; if (!t) return;
+  t.i = i;
+  const s = t.steps[i];
+  if (s.hash && location.hash.slice(1) !== s.hash) { location.hash = s.hash; await wait(140); }
+  if (tour !== t || t.i !== i) return;
+  let el = s.sel ? visibleEl(s.sel) || (s.alt ? visibleEl(s.alt) : null) : null;
+  if (el && getComputedStyle(el).position !== "fixed" && !el.closest(".appbar,.bottomnav")) {
+    el.scrollIntoView({ block: "center", inline: "center" });
+    await wait(80);
+  }
+  if (tour !== t || t.i !== i) return;
+  t.el = el;
+  paintTour();
+  const nx = t.root.querySelector('[data-tour="next"]'); if (nx) nx.focus({ preventScroll: true });
+}
+function paintTour() {
+  const t = tour; if (!t) return;
+  const s = t.steps[t.i], last = t.i === t.steps.length - 1;
+  const card = t.root.querySelector(".tcard"), spot = t.root.querySelector(".tspot"), back = t.root.querySelector(".tback");
+  t.root.querySelector(".tcount").textContent = t.i ? t.i + " of " + (t.steps.length - 1) : "Quick tour";
+  t.root.querySelector("#tour-t").textContent = s.title;
+  t.root.querySelector(".tcard p").textContent = s.text;
+  t.root.querySelector('[data-tour="back"]').hidden = t.i === 0;
+  t.root.querySelector('[data-tour="next"]').textContent = t.i === 0 ? "Start the tour" : last ? "Done" : "Next";
+  t.root.querySelector('.tcard [data-tour="skip"]').textContent = t.i === 0 ? "Not now" : "Skip";
+  const el = t.el && document.contains(t.el) ? t.el : null;
+  if (!el) {
+    spot.hidden = true; back.classList.add("dim");
+    card.classList.add("center"); card.style.left = card.style.top = "";
+    return;
+  }
+  back.classList.remove("dim"); card.classList.remove("center"); spot.hidden = false;
+  const r = el.getBoundingClientRect(), pad = 6, vw = innerWidth, vh = innerHeight;
+  Object.assign(spot.style, { left: r.left - pad + "px", top: r.top - pad + "px", width: r.width + pad * 2 + "px", height: r.height + pad * 2 + "px" });
+  const cw = card.offsetWidth, ch = card.offsetHeight;
+  const left = Math.max(16, Math.min(r.left + r.width / 2 - cw / 2, vw - cw - 16));
+  let top = r.top + r.height / 2 < vh / 2 ? r.bottom + pad + 12 : r.top - pad - 12 - ch;
+  top = Math.max(16, Math.min(top, vh - ch - 16));
+  card.style.left = left + "px"; card.style.top = top + "px";
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-tour]");
+  if (!b || !tour) return;
+  const a = b.dataset.tour;
+  if (a === "skip") endTour(false);
+  else if (a === "back" && tour.i > 0) showStep(tour.i - 1);
+  else if (a === "next") { if (tour.i >= tour.steps.length - 1) endTour(true); else showStep(tour.i + 1); }
+});
+document.addEventListener("keydown", e => {
+  if (!tour) return;
+  if (e.key === "Escape") { e.preventDefault(); endTour(false); }
+  else if (e.key === "ArrowRight") { e.preventDefault(); if (tour.i < tour.steps.length - 1) showStep(tour.i + 1); else endTour(true); }
+  else if (e.key === "ArrowLeft") { e.preventDefault(); if (tour.i > 0) showStep(tour.i - 1); }
+});
+let tourRaf = 0;
+const repaintTour = () => { if (!tour || tourRaf) return; tourRaf = requestAnimationFrame(() => { tourRaf = 0; paintTour(); }); };
+addEventListener("resize", repaintTour);
+addEventListener("scroll", repaintTour, { passive: true, capture: true });
+function maybeTour() {
+  if (TOUR_SKIP_FIRST) return;
+  let seen;
+  try { seen = localStorage.getItem(TOUR_KEY); } catch (e) { return; }
+  if (seen) return;
+  try { localStorage.setItem(TOUR_KEY, "1"); } catch (e) {}
+  setTimeout(startTour, 700);
+}
+
 /* ---------- render ---------- */
 function render() {
   renderChrome();
@@ -2107,6 +2231,7 @@ document.addEventListener("click", e => {
     if (openNotes.has(id)) { const ta = document.getElementById(domId(id)); if (ta) ta.focus(); }
   }
   else if (act === "carry") { showCarry = !showCarry; render(); }
+  else if (act === "tour") startTour();
   else if (act === "nudge-off") { nudgeOff = true; try { localStorage.setItem(NUDGE_KEY, "1"); } catch (e) {} render(); }
   else if (act === "reset") { confirmReset = true; render(); }
   else if (act === "reset-no") { confirmReset = false; render(); }
@@ -2178,6 +2303,7 @@ function route() {
 window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: 0 }); });
 
 route();
+maybeTour();
 startSync();
 startCloud();
 })();
