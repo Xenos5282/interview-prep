@@ -285,6 +285,16 @@ details.queue summary { cursor: pointer; font-size: 13px; color: var(--revisit);
 .tile .tn { display: flex; align-items: center; gap: 7px; font-weight: 600; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tile .tc { font-family: var(--mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .tile[aria-current="page"] { border-color: var(--tc); box-shadow: inset 0 0 0 1px var(--tc); background: color-mix(in srgb, var(--tc) 8%, var(--surface)); }
+details.sqg { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; min-width: 0; }
+details.sqg > summary { cursor: pointer; list-style: none; padding: 14px 16px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; }
+details.sqg > summary::-webkit-details-marker { display: none; }
+.sqn { font-family: var(--display); font-stretch: 86%; font-weight: 700; font-size: 17px; line-height: 1.2; overflow-wrap: anywhere; }
+.sqc { grid-column: 2; grid-row: 1; display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.sqc::after { content: ""; width: 7px; height: 7px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: translateY(-2px) rotate(45deg); }
+details.sqg[open] .sqc::after { transform: translateY(2px) rotate(-135deg); }
+.sqs { grid-column: 1 / -1; color: var(--muted); font-size: 13px; max-width: 70ch; }
+details.sqg > summary .bar { grid-column: 1 / -1; margin-top: 6px; }
+details.sqg > .list { padding: 0 16px 6px; border-top: 1px solid var(--line); }
 .thead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
 .thead h2 { margin: 0; font-family: var(--display); font-stretch: 82%; font-weight: 800; font-size: 24px; line-height: 1.1; display: flex; align-items: center; gap: 9px; }
 .thead .sw { width: 11px; height: 11px; border-radius: 3px; }
@@ -490,21 +500,21 @@ const DSA = [
 ["longest-repeating-character-replacement","Longest Repeating Character Replacement","M",2,"M",2],
 ["permutation-in-string","Permutation in String","M",2,"G",10],
 ["minimum-window-substring","Minimum Window Substring","H",2,"M",2],
-["sliding-window-maximum","Sliding Window Maximum","H",2,"O",3],
+["sliding-window-maximum","Sliding Window Maximum","H",2,"O",0],
 ["valid-parentheses","Valid Parentheses","E",3,"M",2],
 ["min-stack","Min Stack","M",3,"G",10],
 ["evaluate-reverse-polish-notation","Evaluate Reverse Polish Notation","M",3,"G",11],
 ["generate-parentheses","Generate Parentheses","M",3,"G",11],
 ["daily-temperatures","Daily Temperatures","M",3,"G",11],
 ["car-fleet","Car Fleet","M",3,"G",11],
-["largest-rectangle-in-histogram","Largest Rectangle in Histogram","H",3,"O",4],
+["largest-rectangle-in-histogram","Largest Rectangle in Histogram","H",3,"O",0],
 ["binary-search","Binary Search","E",4,"G",11],
 ["search-a-2d-matrix","Search a 2D Matrix","M",4,"G",11],
 ["koko-eating-bananas","Koko Eating Bananas","M",4,"G",11],
 ["find-minimum-in-rotated-sorted-array","Find Minimum in Rotated Sorted Array","M",4,"M",2],
 ["search-in-rotated-sorted-array","Search in Rotated Sorted Array","M",4,"M",3],
 ["time-based-key-value-store","Time Based Key-Value Store","M",4,"G",12],
-["median-of-two-sorted-arrays","Median of Two Sorted Arrays","H",4,"O",5],
+["median-of-two-sorted-arrays","Median of Two Sorted Arrays","H",4,"O",0],
 ["reverse-linked-list","Reverse Linked List","E",5,"M",3],
 ["merge-two-sorted-lists","Merge Two Sorted Lists","E",5,"M",3],
 ["linked-list-cycle","Linked List Cycle","E",5,"M",3],
@@ -515,7 +525,7 @@ const DSA = [
 ["find-the-duplicate-number","Find the Duplicate Number","M",5,"G",12],
 ["lru-cache","LRU Cache","M",5,"G",12],
 ["merge-k-sorted-lists","Merge k Sorted Lists","H",5,"M",3],
-["reverse-nodes-in-k-group","Reverse Nodes in k-Group","H",5,"O",6],
+["reverse-nodes-in-k-group","Reverse Nodes in k-Group","H",5,"O",0],
 ["invert-binary-tree","Invert Binary Tree","E",6,"M",3],
 ["maximum-depth-of-binary-tree","Maximum Depth of Binary Tree","E",6,"M",3],
 ["diameter-of-binary-tree","Diameter of Binary Tree","E",6,"G",12],
@@ -546,28 +556,28 @@ const DSA = [
 ["non-overlapping-intervals","Non-overlapping Intervals","M",15,"M",9],
 ["meeting-rooms","Meeting Rooms","E",15,"M",9],
 ["meeting-rooms-ii","Meeting Rooms II","M",15,"M",9],
-["minimum-interval-to-include-each-query","Minimum Interval to Include Each Query","H",15,"O",14],
+["minimum-interval-to-include-each-query","Minimum Interval to Include Each Query","H",15,"O",0],
 ["subsets","Subsets","M",9,"G",13],
 ["combination-sum","Combination Sum","M",9,"M",5],
 ["combination-sum-ii","Combination Sum II","M",9,"G",14],
 ["permutations","Permutations","M",9,"G",14],
 ["subsets-ii","Subsets II","M",9,"G",14],
 ["word-search","Word Search","M",9,"M",5],
-["palindrome-partitioning","Palindrome Partitioning","M",9,"O",7],
+["palindrome-partitioning","Palindrome Partitioning","M",9,"O",0],
 ["letter-combinations-of-a-phone-number","Letter Combinations of a Phone Number","M",9,"G",14],
-["n-queens","N-Queens","H",9,"O",8],
+["n-queens","N-Queens","H",9,"O",0],
 ["maximum-subarray","Maximum Subarray","M",14,"M",8],
 ["jump-game","Jump Game","M",14,"M",8],
 ["jump-game-ii","Jump Game II","M",14,"G",16],
 ["gas-station","Gas Station","M",14,"G",16],
-["hand-of-straights","Hand of Straights","M",14,"O",11],
-["merge-triplets-to-form-target-triplet","Merge Triplets to Form Target Triplet","M",14,"O",12],
+["hand-of-straights","Hand of Straights","M",14,"O",0],
+["merge-triplets-to-form-target-triplet","Merge Triplets to Form Target Triplet","M",14,"O",0],
 ["partition-labels","Partition Labels","M",14,"G",16],
-["valid-parenthesis-string","Valid Parenthesis String","M",14,"O",13],
+["valid-parenthesis-string","Valid Parenthesis String","M",14,"O",0],
 ["number-of-islands","Number of Islands","M",10,"M",5],
 ["max-area-of-island","Max Area of Island","M",10,"G",14],
 ["clone-graph","Clone Graph","M",10,"M",6],
-["walls-and-gates","Walls and Gates","M",10,"O",9],
+["walls-and-gates","Walls and Gates","M",10,"O",0],
 ["rotting-oranges","Rotting Oranges","M",10,"G",14],
 ["pacific-atlantic-water-flow","Pacific Atlantic Water Flow","M",10,"M",6],
 ["surrounded-regions","Surrounded Regions","M",10,"G",14],
@@ -576,11 +586,11 @@ const DSA = [
 ["graph-valid-tree","Graph Valid Tree","M",10,"M",6],
 ["number-of-connected-components-in-an-undirected-graph","Number of Connected Components","M",10,"M",6],
 ["redundant-connection","Redundant Connection","M",10,"G",15],
-["word-ladder","Word Ladder","H",10,"O",10],
+["word-ladder","Word Ladder","H",10,"O",0],
 ["network-delay-time","Network Delay Time","M",11,"G",15],
-["reconstruct-itinerary","Reconstruct Itinerary","H",11,"O",11],
+["reconstruct-itinerary","Reconstruct Itinerary","H",11,"O",0],
 ["min-cost-to-connect-all-points","Min Cost to Connect All Points","M",11,"G",15],
-["swim-in-rising-water","Swim in Rising Water","H",11,"O",12],
+["swim-in-rising-water","Swim in Rising Water","H",11,"O",0],
 ["alien-dictionary","Alien Dictionary","H",11,"M",6],
 ["cheapest-flights-within-k-stops","Cheapest Flights Within K Stops","M",11,"G",15],
 ["climbing-stairs","Climbing Stairs","E",12,"M",6],
@@ -597,30 +607,30 @@ const DSA = [
 ["partition-equal-subset-sum","Partition Equal Subset Sum","M",12,"G",15],
 ["unique-paths","Unique Paths","M",13,"M",8],
 ["longest-common-subsequence","Longest Common Subsequence","M",13,"M",8],
-["best-time-to-buy-and-sell-stock-with-cooldown","Best Time to Buy and Sell Stock with Cooldown","M",13,"O",13],
+["best-time-to-buy-and-sell-stock-with-cooldown","Best Time to Buy and Sell Stock with Cooldown","M",13,"O",0],
 ["coin-change-ii","Coin Change II","M",13,"G",16],
 ["target-sum","Target Sum","M",13,"G",16],
-["interleaving-string","Interleaving String","M",13,"O",14],
-["longest-increasing-path-in-a-matrix","Longest Increasing Path in a Matrix","H",13,"O",15],
-["distinct-subsequences","Distinct Subsequences","H",13,"O",16],
+["interleaving-string","Interleaving String","M",13,"O",0],
+["longest-increasing-path-in-a-matrix","Longest Increasing Path in a Matrix","H",13,"O",0],
+["distinct-subsequences","Distinct Subsequences","H",13,"O",0],
 ["edit-distance","Edit Distance","M",13,"G",16],
-["burst-balloons","Burst Balloons","H",13,"O",9],
-["regular-expression-matching","Regular Expression Matching","H",13,"O",10],
+["burst-balloons","Burst Balloons","H",13,"O",0],
+["regular-expression-matching","Regular Expression Matching","H",13,"O",0],
 ["single-number","Single Number","E",17,"G",16],
 ["number-of-1-bits","Number of 1 Bits","E",17,"M",9],
 ["counting-bits","Counting Bits","E",17,"M",9],
 ["reverse-bits","Reverse Bits","E",17,"M",10],
 ["missing-number","Missing Number","E",17,"M",10],
 ["sum-of-two-integers","Sum of Two Integers","M",17,"M",10],
-["reverse-integer","Reverse Integer","M",17,"O",11],
+["reverse-integer","Reverse Integer","M",17,"O",0],
 ["rotate-image","Rotate Image","M",16,"M",9],
 ["spiral-matrix","Spiral Matrix","M",16,"M",9],
 ["set-matrix-zeroes","Set Matrix Zeroes","M",16,"M",9],
 ["happy-number","Happy Number","E",16,"G",16],
 ["plus-one","Plus One","E",16,"G",16],
-["powx-n","Pow(x, n)","M",16,"O",15],
-["multiply-strings","Multiply Strings","M",16,"O",16],
-["detect-squares","Detect Squares","M",16,"O",10]
+["powx-n","Pow(x, n)","M",16,"O",0],
+["multiply-strings","Multiply Strings","M",16,"O",0],
+["detect-squares","Detect Squares","M",16,"O",0]
 ];
 const PREMIUM = new Set(["encode-and-decode-strings","meeting-rooms","meeting-rooms-ii","walls-and-gates","graph-valid-tree","number-of-connected-components-in-an-undirected-graph","alien-dictionary"]);
 
@@ -825,52 +835,99 @@ const AI = [
 ];
 
 // [id, title, source, read after, week, url, note]
+const DD = "https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/";
+const KL = "https://www.youtube.com/playlist?list=PLeKd45zvjcDFUEv_ohr_HdUFe97RItdiB";
+// Side quests are not tied to weeks. Rows: [id, title, source, goes after, group, url, note, flag]
+const SIDE_GROUPS = [
+  ["dsa", "NeetCode bonus problems", "The 24 that don't fit one a day, mostly Hards. Try one once you've done its topic."],
+  ["ddia", "Designing Data-Intensive Applications (2nd ed)", "Kleppmann & Riccomini, 2026. The deep 'why' behind the system design track. One chapter makes a good weekend read."],
+  ["lectures", "Distributed systems lectures", "Martin Kleppmann's Cambridge course: 23 short videos grouped into 8 lectures. One lecture per sitting."],
+  ["xu1", "System Design Interview, Vol 1", "Alex Xu. Long write-ups of the classic problems. Read the one that matches a problem you've just done."],
+  ["xu2", "System Design Interview, Vol 2", "Alex Xu and Sahn Lam. Same idea, harder problems."],
+  ["hi", "Hello Interview deep dives", "How real companies built things (In the Wild), plus deeper technology write-ups."],
+  ["ai", "AI deep dives", "Longer talks, posts and chapters beyond the AI design track."],
+  ["hfdp", "Head First Design Patterns", "One pattern chapter at a time, alongside the LLD track."],
+  ["ref", "Reference", "Big resources to look things up in, not to read cover to cover."]
+];
 const SIDE = [
-["xu1-1","Ch 1 · Scale from zero to millions of users","Alex Xu · Vol 1","SD core concepts",1,"",""],
-["xu1-2","Ch 2 · Back-of-the-envelope estimation","Alex Xu · Vol 1","Numbers to Know",1,"",""],
-["xu1-3","Ch 3 · A framework for system design interviews","Alex Xu · Vol 1","Delivery Framework",1,"",""],
-["xu1-5","Ch 5 · Design consistent hashing","Alex Xu · Vol 1","Consistent Hashing",2,"",""],
-["lilian","LLM Powered Autonomous Agents","Lilian Weng","Building effective agents",2,"https://lilianweng.github.io/posts/2023-06-23-agent/",""],
-["kleppmann","Distributed Systems lecture series","Martin Kleppmann · Cambridge","SD core concepts",2,"https://www.youtube.com/playlist?list=PLeKd45zvjcDFUEv_ohr_HdUFe97RItdiB","8 lectures, about 7 hours. One a weekend","7 hrs"],
-["karpathy-deep-dive","Deep Dive into LLMs like ChatGPT","Andrej Karpathy","AI Engineering ch 1–2",3,"https://www.youtube.com/watch?v=7xTGNNLPyMI","The long, detailed follow-up to his intro talk","v"],
-["year-of-llms","What We Learned From A Year of Building With LLMs","AI Engineer World's Fair 2024","Demystifying evals",6,"https://www.youtube.com/watch?v=qBHfQT3YtyY","Eugene Yan, Hamel Husain, Shreya Shankar and others","v"],
-["jordan-sd","Systems Design Interview: 0 to 1 series","Jordan has no life","SD core concepts",0,"https://www.youtube.com/watch?v=bwt09KXDH94","Very deep. Starts with 'What is Systems Design?'","v"],
-["xu2-4","Ch 4 · Distributed message queue","Alex Xu · Vol 2","Kafka",3,"",""],
-["zgateway","Meta ZGateway","Hello Interview · In the Wild","API Gateway",3,HI+"in-the-wild/meta-zgateway-zippydb",""],
-["head-first","Head First Design Patterns","Freeman & Robson","LLD patterns",3,"",""],
-["xu1-7","Ch 7 · Design a unique ID generator","Alex Xu · Vol 1","Bitly",4,"",""],
-["xu1-8","Ch 8 · Design a URL shortener","Alex Xu · Vol 1","Bitly",4,"",""],
-["xu1-15","Ch 15 · Design Google Drive","Alex Xu · Vol 1","Dropbox",4,"",""],
-["xu2-9","Ch 9 · S3-like object storage","Alex Xu · Vol 2","Handling Large Blobs",4,"",""],
-["xu2-7","Ch 7 · Hotel reservation system","Alex Xu · Vol 2","Ticketmaster",5,"",""],
-["xu1-11","Ch 11 · Design a news feed system","Alex Xu · Vol 1","FB News Feed",6,"",""],
-["xu1-4","Ch 4 · Design a rate limiter","Alex Xu · Vol 1","Rate Limiter",7,"",""],
-["xu1-12","Ch 12 · Design a chat system","Alex Xu · Vol 1","WhatsApp",7,"",""],
-["discord","Discord Message Storage","Hello Interview · In the Wild","WhatsApp",7,HI+"in-the-wild/discord-messages-scylladb",""],
-["xu1-14","Ch 14 · Design YouTube","Alex Xu · Vol 1","YouTube",8,"",""],
-["xu2-1","Ch 1 · Proximity service","Alex Xu · Vol 2","Yelp",8,"",""],
-["xu2-2","Ch 2 · Nearby friends","Alex Xu · Vol 2","Uber",9,"",""],
-["xu2-3","Ch 3 · Google Maps","Alex Xu · Vol 2","Uber",9,"",""],
-["xu1-9","Ch 9 · Design a web crawler","Alex Xu · Vol 1","Web Crawler",10,"",""],
-["xu2-6","Ch 6 · Ad click event aggregation","Alex Xu · Vol 2","Ad Click Aggregator",10,"",""],
-["xu2-10","Ch 10 · Real-time gaming leaderboard","Alex Xu · Vol 2","YouTube Top K",11,"",""],
-["figma","Figma Multiplayer","Hello Interview · In the Wild","Google Docs",11,HI+"in-the-wild/figma-multiplayer",""],
-["xu1-10","Ch 10 · Design a notification system","Alex Xu · Vol 1","Notification System",12,"",""],
-["slack","Slack Job Queue","Hello Interview · In the Wild","Job Scheduler",12,HI+"in-the-wild/slack-job-queue",""],
-["xu2-11","Ch 11 · Payment system","Alex Xu · Vol 2","Payment System",13,"",""],
-["xu2-12","Ch 12 · Digital wallet","Alex Xu · Vol 2","Payment System",13,"",""],
-["xu1-6","Ch 6 · Design a key-value store","Alex Xu · Vol 1","Distributed Cache",13,"",""],
-["ddia","Designing Data-Intensive Applications, 2nd ed (2026)","Kleppmann & Riccomini","Most of the SD track",14,"https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/","The deep 'why' behind storage, replication, partitioning and streams. A slow read, not interview prep"],
-["xu1-13","Ch 13 · Design a search autocomplete system","Alex Xu · Vol 1","FB Post Search",0,"",""],
-["xu2-5","Ch 5 · Metrics monitoring and alerting","Alex Xu · Vol 2","Metrics Monitoring",0,"",""],
-["xu2-13","Ch 13 · Stock exchange","Alex Xu · Vol 2","Robinhood",0,"",""],
-["xu2-8","Ch 8 · Distributed email service","Alex Xu · Vol 2","Anytime",0,"","Lowest priority"],
-["primer","System Design Primer","GitHub","SD core concepts",0,"https://github.com/donnemartin/system-design-primer",""],
-["tsdb","Time Series Databases","Hello Interview","Metrics Monitoring",0,HI+"deep-dives/time-series-databases",""],
-["cdc","Change Data Capture","Hello Interview","FB Post Search",0,HI+"deep-dives/change-data-capture",""],
-["shopify","Shopify Inventory Reservations","Hello Interview · In the Wild","Flash Sale",0,HI+"in-the-wild/shopify-inventory-reservations",""],
-["spotify","Spotify Data Lake","Hello Interview · In the Wild","Anytime",0,HI+"in-the-wild/spotify-data-lake-point-queries",""],
-["ai-eng-rest","AI Engineering, ch 5, 7, 8 (prompting, finetuning, data)","Chip Huyen","AI basics",0,OR,""]
+["ddia-1","Ch 1 · Trade-offs in data systems architecture","Kleppmann & Riccomini","SD core concepts","ddia",DD+"ch01.html",""],
+["ddia-2","Ch 2 · Defining nonfunctional requirements","Kleppmann & Riccomini","Numbers to Know","ddia",DD+"ch02.html",""],
+["ddia-3","Ch 3 · Data models and query languages","Kleppmann & Riccomini","Data Modeling","ddia",DD+"ch03.html",""],
+["ddia-4","Ch 4 · Storage and retrieval","Kleppmann & Riccomini","Database Indexing","ddia",DD+"ch04.html",""],
+["ddia-5","Ch 5 · Encoding and evolution","Kleppmann & Riccomini","API Design","ddia",DD+"ch05.html",""],
+["ddia-6","Ch 6 · Replication","Kleppmann & Riccomini","CAP Theorem","ddia",DD+"ch06.html",""],
+["ddia-7","Ch 7 · Sharding","Kleppmann & Riccomini","Sharding","ddia",DD+"ch07.html",""],
+["ddia-8","Ch 8 · Transactions","Kleppmann & Riccomini","Dealing with Contention","ddia",DD+"ch08.html",""],
+["ddia-9","Ch 9 · The trouble with distributed systems","Kleppmann & Riccomini","DDIA ch 6–8","ddia",DD+"ch09.html",""],
+["ddia-10","Ch 10 · Consistency and consensus","Kleppmann & Riccomini","DDIA ch 9","ddia",DD+"ch10.html",""],
+["ddia-11","Ch 11 · Batch processing","Kleppmann & Riccomini","Ad Click Aggregator","ddia",DD+"ch11.html",""],
+["ddia-12","Ch 12 · Stream processing","Kleppmann & Riccomini","Flink","ddia",DD+"ch12.html",""],
+["ddia-13","Ch 13 · A philosophy of streaming systems","Kleppmann & Riccomini","DDIA ch 12","ddia",DD+"ch13.html",""],
+["ddia-14","Ch 14 · Doing the right thing","Kleppmann & Riccomini","Anytime","ddia",DD+"ch14.html",""],
+["kl-1","Lecture 1 · Introduction, networking and RPC (videos 1.1–1.3)","Martin Kleppmann · Cambridge","Networking Essentials","lectures",KL,"The playlist has all 23 videos in order","v"],
+["kl-2","Lecture 2 · Models of distributed systems (2.1–2.4)","Martin Kleppmann · Cambridge","CAP Theorem","lectures",KL,"Two generals, Byzantine generals, system models, fault tolerance","v"],
+["kl-3","Lecture 3 · Time, clocks and ordering (3.1–3.3)","Martin Kleppmann · Cambridge","Lecture 2","lectures",KL,"","v"],
+["kl-4","Lecture 4 · Broadcast protocols and logical time (4.1–4.3)","Martin Kleppmann · Cambridge","Lecture 3","lectures",KL,"","v"],
+["kl-5","Lecture 5 · Replication and quorums (5.1–5.3)","Martin Kleppmann · Cambridge","Sharding","lectures",KL,"","v"],
+["kl-6","Lecture 6 · Consensus and Raft (6.1–6.2)","Martin Kleppmann · Cambridge","Lecture 5","lectures",KL,"","v"],
+["kl-7","Lecture 7 · Two-phase commit, linearizability, eventual consistency (7.1–7.3)","Martin Kleppmann · Cambridge","Dealing with Contention","lectures",KL,"","v"],
+["kl-8","Lecture 8 · Case studies: collaborative editing and Spanner (8.1–8.2)","Martin Kleppmann · Cambridge","Google Docs","lectures",KL,"","v"],
+["xu1-1","Ch 1 · Scale from zero to millions of users","Alex Xu · Vol 1","SD core concepts","xu1","",""],
+["xu1-2","Ch 2 · Back-of-the-envelope estimation","Alex Xu · Vol 1","Numbers to Know","xu1","",""],
+["xu1-3","Ch 3 · A framework for system design interviews","Alex Xu · Vol 1","Delivery Framework","xu1","",""],
+["xu1-4","Ch 4 · Design a rate limiter","Alex Xu · Vol 1","Rate Limiter","xu1","",""],
+["xu1-5","Ch 5 · Design consistent hashing","Alex Xu · Vol 1","Consistent Hashing","xu1","",""],
+["xu1-6","Ch 6 · Design a key-value store","Alex Xu · Vol 1","Distributed Cache","xu1","",""],
+["xu1-7","Ch 7 · Design a unique ID generator","Alex Xu · Vol 1","Bitly","xu1","",""],
+["xu1-8","Ch 8 · Design a URL shortener","Alex Xu · Vol 1","Bitly","xu1","",""],
+["xu1-9","Ch 9 · Design a web crawler","Alex Xu · Vol 1","Web Crawler","xu1","",""],
+["xu1-10","Ch 10 · Design a notification system","Alex Xu · Vol 1","Notification System","xu1","",""],
+["xu1-11","Ch 11 · Design a news feed system","Alex Xu · Vol 1","FB News Feed","xu1","",""],
+["xu1-12","Ch 12 · Design a chat system","Alex Xu · Vol 1","WhatsApp","xu1","",""],
+["xu1-13","Ch 13 · Design a search autocomplete system","Alex Xu · Vol 1","FB Post Search","xu1","",""],
+["xu1-14","Ch 14 · Design YouTube","Alex Xu · Vol 1","YouTube","xu1","",""],
+["xu1-15","Ch 15 · Design Google Drive","Alex Xu · Vol 1","Dropbox","xu1","",""],
+["xu2-1","Ch 1 · Proximity service","Alex Xu · Vol 2","Yelp","xu2","",""],
+["xu2-2","Ch 2 · Nearby friends","Alex Xu · Vol 2","Uber","xu2","",""],
+["xu2-3","Ch 3 · Google Maps","Alex Xu · Vol 2","Uber","xu2","",""],
+["xu2-4","Ch 4 · Distributed message queue","Alex Xu · Vol 2","Kafka","xu2","",""],
+["xu2-5","Ch 5 · Metrics monitoring and alerting","Alex Xu · Vol 2","Metrics Monitoring","xu2","",""],
+["xu2-6","Ch 6 · Ad click event aggregation","Alex Xu · Vol 2","Ad Click Aggregator","xu2","",""],
+["xu2-7","Ch 7 · Hotel reservation system","Alex Xu · Vol 2","Ticketmaster","xu2","",""],
+["xu2-8","Ch 8 · Distributed email service","Alex Xu · Vol 2","Anytime","xu2","","Lowest priority"],
+["xu2-9","Ch 9 · S3-like object storage","Alex Xu · Vol 2","Handling Large Blobs","xu2","",""],
+["xu2-10","Ch 10 · Real-time gaming leaderboard","Alex Xu · Vol 2","YouTube Top K","xu2","",""],
+["xu2-11","Ch 11 · Payment system","Alex Xu · Vol 2","Payment System","xu2","",""],
+["xu2-12","Ch 12 · Digital wallet","Alex Xu · Vol 2","Payment System","xu2","",""],
+["xu2-13","Ch 13 · Stock exchange","Alex Xu · Vol 2","Robinhood","xu2","",""],
+["zgateway","Meta ZGateway","Hello Interview · In the Wild","API Gateway","hi",HI+"in-the-wild/meta-zgateway-zippydb",""],
+["discord","Discord Message Storage","Hello Interview · In the Wild","WhatsApp","hi",HI+"in-the-wild/discord-messages-scylladb",""],
+["figma","Figma Multiplayer","Hello Interview · In the Wild","Google Docs","hi",HI+"in-the-wild/figma-multiplayer",""],
+["slack","Slack Job Queue","Hello Interview · In the Wild","Job Scheduler","hi",HI+"in-the-wild/slack-job-queue",""],
+["shopify","Shopify Inventory Reservations","Hello Interview · In the Wild","Flash Sale","hi",HI+"in-the-wild/shopify-inventory-reservations",""],
+["spotify","Spotify Data Lake","Hello Interview · In the Wild","Anytime","hi",HI+"in-the-wild/spotify-data-lake-point-queries",""],
+["tsdb","Time Series Databases","Hello Interview","Metrics Monitoring","hi",HI+"deep-dives/time-series-databases",""],
+["cdc","Change Data Capture","Hello Interview","FB Post Search","hi",HI+"deep-dives/change-data-capture",""],
+["lilian","LLM Powered Autonomous Agents","Lilian Weng","Building effective agents","ai","https://lilianweng.github.io/posts/2023-06-23-agent/",""],
+["karpathy-deep-dive","Deep Dive into LLMs like ChatGPT","Andrej Karpathy","AI Engineering ch 1–2","ai","https://www.youtube.com/watch?v=7xTGNNLPyMI","One long video with chapters. Watch it over two or three sittings","3.5 hrs"],
+["year-of-llms","What We Learned From A Year of Building With LLMs","AI Engineer World's Fair 2024","Demystifying evals","ai","https://www.youtube.com/watch?v=qBHfQT3YtyY","Eugene Yan, Hamel Husain, Shreya Shankar and others","v"],
+["ai-eng-5","AI Engineering, ch 5 · Prompt engineering","Chip Huyen","AI Engineering ch 1–2","ai",OR,""],
+["ai-eng-7","AI Engineering, ch 7 · Finetuning","Chip Huyen","AI Engineering ch 6","ai",OR,""],
+["ai-eng-8","AI Engineering, ch 8 · Dataset engineering","Chip Huyen","AI Engineering ch 7","ai",OR,""],
+["hfdp-1","Ch 1 · Welcome to design patterns: Strategy","Freeman & Robson","Strategy","hfdp","",""],
+["hfdp-2","Ch 2 · Observer","Freeman & Robson","Observer","hfdp","",""],
+["hfdp-3","Ch 3 · Decorator","Freeman & Robson","Decorator","hfdp","",""],
+["hfdp-4","Ch 4 · Factory Method and Abstract Factory","Freeman & Robson","Factory Method","hfdp","",""],
+["hfdp-5","Ch 5 · Singleton","Freeman & Robson","Singleton","hfdp","",""],
+["hfdp-6","Ch 6 · Command","Freeman & Robson","Command","hfdp","",""],
+["hfdp-7","Ch 7 · Adapter and Facade","Freeman & Robson","Adapter","hfdp","",""],
+["hfdp-8","Ch 8 · Template Method","Freeman & Robson","Design Patterns overview","hfdp","",""],
+["hfdp-9","Ch 9 · Iterator and Composite","Freeman & Robson","Design Patterns overview","hfdp","",""],
+["hfdp-10","Ch 10 · State","Freeman & Robson","State","hfdp","",""],
+["hfdp-11","Ch 11 · Proxy","Freeman & Robson","Design Patterns overview","hfdp","",""],
+["hfdp-12","Ch 12 · Compound patterns (MVC)","Freeman & Robson","Head First ch 1–11","hfdp","",""],
+["primer","System Design Primer","GitHub","SD core concepts","ref","https://github.com/donnemartin/system-design-primer",""],
+["jordan-sd","Systems Design Interview: 0 to 1 series","Jordan has no life","SD core concepts","ref","https://www.youtube.com/watch?v=bwt09KXDH94","A long playlist. Use it as a lookup: watch the episode on whatever topic you're on","v"]
 ];
 
 const TRACKS = [
@@ -878,7 +935,7 @@ const TRACKS = [
   { key: "sd", name: "System design", long: "System design", cadence: "2 sessions a week", noun: "items" },
   { key: "lld", name: "LLD", long: "Low-level design", cadence: "1 session a week", noun: "items" },
   { key: "ai", name: "AI design", long: "AI system design", cadence: "2 sessions a week", noun: "items" },
-  { key: "side", name: "Side quest", long: "Side quest", cadence: "Optional extras", noun: "items" }
+  { key: "side", name: "Side quest", long: "Side quest", cadence: "Any time · optional", noun: "items" }
 ];
 const TRACK = Object.fromEntries(TRACKS.map(t => [t.key, t]));
 
@@ -903,11 +960,11 @@ const METHOD = {
         "Two sessions a week, 60–75 minutes. The hands-on builds land in weeks 7–10.",
         "You can whiteboard it and tell the eval, tracing and cost story.",
         "Talks sit next to the reading on the same topic, from Karpathy's intro in week 1 to the inference talk in week 13. Where a talk and a post cover the same ground, do one or the other."],
-  side:["Alex Xu Vol 1 & 2, DDIA 2nd edition (2026), and Hello Interview's In the Wild posts.",
-        "Read only after the item it pairs with. Skip it in an interview week. A three-line takeaway is enough.",
-        "Weekends, and only when you're on schedule.",
-        "Read, with a three-line takeaway in your note.",
-        "Kleppmann's distributed systems lectures, Karpathy's deep dive and the 'Year of building with LLMs' panel. Treat them like the books."]
+  side:["Extras for when you're ahead: the 24 NeetCode problems that don't fit one a day, DDIA 2nd edition chapter by chapter, Kleppmann's distributed systems lectures, Alex Xu Vol 1 & 2, Hello Interview deep dives, AI deep dives and Head First Design Patterns.",
+        "Not tied to any week. Each item says what it goes after, so pick one once you've covered that. A three-line takeaway in a note is enough.",
+        "Weekends, and only when you're on schedule. Skip it in a mock-interview week.",
+        "Read or watched, with a three-line takeaway in your note.",
+        "Kleppmann's course is split into its 8 lectures, one per sitting. Karpathy's deep dive is a single 3.5-hour video; watch it over two or three sittings."]
 };
 
 /* ---------- items ---------- */
@@ -916,7 +973,7 @@ const PAGE_VIDEO = new Set(["sd:bitly","sd:dropbox","sd:yelp","sd:ticketmaster",
 // last column of SD/LLD/AI/SIDE rows: "v" = video, or its length ("1 hr")
 const vf = f => ({ video: !!f, len: f && f !== "v" ? f : "" });
 const ITEMS = [];
-DSA.forEach((r, i) => ITEMS.push({ id: "dsa:" + r[0], track: "dsa", title: r[1], url: LC + r[0] + "/", diff: r[2], cat: CATS[r[3]], prio: r[4] === "O" ? "Side quest" : PR[r[4]], bonus: r[4] === "O", week: r[5], s: 0, hint: PREMIUM.has(r[0]) ? "LeetCode Premium; free on neetcode.io" : "", i }));
+DSA.forEach((r, i) => ITEMS.push({ id: "dsa:" + r[0], track: "dsa", title: r[1], url: LC + r[0] + "/", diff: r[2], cat: CATS[r[3]], prio: r[4] === "O" ? "Side quest" : PR[r[4]], bonus: r[4] === "O", group: r[4] === "O" ? "dsa" : "", week: r[5], s: 0, hint: PREMIUM.has(r[0]) ? "LeetCode Premium; free on neetcode.io" : "", i }));
 SD.forEach((r, i) => ITEMS.push(Object.assign({ id: "sd:" + r[0], track: "sd", title: r[1], url: r[2] ? (r[2].startsWith("http") ? r[2] : HI + r[2]) : "", type: r[3], prio: PR[r[4]], week: r[5], s: r[6], hint: r[7], i }, vf(r[8]))));
 LLD.forEach((r, i) => {
   const l = r[2];
@@ -924,7 +981,7 @@ LLD.forEach((r, i) => {
   ITEMS.push(Object.assign({ id: "lld:" + r[0], track: "lld", title: r[1], url, type: r[3], prio: PR[r[4]], week: r[5], s: 0, hint: r[6], i }, vf(r[7])));
 });
 AI.forEach((r, i) => ITEMS.push(Object.assign({ id: "ai:" + r[0], track: "ai", title: r[1], by: r[2], url: r[3], type: r[4], prio: PR[r[5]], week: r[6], s: r[7], hint: r[8], i }, vf(r[9]))));
-SIDE.forEach((r, i) => ITEMS.push(Object.assign({ id: "side:" + r[0], track: "side", title: r[1], source: r[2], after: r[3], week: r[4], url: r[5], hint: r[6], prio: null, s: 0, i }, vf(r[7]))));
+SIDE.forEach((r, i) => ITEMS.push(Object.assign({ id: "side:" + r[0], track: "side", title: r[1], source: r[2], after: r[3], week: 0, group: r[4], url: r[5], hint: r[6], prio: null, s: 0, i }, vf(r[7]))));
 ITEMS.forEach(x => { if (PAGE_VIDEO.has(x.id)) x.pageVid = true; });
 const isVideo = x => !!(x.video || x.pageVid);
 const ytSearch = t => "https://www.youtube.com/results?search_query=" + encodeURIComponent("neetcode " + t);
@@ -934,7 +991,6 @@ const byOrder = (a, b) => a.i - b.i;
 const isCore = x => x.track !== "side" && !x.bonus;
 const inTrack = (x, key) => key === "side" ? x.track === "side" || !!x.bonus : x.track === key;
 const inCard = (x, key) => key === "side" ? x.track === "side" || !!x.bonus : x.track === key && !x.bonus;
-const sideSort = (a, b) => (a.track === "side" ? 0 : 1) - (b.track === "side" ? 0 : 1) || a.i - b.i;
 
 /* ---------- state ---------- */
 const LS = "interview-prep-16w.v1";
@@ -1271,6 +1327,7 @@ const VIEW_SET = new Set(["week", "plan", "tracks", "board", "you", "streak"]);
 let view = "week";
 let trackSel = "dsa";
 let howOpen = false;
+const sqOpen = new Set();
 let selWeek = clampW(curWeek());
 const openNotes = new Set();
 const F = {};
@@ -1478,17 +1535,17 @@ function weekView() {
   }
 
   for (const t of TRACKS) {
-    const xs = ITEMS.filter(x => inCard(x, t.key) && x.week === w).sort(t.key === "side" ? sideSort : byOrder);
+    if (t.key === "side") continue;
+    const xs = ITEMS.filter(x => inCard(x, t.key) && x.week === w).sort(byOrder);
     const k = counts(xs);
-    h += '<section class="card' + (t.key === "side" ? " quiet" : "") + '" data-t="' + t.key + '" aria-label="' + esc(t.long) + '">' +
+    h += '<section class="card" data-t="' + t.key + '" aria-label="' + esc(t.long) + '">' +
       '<div class="chead"><h2><i class="sw ' + t.key + '"></i>' + esc(t.long) + '</h2><span class="cad">' + esc(t.cadence) + '</span><span class="count">' + k.done + "/" + k.total + "</span></div>" +
-      (t.key !== "side" && k.total ? '<div class="cbar"><i style="width:' + (k.done / k.total) * 100 + '%"></i></div>' : "");
+      (k.total ? '<div class="cbar"><i style="width:' + (k.done / k.total) * 100 + '%"></i></div>' : "");
     if (t.key === "dsa") {
       h += '<p class="tip">One a day, about 30 minutes. Do two on days they\'re both Easy. At the weekend, redo one from your Revisit queue if you have time. Watch the ▶ NeetCode video only after your own attempt.</p>';
       const rq = ITEMS.filter(x => x.track === "dsa" && status(x.id) === "revisit").sort((a, b) => a.week - b.week || byOrder(a, b));
       if (rq.length) h += '<details class="queue"><summary>Revisit queue (' + rq.length + ")</summary>" + listHTML(rq, true) + "</details>";
     }
-    if (t.key === "side") h += '<p class="tip">Only if you\'re on schedule. Readings go with an item you\'ve done; bonus problems are tougher ones from topics you\'ve already covered.</p>';
     if (!xs.length) h += '<div class="empty">Nothing scheduled this week.</div>';
     else if (t.key === "sd" || t.key === "ai") {
       for (const s of [1, 2]) {
@@ -1496,13 +1553,11 @@ function weekView() {
         if (!ss.length) continue;
         h += '<div class="sess">Session ' + s + "</div>" + listHTML(ss, false);
       }
-    } else if (t.key === "side") {
-      const rd = xs.filter(x => x.track === "side"), bp = xs.filter(x => x.bonus);
-      if (rd.length) h += (bp.length ? '<div class="sess">Reading</div>' : "") + listHTML(rd, false);
-      if (bp.length) h += '<div class="sess">Bonus problems</div>' + listHTML(bp, false);
     } else h += listHTML(xs, false);
     h += "</section>";
   }
+  const sq = counts(ITEMS.filter(x => inTrack(x, "side")));
+  h += '<a class="linkcard" href="#side">' + NI.tracks + "<div><b>Side quests</b><span>Optional extras for when you're ahead: bonus problems, DDIA, lectures and more. Not tied to any week. " + sq.done + " of " + sq.total + " done.</span></div>" + '<span class="chev">' + NI.chev + "</span></a>";
   return '<div class="stack">' + h + "</div>";
 }
 
@@ -1516,7 +1571,8 @@ function planView() {
     h += '<article class="pw' + (w === cw ? " now" : "") + '"><div class="pwh"><b>W' + String(w).padStart(2, "0") + "</b><div><small>" + weekRange(w) + (w === cw ? " · this week" : "") + "</small><small>" + pct + "% done</small></div>" +
       '<button type="button" class="chip" data-week="' + w + '">Open week</button></div>';
     for (const t of TRACKS) {
-      const xs = ITEMS.filter(x => inCard(x, t.key) && x.week === w).sort(t.key === "side" ? sideSort : byOrder);
+      if (t.key === "side") continue;
+      const xs = ITEMS.filter(x => inCard(x, t.key) && x.week === w).sort(byOrder);
       if (!xs.length) continue;
       let txt;
       if (t.key === "dsa") {
@@ -1524,9 +1580,6 @@ function planView() {
         txt = "<em>" + xs.length + " problems</em> " + esc(cats.join(", "));
       } else if (t.key === "sd" || t.key === "ai") {
         txt = [1, 2].map(s => { const ss = xs.filter(x => x.s === s); return ss.length ? "<em>S" + s + "</em> " + esc(ss.map(x => x.title).join(", ")) : ""; }).filter(Boolean).join(" · ");
-      } else if (t.key === "side") {
-        const rd = xs.filter(x => x.track === "side"), bp = xs.filter(x => x.bonus);
-        txt = [rd.length ? esc(rd.map(x => x.title).join(", ")) : "", bp.length ? "<em>+" + bp.length + (bp.length === 1 ? " bonus problem" : " bonus problems") + "</em>" : ""].filter(Boolean).join(" · ");
       } else txt = esc(xs.map(x => x.title).join(", "));
       h += '<div class="pline' + (t.key === "side" ? " side" : "") + '"><i class="sw ' + t.key + '"></i><span>' + txt + "</span></div>";
     }
@@ -1574,12 +1627,28 @@ function trackList(key) {
     .filter(x => !q || (x.title + " " + (x.cat || "") + " " + (x.type || "") + " " + (x.by || "") + " " + (x.source || "") + " " + (x.after || "")).toLowerCase().includes(q));
   const found = '<p class="found">' + (xs.length === all.length ? "All " + all.length + " " + TRACK[key].noun : xs.length + " of " + all.length + " " + TRACK[key].noun) + "</p>";
   if (!xs.length) return '<div class="stack">' + found + '<div class="empty">Nothing matches these filters.</div></div>';
+  if (key === "side") {
+    const filtering = !!q || f.s !== "all" || f.v !== "all";
+    let h = found;
+    for (const g of SIDE_GROUPS) {
+      const gx = xs.filter(x => x.group === g[0]).sort(byOrder);
+      if (!gx.length) continue;
+      const ga = all.filter(x => x.group === g[0]), c = counts(ga);
+      const pd = c.total ? (c.done / c.total) * 100 : 0, pr = c.total ? (c.rev / c.total) * 100 : 0;
+      h += '<details class="sqg" data-g="' + g[0] + '"' + (filtering || sqOpen.has(g[0]) ? " open" : "") + "><summary>" +
+        '<span class="sqn">' + esc(g[1]) + '</span><span class="sqc">' + c.done + "/" + c.total + "</span>" +
+        '<span class="sqs">' + esc(g[2]) + "</span>" +
+        '<span class="bar"><i class="b-done" style="width:' + pd + '%"></i><i class="b-rev" style="width:' + pr + '%"></i></span></summary>' +
+        listHTML(gx, false) + "</details>";
+    }
+    return '<div class="stack">' + h + "</div>";
+  }
   const weeks = [...new Set(xs.map(x => x.week))].sort((a, b) => (a || 99) - (b || 99));
   let h = found;
   for (const w of weeks) {
     const g = xs.filter(x => x.week === w).sort(byOrder);
     const c = counts(all.filter(x => x.week === w));
-    h += '<section class="card"><div class="ghead"><h3>' + (w ? "Week " + w : "Extras") + "</h3><small>" + (w ? weekRange(w) : "No week; do these if you're ahead") + '</small><span class="count">' + c.done + "/" + c.total + "</span></div>" + listHTML(g, false) + "</section>";
+    h += '<section class="card"><div class="ghead"><h3>' + (w ? "Week " + w : key === "dsa" ? "Side quest" : "Extras") + "</h3><small>" + (w ? weekRange(w) : key === "dsa" ? "Not tied to a week. Try one once you've done its topic" : "No week; do these if you're ahead") + '</small><span class="count">' + c.done + "/" + c.total + "</span></div>" + listHTML(g, false) + "</section>";
   }
   return '<div class="stack">' + h + "</div>";
 }
@@ -2029,6 +2098,7 @@ document.addEventListener("change", e => {
 });
 document.addEventListener("toggle", e => {
   if (e.target.matches && e.target.matches("details.how") && view === "tracks") howOpen = e.target.open;
+  if (e.target.matches && e.target.matches("details.sqg")) { const g = e.target.dataset.g; if (e.target.open) sqOpen.add(g); else sqOpen.delete(g); }
 }, true);
 document.addEventListener("focusout", e => {
   const t = e.target;
