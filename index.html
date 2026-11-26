@@ -245,6 +245,7 @@ a.t:hover { text-decoration-color: currentColor; }
 .d-E { color: var(--easy); } .d-M { color: var(--medium); } .d-H { color: var(--hard); }
 .p-Must { color: var(--ink); font-weight: 500; }
 .p-Optional { color: var(--faint); }
+.p-Side { color: var(--side); font-weight: 500; }
 .tag-rev { color: var(--revisit); } .tag-done { color: var(--done); }
 .vid { color: var(--ai); font-weight: 500; }
 .vlink { color: var(--ai); text-decoration: none; font-weight: 500; }
@@ -477,149 +478,149 @@ const DSA = [
 ["top-k-frequent-elements","Top K Frequent Elements","M",0,"M",1],
 ["encode-and-decode-strings","Encode and Decode Strings","M",0,"M",1],
 ["product-of-array-except-self","Product of Array Except Self","M",0,"M",1],
-["valid-sudoku","Valid Sudoku","M",0,"O",0],
+["valid-sudoku","Valid Sudoku","M",0,"G",10],
 ["longest-consecutive-sequence","Longest Consecutive Sequence","M",0,"M",1],
-["valid-palindrome","Valid Palindrome","E",1,"M",2],
-["two-sum-ii-input-array-is-sorted","Two Sum II - Input Array Is Sorted","M",1,"G",13],
+["valid-palindrome","Valid Palindrome","E",1,"M",1],
+["two-sum-ii-input-array-is-sorted","Two Sum II - Input Array Is Sorted","M",1,"G",10],
 ["3sum","3Sum","M",1,"M",2],
 ["container-with-most-water","Container With Most Water","M",1,"M",2],
-["trapping-rain-water","Trapping Rain Water","H",1,"G",16],
+["trapping-rain-water","Trapping Rain Water","H",1,"G",10],
 ["best-time-to-buy-and-sell-stock","Best Time to Buy and Sell Stock","E",2,"M",2],
 ["longest-substring-without-repeating-characters","Longest Substring Without Repeating Characters","M",2,"M",2],
 ["longest-repeating-character-replacement","Longest Repeating Character Replacement","M",2,"M",2],
-["permutation-in-string","Permutation in String","M",2,"G",13],
+["permutation-in-string","Permutation in String","M",2,"G",10],
 ["minimum-window-substring","Minimum Window Substring","H",2,"M",2],
-["sliding-window-maximum","Sliding Window Maximum","H",2,"O",0],
-["valid-parentheses","Valid Parentheses","E",3,"M",3],
-["min-stack","Min Stack","M",3,"G",13],
-["evaluate-reverse-polish-notation","Evaluate Reverse Polish Notation","M",3,"G",13],
-["generate-parentheses","Generate Parentheses","M",3,"O",0],
-["daily-temperatures","Daily Temperatures","M",3,"G",13],
-["car-fleet","Car Fleet","M",3,"O",0],
-["largest-rectangle-in-histogram","Largest Rectangle in Histogram","H",3,"O",0],
-["binary-search","Binary Search","E",4,"G",14],
-["search-a-2d-matrix","Search a 2D Matrix","M",4,"G",14],
-["koko-eating-bananas","Koko Eating Bananas","M",4,"G",14],
-["find-minimum-in-rotated-sorted-array","Find Minimum in Rotated Sorted Array","M",4,"M",3],
+["sliding-window-maximum","Sliding Window Maximum","H",2,"O",3],
+["valid-parentheses","Valid Parentheses","E",3,"M",2],
+["min-stack","Min Stack","M",3,"G",10],
+["evaluate-reverse-polish-notation","Evaluate Reverse Polish Notation","M",3,"G",11],
+["generate-parentheses","Generate Parentheses","M",3,"G",11],
+["daily-temperatures","Daily Temperatures","M",3,"G",11],
+["car-fleet","Car Fleet","M",3,"G",11],
+["largest-rectangle-in-histogram","Largest Rectangle in Histogram","H",3,"O",4],
+["binary-search","Binary Search","E",4,"G",11],
+["search-a-2d-matrix","Search a 2D Matrix","M",4,"G",11],
+["koko-eating-bananas","Koko Eating Bananas","M",4,"G",11],
+["find-minimum-in-rotated-sorted-array","Find Minimum in Rotated Sorted Array","M",4,"M",2],
 ["search-in-rotated-sorted-array","Search in Rotated Sorted Array","M",4,"M",3],
-["time-based-key-value-store","Time Based Key-Value Store","M",4,"G",14],
-["median-of-two-sorted-arrays","Median of Two Sorted Arrays","H",4,"O",0],
+["time-based-key-value-store","Time Based Key-Value Store","M",4,"G",12],
+["median-of-two-sorted-arrays","Median of Two Sorted Arrays","H",4,"O",5],
 ["reverse-linked-list","Reverse Linked List","E",5,"M",3],
 ["merge-two-sorted-lists","Merge Two Sorted Lists","E",5,"M",3],
 ["linked-list-cycle","Linked List Cycle","E",5,"M",3],
 ["reorder-list","Reorder List","M",5,"M",3],
 ["remove-nth-node-from-end-of-list","Remove Nth Node From End of List","M",5,"M",3],
-["copy-list-with-random-pointer","Copy List with Random Pointer","M",5,"G",14],
-["add-two-numbers","Add Two Numbers","M",5,"G",14],
-["find-the-duplicate-number","Find the Duplicate Number","M",5,"O",0],
-["lru-cache","LRU Cache","M",5,"G",13],
-["merge-k-sorted-lists","Merge k Sorted Lists","H",5,"M",4],
-["reverse-nodes-in-k-group","Reverse Nodes in k-Group","H",5,"O",0],
-["invert-binary-tree","Invert Binary Tree","E",6,"M",4],
-["maximum-depth-of-binary-tree","Maximum Depth of Binary Tree","E",6,"M",4],
-["diameter-of-binary-tree","Diameter of Binary Tree","E",6,"G",14],
-["balanced-binary-tree","Balanced Binary Tree","E",6,"O",0],
-["same-tree","Same Tree","E",6,"M",4],
-["subtree-of-another-tree","Subtree of Another Tree","E",6,"M",4],
+["copy-list-with-random-pointer","Copy List with Random Pointer","M",5,"G",12],
+["add-two-numbers","Add Two Numbers","M",5,"G",12],
+["find-the-duplicate-number","Find the Duplicate Number","M",5,"G",12],
+["lru-cache","LRU Cache","M",5,"G",12],
+["merge-k-sorted-lists","Merge k Sorted Lists","H",5,"M",3],
+["reverse-nodes-in-k-group","Reverse Nodes in k-Group","H",5,"O",6],
+["invert-binary-tree","Invert Binary Tree","E",6,"M",3],
+["maximum-depth-of-binary-tree","Maximum Depth of Binary Tree","E",6,"M",3],
+["diameter-of-binary-tree","Diameter of Binary Tree","E",6,"G",12],
+["balanced-binary-tree","Balanced Binary Tree","E",6,"G",12],
+["same-tree","Same Tree","E",6,"M",3],
+["subtree-of-another-tree","Subtree of Another Tree","E",6,"M",3],
 ["lowest-common-ancestor-of-a-binary-search-tree","Lowest Common Ancestor of a BST","M",6,"M",4],
 ["binary-tree-level-order-traversal","Binary Tree Level Order Traversal","M",6,"M",4],
-["binary-tree-right-side-view","Binary Tree Right Side View","M",6,"G",15],
-["count-good-nodes-in-binary-tree","Count Good Nodes in Binary Tree","M",6,"O",0],
-["validate-binary-search-tree","Validate Binary Search Tree","M",6,"M",5],
-["kth-smallest-element-in-a-bst","Kth Smallest Element in a BST","M",6,"M",5],
-["construct-binary-tree-from-preorder-and-inorder-traversal","Construct Binary Tree from Preorder and Inorder","M",6,"M",5],
-["binary-tree-maximum-path-sum","Binary Tree Maximum Path Sum","H",6,"M",5],
-["serialize-and-deserialize-binary-tree","Serialize and Deserialize Binary Tree","H",6,"M",6],
-["implement-trie-prefix-tree","Implement Trie (Prefix Tree)","M",7,"M",6],
-["design-add-and-search-words-data-structure","Design Add and Search Words","M",7,"M",6],
-["word-search-ii","Word Search II","H",7,"M",6],
-["kth-largest-element-in-a-stream","Kth Largest Element in a Stream","E",8,"O",0],
-["last-stone-weight","Last Stone Weight","E",8,"O",0],
-["k-closest-points-to-origin","K Closest Points to Origin","M",8,"G",15],
-["kth-largest-element-in-an-array","Kth Largest Element in an Array","M",8,"G",15],
-["task-scheduler","Task Scheduler","M",8,"G",15],
-["design-twitter","Design Twitter","M",8,"O",0],
-["find-median-from-data-stream","Find Median from Data Stream","H",8,"M",7],
-["insert-interval","Insert Interval","M",15,"M",11],
-["merge-intervals","Merge Intervals","M",15,"M",11],
-["non-overlapping-intervals","Non-overlapping Intervals","M",15,"M",11],
-["meeting-rooms","Meeting Rooms","E",15,"M",11],
-["meeting-rooms-ii","Meeting Rooms II","M",15,"M",11],
-["minimum-interval-to-include-each-query","Minimum Interval to Include Each Query","H",15,"O",0],
-["subsets","Subsets","M",9,"G",15],
-["combination-sum","Combination Sum","M",9,"M",7],
-["combination-sum-ii","Combination Sum II","M",9,"O",0],
-["permutations","Permutations","M",9,"G",15],
-["subsets-ii","Subsets II","M",9,"O",0],
-["word-search","Word Search","M",9,"M",7],
-["palindrome-partitioning","Palindrome Partitioning","M",9,"O",0],
-["letter-combinations-of-a-phone-number","Letter Combinations of a Phone Number","M",9,"O",0],
-["n-queens","N-Queens","H",9,"O",0],
-["maximum-subarray","Maximum Subarray","M",14,"M",11],
-["jump-game","Jump Game","M",14,"M",11],
-["jump-game-ii","Jump Game II","M",14,"O",0],
-["gas-station","Gas Station","M",14,"O",0],
-["hand-of-straights","Hand of Straights","M",14,"O",0],
-["merge-triplets-to-form-target-triplet","Merge Triplets to Form Target Triplet","M",14,"O",0],
-["partition-labels","Partition Labels","M",14,"O",0],
-["valid-parenthesis-string","Valid Parenthesis String","M",14,"O",0],
-["number-of-islands","Number of Islands","M",10,"M",7],
-["max-area-of-island","Max Area of Island","M",10,"O",0],
-["clone-graph","Clone Graph","M",10,"M",7],
-["walls-and-gates","Walls and Gates","M",10,"O",0],
-["rotting-oranges","Rotting Oranges","M",10,"G",16],
-["pacific-atlantic-water-flow","Pacific Atlantic Water Flow","M",10,"M",8],
-["surrounded-regions","Surrounded Regions","M",10,"O",0],
-["course-schedule","Course Schedule","M",10,"M",8],
-["course-schedule-ii","Course Schedule II","M",10,"G",16],
-["graph-valid-tree","Graph Valid Tree","M",10,"M",8],
-["number-of-connected-components-in-an-undirected-graph","Number of Connected Components","M",10,"M",8],
-["redundant-connection","Redundant Connection","M",10,"O",0],
-["word-ladder","Word Ladder","H",10,"O",0],
-["network-delay-time","Network Delay Time","M",11,"O",0],
-["reconstruct-itinerary","Reconstruct Itinerary","H",11,"O",0],
-["min-cost-to-connect-all-points","Min Cost to Connect All Points","M",11,"O",0],
-["swim-in-rising-water","Swim in Rising Water","H",11,"O",0],
-["alien-dictionary","Alien Dictionary","H",11,"M",8],
-["cheapest-flights-within-k-stops","Cheapest Flights Within K Stops","M",11,"O",0],
-["climbing-stairs","Climbing Stairs","E",12,"M",9],
-["min-cost-climbing-stairs","Min Cost Climbing Stairs","E",12,"O",0],
-["house-robber","House Robber","M",12,"M",9],
-["house-robber-ii","House Robber II","M",12,"M",9],
-["longest-palindromic-substring","Longest Palindromic Substring","M",12,"M",9],
-["palindromic-substrings","Palindromic Substrings","M",12,"M",9],
-["decode-ways","Decode Ways","M",12,"M",9],
-["coin-change","Coin Change","M",12,"M",10],
-["maximum-product-subarray","Maximum Product Subarray","M",12,"M",10],
-["word-break","Word Break","M",12,"M",10],
-["longest-increasing-subsequence","Longest Increasing Subsequence","M",12,"M",10],
-["partition-equal-subset-sum","Partition Equal Subset Sum","M",12,"O",0],
-["unique-paths","Unique Paths","M",13,"M",10],
-["longest-common-subsequence","Longest Common Subsequence","M",13,"M",10],
-["best-time-to-buy-and-sell-stock-with-cooldown","Best Time to Buy and Sell Stock with Cooldown","M",13,"O",0],
+["binary-tree-right-side-view","Binary Tree Right Side View","M",6,"G",12],
+["count-good-nodes-in-binary-tree","Count Good Nodes in Binary Tree","M",6,"G",13],
+["validate-binary-search-tree","Validate Binary Search Tree","M",6,"M",4],
+["kth-smallest-element-in-a-bst","Kth Smallest Element in a BST","M",6,"M",4],
+["construct-binary-tree-from-preorder-and-inorder-traversal","Construct Binary Tree from Preorder and Inorder","M",6,"M",4],
+["binary-tree-maximum-path-sum","Binary Tree Maximum Path Sum","H",6,"M",4],
+["serialize-and-deserialize-binary-tree","Serialize and Deserialize Binary Tree","H",6,"M",4],
+["implement-trie-prefix-tree","Implement Trie (Prefix Tree)","M",7,"M",5],
+["design-add-and-search-words-data-structure","Design Add and Search Words","M",7,"M",5],
+["word-search-ii","Word Search II","H",7,"M",5],
+["kth-largest-element-in-a-stream","Kth Largest Element in a Stream","E",8,"G",13],
+["last-stone-weight","Last Stone Weight","E",8,"G",13],
+["k-closest-points-to-origin","K Closest Points to Origin","M",8,"G",13],
+["kth-largest-element-in-an-array","Kth Largest Element in an Array","M",8,"G",13],
+["task-scheduler","Task Scheduler","M",8,"G",13],
+["design-twitter","Design Twitter","M",8,"G",13],
+["find-median-from-data-stream","Find Median from Data Stream","H",8,"M",5],
+["insert-interval","Insert Interval","M",15,"M",8],
+["merge-intervals","Merge Intervals","M",15,"M",9],
+["non-overlapping-intervals","Non-overlapping Intervals","M",15,"M",9],
+["meeting-rooms","Meeting Rooms","E",15,"M",9],
+["meeting-rooms-ii","Meeting Rooms II","M",15,"M",9],
+["minimum-interval-to-include-each-query","Minimum Interval to Include Each Query","H",15,"O",14],
+["subsets","Subsets","M",9,"G",13],
+["combination-sum","Combination Sum","M",9,"M",5],
+["combination-sum-ii","Combination Sum II","M",9,"G",14],
+["permutations","Permutations","M",9,"G",14],
+["subsets-ii","Subsets II","M",9,"G",14],
+["word-search","Word Search","M",9,"M",5],
+["palindrome-partitioning","Palindrome Partitioning","M",9,"O",7],
+["letter-combinations-of-a-phone-number","Letter Combinations of a Phone Number","M",9,"G",14],
+["n-queens","N-Queens","H",9,"O",8],
+["maximum-subarray","Maximum Subarray","M",14,"M",8],
+["jump-game","Jump Game","M",14,"M",8],
+["jump-game-ii","Jump Game II","M",14,"G",16],
+["gas-station","Gas Station","M",14,"G",16],
+["hand-of-straights","Hand of Straights","M",14,"O",11],
+["merge-triplets-to-form-target-triplet","Merge Triplets to Form Target Triplet","M",14,"O",12],
+["partition-labels","Partition Labels","M",14,"G",16],
+["valid-parenthesis-string","Valid Parenthesis String","M",14,"O",13],
+["number-of-islands","Number of Islands","M",10,"M",5],
+["max-area-of-island","Max Area of Island","M",10,"G",14],
+["clone-graph","Clone Graph","M",10,"M",6],
+["walls-and-gates","Walls and Gates","M",10,"O",9],
+["rotting-oranges","Rotting Oranges","M",10,"G",14],
+["pacific-atlantic-water-flow","Pacific Atlantic Water Flow","M",10,"M",6],
+["surrounded-regions","Surrounded Regions","M",10,"G",14],
+["course-schedule","Course Schedule","M",10,"M",6],
+["course-schedule-ii","Course Schedule II","M",10,"G",15],
+["graph-valid-tree","Graph Valid Tree","M",10,"M",6],
+["number-of-connected-components-in-an-undirected-graph","Number of Connected Components","M",10,"M",6],
+["redundant-connection","Redundant Connection","M",10,"G",15],
+["word-ladder","Word Ladder","H",10,"O",10],
+["network-delay-time","Network Delay Time","M",11,"G",15],
+["reconstruct-itinerary","Reconstruct Itinerary","H",11,"O",11],
+["min-cost-to-connect-all-points","Min Cost to Connect All Points","M",11,"G",15],
+["swim-in-rising-water","Swim in Rising Water","H",11,"O",12],
+["alien-dictionary","Alien Dictionary","H",11,"M",6],
+["cheapest-flights-within-k-stops","Cheapest Flights Within K Stops","M",11,"G",15],
+["climbing-stairs","Climbing Stairs","E",12,"M",6],
+["min-cost-climbing-stairs","Min Cost Climbing Stairs","E",12,"G",15],
+["house-robber","House Robber","M",12,"M",7],
+["house-robber-ii","House Robber II","M",12,"M",7],
+["longest-palindromic-substring","Longest Palindromic Substring","M",12,"M",7],
+["palindromic-substrings","Palindromic Substrings","M",12,"M",7],
+["decode-ways","Decode Ways","M",12,"M",7],
+["coin-change","Coin Change","M",12,"M",7],
+["maximum-product-subarray","Maximum Product Subarray","M",12,"M",7],
+["word-break","Word Break","M",12,"M",8],
+["longest-increasing-subsequence","Longest Increasing Subsequence","M",12,"M",8],
+["partition-equal-subset-sum","Partition Equal Subset Sum","M",12,"G",15],
+["unique-paths","Unique Paths","M",13,"M",8],
+["longest-common-subsequence","Longest Common Subsequence","M",13,"M",8],
+["best-time-to-buy-and-sell-stock-with-cooldown","Best Time to Buy and Sell Stock with Cooldown","M",13,"O",13],
 ["coin-change-ii","Coin Change II","M",13,"G",16],
-["target-sum","Target Sum","M",13,"O",0],
-["interleaving-string","Interleaving String","M",13,"O",0],
-["longest-increasing-path-in-a-matrix","Longest Increasing Path in a Matrix","H",13,"O",0],
-["distinct-subsequences","Distinct Subsequences","H",13,"O",0],
+["target-sum","Target Sum","M",13,"G",16],
+["interleaving-string","Interleaving String","M",13,"O",14],
+["longest-increasing-path-in-a-matrix","Longest Increasing Path in a Matrix","H",13,"O",15],
+["distinct-subsequences","Distinct Subsequences","H",13,"O",16],
 ["edit-distance","Edit Distance","M",13,"G",16],
-["burst-balloons","Burst Balloons","H",13,"O",0],
-["regular-expression-matching","Regular Expression Matching","H",13,"O",0],
-["single-number","Single Number","E",17,"O",0],
-["number-of-1-bits","Number of 1 Bits","E",17,"M",12],
-["counting-bits","Counting Bits","E",17,"M",12],
-["reverse-bits","Reverse Bits","E",17,"M",12],
-["missing-number","Missing Number","E",17,"M",12],
-["sum-of-two-integers","Sum of Two Integers","M",17,"M",12],
-["reverse-integer","Reverse Integer","M",17,"O",0],
-["rotate-image","Rotate Image","M",16,"M",12],
-["spiral-matrix","Spiral Matrix","M",16,"M",12],
-["set-matrix-zeroes","Set Matrix Zeroes","M",16,"M",12],
-["happy-number","Happy Number","E",16,"O",0],
-["plus-one","Plus One","E",16,"O",0],
-["powx-n","Pow(x, n)","M",16,"O",0],
-["multiply-strings","Multiply Strings","M",16,"O",0],
-["detect-squares","Detect Squares","M",16,"O",0]
+["burst-balloons","Burst Balloons","H",13,"O",9],
+["regular-expression-matching","Regular Expression Matching","H",13,"O",10],
+["single-number","Single Number","E",17,"G",16],
+["number-of-1-bits","Number of 1 Bits","E",17,"M",9],
+["counting-bits","Counting Bits","E",17,"M",9],
+["reverse-bits","Reverse Bits","E",17,"M",10],
+["missing-number","Missing Number","E",17,"M",10],
+["sum-of-two-integers","Sum of Two Integers","M",17,"M",10],
+["reverse-integer","Reverse Integer","M",17,"O",11],
+["rotate-image","Rotate Image","M",16,"M",9],
+["spiral-matrix","Spiral Matrix","M",16,"M",9],
+["set-matrix-zeroes","Set Matrix Zeroes","M",16,"M",9],
+["happy-number","Happy Number","E",16,"G",16],
+["plus-one","Plus One","E",16,"G",16],
+["powx-n","Pow(x, n)","M",16,"O",15],
+["multiply-strings","Multiply Strings","M",16,"O",16],
+["detect-squares","Detect Squares","M",16,"O",10]
 ];
 const PREMIUM = new Set(["encode-and-decode-strings","meeting-rooms","meeting-rooms-ii","walls-and-gates","graph-valid-tree","number-of-connected-components-in-an-undirected-graph","alien-dictionary"]);
 
@@ -877,14 +878,14 @@ const TRACKS = [
   { key: "sd", name: "System design", long: "System design", cadence: "2 sessions a week", noun: "items" },
   { key: "lld", name: "LLD", long: "Low-level design", cadence: "1 session a week", noun: "items" },
   { key: "ai", name: "AI design", long: "AI system design", cadence: "2 sessions a week", noun: "items" },
-  { key: "side", name: "Side quest", long: "Side quest", cadence: "Optional reading", noun: "reads" }
+  { key: "side", name: "Side quest", long: "Side quest", cadence: "Optional extras", noun: "items" }
 ];
 const TRACK = Object.fromEntries(TRACKS.map(t => [t.key, t]));
 
 const METHOD = {
-  dsa: ["NeetCode 150 on LeetCode. Must is the Blind 75 core (weeks 1–12). Good is the most-asked extras (weeks 13–16). Optional has no week; do those if you're ahead.",
-        "20 minutes solo. Stuck? Use the last 10 to read the approach, mark it Revisit, and re-solve it cold on Sunday. Write the pattern and the key trick in a note.",
-        "Monday to Saturday: one new problem (two if both are Easy). Sunday: redo one problem from your Revisit queue.",
+  dsa: ["All of NeetCode 150 on LeetCode. Weeks 1–10: the Blind 75 core in roadmap order (Must). Weeks 10–16: every topic again with 51 more (Good). The other 24, mostly Hards, are side quests that show up one to three a week once you've covered their topic.",
+        "20 minutes solo. Stuck? Use the last 10 to read the approach, mark it Revisit, and re-solve it cold at the weekend. Write the pattern and the key trick in a note.",
+        "One problem every day, about 30 minutes. Do two on days they're both Easy. At the weekend, redo one from your Revisit queue if you have time.",
         "Solved cold in under 25 minutes with the right complexity, explained out loud.",
         "Every problem has a ▶ NeetCode video link, which opens a YouTube search for NeetCode's walkthrough. Watch it after your own attempt."],
   sd:  ["Hello Interview's System Design in a Hurry: framework, core concepts, key technologies, patterns and problem breakdowns. The written breakdowns are free; guided practice is premium.",
@@ -915,7 +916,7 @@ const PAGE_VIDEO = new Set(["sd:bitly","sd:dropbox","sd:yelp","sd:ticketmaster",
 // last column of SD/LLD/AI/SIDE rows: "v" = video, or its length ("1 hr")
 const vf = f => ({ video: !!f, len: f && f !== "v" ? f : "" });
 const ITEMS = [];
-DSA.forEach((r, i) => ITEMS.push({ id: "dsa:" + r[0], track: "dsa", title: r[1], url: LC + r[0] + "/", diff: r[2], cat: CATS[r[3]], prio: PR[r[4]], week: r[5], s: 0, hint: PREMIUM.has(r[0]) ? "LeetCode Premium; free on neetcode.io" : "", i }));
+DSA.forEach((r, i) => ITEMS.push({ id: "dsa:" + r[0], track: "dsa", title: r[1], url: LC + r[0] + "/", diff: r[2], cat: CATS[r[3]], prio: r[4] === "O" ? "Side quest" : PR[r[4]], bonus: r[4] === "O", week: r[5], s: 0, hint: PREMIUM.has(r[0]) ? "LeetCode Premium; free on neetcode.io" : "", i }));
 SD.forEach((r, i) => ITEMS.push(Object.assign({ id: "sd:" + r[0], track: "sd", title: r[1], url: r[2] ? (r[2].startsWith("http") ? r[2] : HI + r[2]) : "", type: r[3], prio: PR[r[4]], week: r[5], s: r[6], hint: r[7], i }, vf(r[8]))));
 LLD.forEach((r, i) => {
   const l = r[2];
@@ -929,6 +930,11 @@ const isVideo = x => !!(x.video || x.pageVid);
 const ytSearch = t => "https://www.youtube.com/results?search_query=" + encodeURIComponent("neetcode " + t);
 const BYID = new Map(ITEMS.map(x => [x.id, x]));
 const byOrder = (a, b) => a.i - b.i;
+// The 24 NeetCode problems that don't fit one-a-day are side quests: they belong to DSA and also show in Side quest.
+const isCore = x => x.track !== "side" && !x.bonus;
+const inTrack = (x, key) => key === "side" ? x.track === "side" || !!x.bonus : x.track === key;
+const inCard = (x, key) => key === "side" ? x.track === "side" || !!x.bonus : x.track === key && !x.bonus;
+const sideSort = (a, b) => (a.track === "side" ? 0 : 1) - (b.track === "side" ? 0 : 1) || a.i - b.i;
 
 /* ---------- state ---------- */
 const LS = "interview-prep-16w.v1";
@@ -1288,7 +1294,7 @@ function metaHTML(x, withWeek) {
     parts.push(esc(x.type));
     if (x.by) parts.push(esc(x.by));
   }
-  if (x.prio) parts.push('<span class="p-' + x.prio + '">' + x.prio + "</span>");
+  if (x.prio) parts.push('<span class="p-' + x.prio.split(" ")[0] + '">' + x.prio + "</span>");
   if (withWeek) parts.push(x.week ? "W" + x.week : "extra");
   const st = status(x.id), rec = state.items[x.id];
   if (st === "done" && rec && rec.t) parts.push('<span class="tag-done">done ' + esc(fmt(parseD(rec.t))) + "</span>");
@@ -1324,7 +1330,7 @@ function counts(xs) {
   return { done: d, rev: r, total: xs.length };
 }
 function weekFill(w) {
-  const xs = ITEMS.filter(x => x.week === w && x.track !== "side");
+  const xs = ITEMS.filter(x => x.week === w && isCore(x));
   const c = counts(xs);
   return c.total ? c.done / c.total : 0;
 }
@@ -1427,7 +1433,7 @@ function showNudge() {
 }
 function weekView() {
   const w = selWeek, cw = curWeek(), d = daysIn();
-  const c = counts(ITEMS.filter(x => x.week === w && x.track !== "side"));
+  const c = counts(ITEMS.filter(x => x.week === w && isCore(x)));
   const pct = c.total ? Math.round((c.done / c.total) * 100) : 0;
   const label = d < 0 ? "Starts in " + -d + (d === -1 ? " day" : " days") : cw > 16 ? "Plan finished" : w === cw ? "This week" : w < cw ? "Earlier week" : "Coming up";
   const R = 30, C = 2 * Math.PI * R;
@@ -1462,7 +1468,7 @@ function weekView() {
   }
 
   if (w === cw && cw > 1) {
-    const carry = ITEMS.filter(x => x.track !== "side" && x.week >= 1 && x.week < cw && status(x.id) === "todo").sort((a, b) => a.week - b.week || byOrder(a, b));
+    const carry = ITEMS.filter(x => isCore(x) && x.week >= 1 && x.week < cw && status(x.id) === "todo").sort((a, b) => a.week - b.week || byOrder(a, b));
     if (!carry.length) h += '<div class="pace ok"><div class="msg"><strong>On pace.</strong><span>Everything scheduled before this week is done.</span></div></div>';
     else {
       h += '<div class="pace behind"><div class="msg"><strong>' + carry.length + (carry.length === 1 ? " item" : " items") + " from earlier weeks still open.</strong>" +
@@ -1472,17 +1478,17 @@ function weekView() {
   }
 
   for (const t of TRACKS) {
-    const xs = ITEMS.filter(x => x.track === t.key && x.week === w).sort(byOrder);
+    const xs = ITEMS.filter(x => inCard(x, t.key) && x.week === w).sort(t.key === "side" ? sideSort : byOrder);
     const k = counts(xs);
     h += '<section class="card' + (t.key === "side" ? " quiet" : "") + '" data-t="' + t.key + '" aria-label="' + esc(t.long) + '">' +
       '<div class="chead"><h2><i class="sw ' + t.key + '"></i>' + esc(t.long) + '</h2><span class="cad">' + esc(t.cadence) + '</span><span class="count">' + k.done + "/" + k.total + "</span></div>" +
       (t.key !== "side" && k.total ? '<div class="cbar"><i style="width:' + (k.done / k.total) * 100 + '%"></i></div>' : "");
     if (t.key === "dsa") {
-      h += '<p class="tip">Mon–Sat: one a day (two if both are Easy). Sunday: redo one from your Revisit queue. Watch the ▶ NeetCode video only after your own attempt.</p>';
+      h += '<p class="tip">One a day, about 30 minutes. Do two on days they\'re both Easy. At the weekend, redo one from your Revisit queue if you have time. Watch the ▶ NeetCode video only after your own attempt.</p>';
       const rq = ITEMS.filter(x => x.track === "dsa" && status(x.id) === "revisit").sort((a, b) => a.week - b.week || byOrder(a, b));
       if (rq.length) h += '<details class="queue"><summary>Revisit queue (' + rq.length + ")</summary>" + listHTML(rq, true) + "</details>";
     }
-    if (t.key === "side") h += '<p class="tip">Only if you\'re on schedule. Read after the item it pairs with.</p>';
+    if (t.key === "side") h += '<p class="tip">Only if you\'re on schedule. Readings go with an item you\'ve done; bonus problems are tougher ones from topics you\'ve already covered.</p>';
     if (!xs.length) h += '<div class="empty">Nothing scheduled this week.</div>';
     else if (t.key === "sd" || t.key === "ai") {
       for (const s of [1, 2]) {
@@ -1490,6 +1496,10 @@ function weekView() {
         if (!ss.length) continue;
         h += '<div class="sess">Session ' + s + "</div>" + listHTML(ss, false);
       }
+    } else if (t.key === "side") {
+      const rd = xs.filter(x => x.track === "side"), bp = xs.filter(x => x.bonus);
+      if (rd.length) h += (bp.length ? '<div class="sess">Reading</div>' : "") + listHTML(rd, false);
+      if (bp.length) h += '<div class="sess">Bonus problems</div>' + listHTML(bp, false);
     } else h += listHTML(xs, false);
     h += "</section>";
   }
@@ -1506,7 +1516,7 @@ function planView() {
     h += '<article class="pw' + (w === cw ? " now" : "") + '"><div class="pwh"><b>W' + String(w).padStart(2, "0") + "</b><div><small>" + weekRange(w) + (w === cw ? " · this week" : "") + "</small><small>" + pct + "% done</small></div>" +
       '<button type="button" class="chip" data-week="' + w + '">Open week</button></div>';
     for (const t of TRACKS) {
-      const xs = ITEMS.filter(x => x.track === t.key && x.week === w).sort(byOrder);
+      const xs = ITEMS.filter(x => inCard(x, t.key) && x.week === w).sort(t.key === "side" ? sideSort : byOrder);
       if (!xs.length) continue;
       let txt;
       if (t.key === "dsa") {
@@ -1514,6 +1524,9 @@ function planView() {
         txt = "<em>" + xs.length + " problems</em> " + esc(cats.join(", "));
       } else if (t.key === "sd" || t.key === "ai") {
         txt = [1, 2].map(s => { const ss = xs.filter(x => x.s === s); return ss.length ? "<em>S" + s + "</em> " + esc(ss.map(x => x.title).join(", ")) : ""; }).filter(Boolean).join(" · ");
+      } else if (t.key === "side") {
+        const rd = xs.filter(x => x.track === "side"), bp = xs.filter(x => x.bonus);
+        txt = [rd.length ? esc(rd.map(x => x.title).join(", ")) : "", bp.length ? "<em>+" + bp.length + (bp.length === 1 ? " bonus problem" : " bonus problems") + "</em>" : ""].filter(Boolean).join(" · ");
       } else txt = esc(xs.map(x => x.title).join(", "));
       h += '<div class="pline' + (t.key === "side" ? " side" : "") + '"><i class="sw ' + t.key + '"></i><span>' + txt + "</span></div>";
     }
@@ -1528,7 +1541,7 @@ function trackView(key) {
   const labels = ["Main source", "How to work it", "Rhythm", "Done means", "Videos"];
   let h = '<div class="vhead"><div class="grow"><h1>Tracks</h1><p>The whole syllabus, track by track. Search, filter and tick things off here or in This week.</p></div></div>';
   h += '<nav class="tiles" aria-label="Pick a track">' + TRACKS.map(tr => {
-    const c = counts(ITEMS.filter(x => x.track === tr.key));
+    const c = counts(ITEMS.filter(x => inTrack(x, tr.key)));
     const pd = c.total ? (c.done / c.total) * 100 : 0, pr = c.total ? (c.rev / c.total) * 100 : 0;
     return '<a class="tile" data-t="' + tr.key + '" href="#' + tr.key + '"' + (tr.key === key ? ' aria-current="page"' : "") + ">" +
       '<span class="tn"><i class="sw ' + tr.key + '"></i>' + esc(tr.name) + "</span>" +
@@ -1544,7 +1557,7 @@ function trackView(key) {
     '<div class="row"><div class="seg" role="group" aria-label="Status">' +
       sOpts.map(s => '<button type="button" id="fs-' + key + "-" + s[0] + '" data-fs="' + s[0] + '" aria-pressed="' + (f.s === s[0]) + '">' + s[1] + "</button>").join("") + "</div>";
   if (key !== "side") h += '<label class="sel"><select id="fp-' + key + '" data-fsel="p" aria-label="Priority">' +
-    [["all", "Any priority"], ["Must", "Must"], ["Good", "Good"], ["Optional", "Optional"]].map(o => '<option value="' + o[0] + '"' + (f.p === o[0] ? " selected" : "") + ">" + o[1] + "</option>").join("") + "</select></label>";
+    [["all", "Any priority"], ["Must", "Must"], ["Good", "Good"], key === "dsa" ? ["Side quest", "Side quest"] : ["Optional", "Optional"]].map(o => '<option value="' + o[0] + '"' + (f.p === o[0] ? " selected" : "") + ">" + o[1] + "</option>").join("") + "</select></label>";
   if (key !== "dsa") h += '<label class="sel"><select id="fv-' + key + '" data-fsel="v" aria-label="Format">' +
     [["all", "Any format"], ["video", "▶ Videos"], ["other", "Reading & practice"]].map(o => '<option value="' + o[0] + '"' + (f.v === o[0] ? " selected" : "") + ">" + o[1] + "</option>").join("") + "</select></label>";
   h += "</div></div>";
@@ -1553,7 +1566,7 @@ function trackView(key) {
 }
 function trackList(key) {
   const f = F[key], q = f.q.trim().toLowerCase();
-  const all = ITEMS.filter(x => x.track === key);
+  const all = ITEMS.filter(x => inTrack(x, key));
   const xs = all
     .filter(x => f.p === "all" || x.prio === f.p)
     .filter(x => f.s === "all" || status(x.id) === f.s)
@@ -1681,7 +1694,7 @@ function youView() {
       '</span></div><span class="chev">' + NI.chev + "</span></a>";
   }
   h += '<section class="panel"><h2>Progress by track</h2><div class="meters">' + TRACKS.map(t => {
-    const c = counts(ITEMS.filter(x => x.track === t.key));
+    const c = counts(ITEMS.filter(x => inTrack(x, t.key)));
     const pd = c.total ? (c.done / c.total) * 100 : 0, pr = c.total ? (c.rev / c.total) * 100 : 0;
     return '<button type="button" class="meter" data-go="' + t.key + '"><span class="mrow"><span class="name"><i class="sw ' + t.key + '"></i>' + esc(t.long) + '</span><span class="num">' + c.done + " / " + c.total + "</span></span>" +
       '<span class="bar"><i class="b-done" style="width:' + pd + '%"></i><i class="b-rev" style="width:' + pr + '%"></i></span></button>';
